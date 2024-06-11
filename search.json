@@ -1,0 +1,361 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Automated Management of AWS Instances",
+    "section": "",
+    "text": "Cloud-SPAN is a project run by the Biology Department at the University of York with the aim to training researchers in the experimental design and analysis of ’omics data using cloud-based High Performance Computing (HPC) resources.\nThis course teaches how to automatically manage multiple Amazon Web Services (AWS) instances — each instance being a Linux virtual machine. Using Bash Shell scripts, we show how to create, configure, stop, start and delete one or multiple instances with a single invocation of a script.\nWe use the scripts to manage multiple instances for training. When running a workshop, instances are created with ’omics data and software required for the workshop. Each student is granted exclusive access to one instance through the use of an encrypted login key.\nTo create, configure or delete instances, the scripts require only the names of the instances. The login keys, IP addresses, and domain names used by the instances are created or deleted automatically. Creating over 30 instances takes 10-15 minutes.\nThe target audience of the course is anyone interested in deploying and managing cloud resources for training. While the course is focused on AWS, and particularly Elastic Compute Cloud (EC2) instances, the scripts can be adapted for use with other cloud providers and other types of cloud services.\nThe course is designed for 4-6 hours of self-study, depending on the number of related topics you decide to explore further.\n\n\n\n\n\n\nGetting Started\n\n\n\nThe course assumes that learners have no prior experience with the AWS concepts and tools covered in the course.\nHowever, learners are expected to have experience with both the Linux/Unix terminal and Bash shell programming — the terminal is also known as the shell and the command line interface or CLI. Windows users need to install and configure the Git Bash terminal and Mac users need to install or update the Bash shell as instructed in the Setup section; see also the Workshops Organisation below.\nLearners are also expected to use a laptop or desktop computer. Tablets and mobile phones are not suitable for taking the course, as you will be using the keyboard to type commands to the terminal or to edit text files.\n\n\n\nBackground\n“Cloud computing is the on-demand availability [through the Internet] of computer system resources [such as] data storage and computing power … [that] relies on a “pay-as-you-go” model …“[Wikipedia]. That means that we can rent as many computing resources as we need, whenever we need them, and pay only for the time we use them.\nThe main advantage of Cloud computing is that we don’t have to commit too much time and money in managing the IT resources needed to try out a new idea or experiment. Or as is the case of the Cloud-SPAN and similar projects, running hands-on training workshops by providing a properly configured instance (virtual machine) to each participant without having to handle nor invest in hardware resources nor physical space. Instead, an instance in the cloud is first configured with all the data and software tools required by a workshop. This instance is then configured as a template, or Amazon Machine Image (AMI) in AWS terminology. Finally, a number of instances is created from the AMI and configured individually as to domain name, IP address and access login key. Once the course is over, the instances are deleted to stop incurring costs. The AMI is typically preserved to serve as the starting point either (1) to create new instances for a new run of the workshop, or (2) to create a new AMI with updated data or software or both, through creating an instance, updating the data or software, and creating an AMI out of the instance.\nDespite such convenience, managing multiple instances through a Graphical User Interface (GUI), such as the AWS Console, is really cumbersome and error-prone. Hence we developed the scripts, and through their use we have noted a few best practices to manage multiple instances that are covered in the course.\n\n\nCourse Overview\n\n\n\nLesson\nOverview\n\n\n\n\n1. Setting Up Your Cloud and Terminal Environments\nLearn how to create and configure your AWS account for daily work, and how to install and configure the scripts in your Terminal environment to use your AWS account.\n\n\n2. Managing AWS Instances\nLearn how to configure your AWS account to provide AWS instances with access based on domain names and login keys, how to run the scripts to deploy and manage AWS instances for a workshop, how to create and manage AMIs, and the organisation and workings of the scripts.\n\n\n\n\n\nWorkshops Organisation\nOnline and in-person workshops of this course are delivered in 2.5 - 3 hours and are focused on the use of the scripts, covering only the episodes indicated below:\nLesson 1: Setting Up Your Cloud and Terminal Environments:\n1.1. Create Your AWS Account\n1.2. Configure Your AWS Account\n1.3. Configure Your Terminal Environment\n1.4. Configure Your AWS CloudShell Environment\nLesson 2: Managing AWS Instances:\n2.1. Configure Instances Internet Access\n2.2. Instances Management Tasks Using the Scripts — workshop\n2.3. AMIs Management — workshop\n2.4. The Scripts Design — workshop\n\nAttending a workshop with no AWS account — using a Cloud-SPAN AWS account\nYou can attend a workshop without having to create and configure an AWS account (Episodes 1.1 and 1.2). However, as an AWS account is needed to create and manage AWS instances with the scripts, as a workshop attendee, an AWS Linux instance will be made available to you at no cost by the Cloud-SPAN team. This instance will have already configured the terminal environment (Episode 1.3) and instances internet access (Episode 2.1) using a Cloud-SPAN AWS account. To login to your Linux instance you will use the (secure shell) ssh program, and hence, prior to the workshop you need to have installed ssh on your (Linux or Mac) computer – Windows users can install Git Bash as that will also install ssh on your computer, see the Setup section. You will receive instructions to login to your Linux instance at the worshop.\n\n\nAttending a workshop using your AWS account\nYou can attend a workshop and use your AWS account (or the AWS account of your institution) to use (run) the scripts. You need to complete the following episodes before the workshop (contact the Cloud-SPAN team if you need assistance):\n1.1. Create Your AWS Account\n1.2. Configure Your AWS Account\n1.3. Configure Your Terminal Environment or\n1.4. Configure Your AWS CloudShell Environment and\n2.1. Configure Instances Internet Access\nYou can configure the scripts to use your AWS account either on your computer (Episode 1.3: using either a Git Bash terminal, a Linux terminal or a Mac terminal) or on your AWS CloudShell Environment (Episode 1.4), which is a browser-based Linux terminal. If you opt for configuring the scripts on your computer: Windows users need to install Git Bash and Mac users need to install or update the Bash shell on their computer prior to the workshop, see details in the Setup section and in the introduction to Lesson 1, Setting Up Your Cloud and Terminal Environments.\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "docs/lesson02-managing-aws-instances/04-scripts-design.html",
+    "href": "docs/lesson02-managing-aws-instances/04-scripts-design.html",
+    "title": "Automated Management of AWS Instances",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "docs/lesson02-managing-aws-instances/01-configure-instances-internet.html",
+    "href": "docs/lesson02-managing-aws-instances/01-configure-instances-internet.html",
+    "title": "Automated Management of AWS Instances",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Home",
+      "Managing AWS Instances",
+      "01-configure-instances-internet.html"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html",
+    "title": "Create Your AWS Account",
+    "section": "",
+    "text": "Prerequisites\n\n\n\nPlease read Workshops Organisation if you haven’t done so. To complete this episode you will need: - if you are self-studying the course or attending a workshop using your AWS account: - an email address - a credit card — new accounts get one-year of AWS Free Tier but a card number must be entered on creating an account - the phone number associated with the credit card - the address associated with the credit card - if you are attending a workshop using a Cloud-SPAN AWS account (and an AWS Linux instance), you don’t need to complete this episode.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#introduction",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#introduction",
+    "title": "Create Your AWS Account",
+    "section": "Introduction",
+    "text": "Introduction\nThese are the main steps you will follow to open your AWS account:\n\nSign-up to AWS with your email (as username) and password.\nSelect your account type (Personal) and enter your contact information.\nEnter Billing Information: your credit card details.\nConfirm your identity to AWS through a phone call or SMS message.\nSelect support plan (Basic) and complete sign-up.\nLogin to your AWS account.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#sign-up-to-aws-with-your-email-and-password",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#sign-up-to-aws-with-your-email-and-password",
+    "title": "Create Your AWS Account",
+    "section": "1. Sign-up to AWS with your email and password",
+    "text": "1. Sign-up to AWS with your email and password\nGo to the AWS sign-up page by going to AWS sign-up — for convenience, right click on the link and, in the menu that pops up, left click on Open link in new window; you can switch between this browser window and the sign-up page window to be opened by pressing the keys Alt-Tab simultaneously.\nEnter your email and password and a name for your account — you can change the name of your account later.\n\n\n\n.\n\n\n\n\n\n\n\n\nNew accounts\n\n\n\n\nNew accounts are all granted the one-year Free Tier (message on the left).\nThe name of an account helps to identify the account once the user is logged in, as it is not uncommon for AWS users to have more than one AWS account.\n\n\n\nOnce you have entered your email, password and account name, click on Continue (step 1 of 5) and complete the Security check box that will pop up by typing the characters displayed into the box. Click on Continue (step 1 of 5) again.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#select-your-account-type-personal-and-enter-your-contact-information",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#select-your-account-type-personal-and-enter-your-contact-information",
+    "title": "Create Your AWS Account",
+    "section": "2. Select your account type (Personal) and enter your contact information",
+    "text": "2. Select your account type (Personal) and enter your contact information\nThe next page asks you How do you plan to use AWS? Choose Personal and enter your name, phone number and address — your address must be the one associated with your credit card and this will be verified in the next step.\nThen read the AWS Customer Agreement and check the box I have read and agree to the terms of the AWS Customer Agreement. Finally, click on Continue (step 2 of 5) to move to step 3.\n\n\n\n.\n\n\n\n\n\n\n\n\nAccount types\n\n\n\n\nThere is no functional difference between a business account and a personal account. Both have access to all AWS services and both support managing sub-accounts which, as we will see in the next episode, are more convenient for every day work.\nA personal account should not be opened with a work email address as you may change jobs after opening the account. A business account should be opened with a company or institution address linked to a roll or position and not to a person who may change jobs at some point.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#enter-billing-information-your-credit-card-details",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#enter-billing-information-your-credit-card-details",
+    "title": "Create Your AWS Account",
+    "section": "3. Enter Billing Information: your credit card details",
+    "text": "3. Enter Billing Information: your credit card details\nNow you are asked for your credit card details. Note that your credit card will be verified once you click on the orange button Verify and Continue (step 3 of 5) and that you must select/provide the address associated with your credit card.\nPlease note the Secure verification message on the left: AWS will make a small charge (equivalent to $1 USD) on your card to verify it and the charge will appear in your card account as a pending transaction that will not be confirmed by AWS, and hence it will not be charged and will disappear from your account in 3-5 days.\n\n\n\n.\n\n\nAs part of the card verification process, a pop-up window from your bank or financial institution may appear and ask you to verify the AWS transaction. Choose the (Mobile or Home) phone registered with your card to receive the passcode, click on Confirm, and once you receive the passcode enter it as required.\n\n\n\n.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#confirm-your-identity-to-aws-through-a-phone-call-or-sms-message",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#confirm-your-identity-to-aws-through-a-phone-call-or-sms-message",
+    "title": "Create Your AWS Account",
+    "section": "4. Confirm your identity to AWS through a phone call or SMS message",
+    "text": "4. Confirm your identity to AWS through a phone call or SMS message\nYou now need to confirm your identity to AWS through an SMS message or a phone call to the phone number that will be associated with your AWS account (we used the same phone number we entered in step 2).\nPlease select SMS message or phone call, enter your phone number and the characters in the security check box, and finally click on Send SMS (step 4 of 5). After you enter the code, you will receive the SMS or a phone call within a few seconds.\n\n\n\n.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#select-support-plan-basic-and-complete-sign-up",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#select-support-plan-basic-and-complete-sign-up",
+    "title": "Create Your AWS Account",
+    "section": "5. Select support plan (Basic) and complete sign-up",
+    "text": "5. Select support plan (Basic) and complete sign-up\nYou must now select a support plan. Select the Basic support - Free plan and click on Complete sign-up. The Basic support plan is free and you don’t need more if this is your first AWS account.\n\n\n\n.\n\n\nThe congratulations page will then be displayed.\nYou will also receive three emails from AWS with the Subjects:\n\n“Welcome to Amazon Web Services”\n“AWS Support (Basic) Sign-Up Confirmation”\n“Your AWS Account is Ready - Get Started Now”\n\nThese emails have links to useful information and resources.\n\n\n\n.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/01-create-aws-account.html#login-to-your-aws-account",
+    "href": "docs/lesson01-setting-work-envs/01-create-aws-account.html#login-to-your-aws-account",
+    "title": "Create Your AWS Account",
+    "section": "6. Login to your AWS account",
+    "text": "6. Login to your AWS account\nFrom the congratulations page click on Go to the AWS Management Console where you will be able to sign in.\nLogin to your Root user account by entering the email address that you used to open your account in step 1 and click on the Next button.\n\n\n\n.\n\n\nYou will then be prompted to:\n\nEnter some characters by a “Security check” box and then your password\nSelect either the previous or the new version of the Console Home (please choose the new version)\nSelect your cookie preferences (select as you prefer).\n\n\n\n\n\n\n\nTypes of user\n\n\n\n\nThe login page gives the option to login either as the Root user or as an IAM user — IAM stands for Identity Access Managment.\nThe Root user account is for the owner of the account who “performs tasks requiring unrestricted access”, such as updating billing information or deleting the account, while an IAM user account is for a user who “performs daily tasks” such as using AWS services.\nAt this stage you can only login to the Root user account. In the next episode you will create an IAM account which you will use to create and manage AWS resources.\n\n\n\nFinally you will be logged in as Root user to the Console Home screen shown below, able to use your account. We will first configure your account in the next episode.\n\n\n\n.\n\n\nAs you eventually will logout from your account, please make a note of the address to log back in to the AWS Managment Console: aws.amazon.com/console or https://aws.amazon.com/console.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Create Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html",
+    "href": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html",
+    "title": "Configure Your AWS CloudShell Environment",
+    "section": "",
+    "text": "Prerequisites\n\n\n\nPlease read Workshops Organisation if you haven’t done so. To complete this episode you will need:\n\nif you are self-studying the course or attending a workshop using your AWS account:\n\nto have created and configured your AWS account as described in the two previous episodes: Create Your AWS Account and Configure Your AWS Account.\nthe login page, username and password of your IAM user account.\n\nif you are attending a workshop using a Cloud-SPAN AWS account (and an AWS Linux instance), you don’t need to complete this episode but to follow the instructions in the episode Configure Your Terminal Environment.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS CloudShell Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html#login-to-the-aws-console",
+    "href": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html#login-to-the-aws-console",
+    "title": "Configure Your AWS CloudShell Environment",
+    "section": "Login to the AWS Console",
+    "text": "Login to the AWS Console\nTo access the AWS CloudShell environment and download the Scripts therein, you need to be logged in to the AWS Console with your IAM user account.\nOpen a new browser window and enter the address of the login page for your account IAM users. The address contains the account alias or your 12-digit account number:\n\nhttps://youraccountalias.signin.aws.amazon.com/console\nhttps://123456789012.signin.aws.amazon.com/console\n\nEnter your IAM username and password. You may also get a Security check to complete.\nOnce you are logged in, a page like the one below will appear.\nIMPORTANT: On the top right, check that the region is set to Ireland. Set it to Ireland if it is not:\nAn AWS CloudShell that you launch can only operate on resources within a selected region. Since the Cloud-SPAN Amazon Machine Image (AMI) from which you will create AWS instances with the Scripts is located in the Ireland region, you need to select this region before launching the AWS CloudShell.\nIf you are using an institutional account and you cannot set the region to Ireland, set it to the region which your institutional account is enabled to. Hence you will be installing and running the Scripts in the CloudShell for that region. However, before running the Scripts (in the next lesson), you will need to ask your IT department to copy the Cloud-SPAN AMI to your AWS account.\n(Note: you can launch multiple AWS CloudShells, each operating on a different region, but this is not needed and hence not covered in the course.)",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS CloudShell Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html#launch-the-aws-cloudshell",
+    "href": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html#launch-the-aws-cloudshell",
+    "title": "Configure Your AWS CloudShell Environment",
+    "section": "Launch the AWS CloudShell",
+    "text": "Launch the AWS CloudShell\nTo launch the AWS CloudShell, click on its icon at the top: the little square with these two characters “**&gt;_**” inside.\n\n\n\n.\n\n\nYou will be presented with the message “Welcome to AWS CloudShell” below.\nIf you would like to learn more about the AWS CloudShell (software available, installing software, etc.), click on Learn more. A new browser tab will be opened with the online documentation about the AWS CloudShell.\nClick on Close to get to the AWS CloudShell.\n\n\n\n.\n\n\nYou will now be presented with the AWS CloudShell terminal, like the one below.\nIt may take up to a couple of minutes for the AWS CloudShell terminal to be ready the first time you open it in a Console session:\n\nfirst, an AWS instance called the environment will be launched — you will see the message “Waiting for the environment to run …”, not shown below\nthen the terminal program will be run — you will see the message “Preparing your terminal …”.\nfinally, you will see the terminal prompt, something like this: [cloudshell-user]@ip-11-22-33-44 ~]$ — the numbers in the prompt are the IP address of the instance and may differ every time you open the AWS CloudShell.\n\nThe message after the first prompt, “Try these commands to get started: aws help …”, means that the AWS CLI, whose name when used is aws, is ready to be used.\n\n\n\n.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS CloudShell Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html#download-the-scripts",
+    "href": "docs/lesson01-setting-work-envs/04-configure-cloudshell.html#download-the-scripts",
+    "title": "Configure Your AWS CloudShell Environment",
+    "section": "Download the Scripts",
+    "text": "Download the Scripts\nTo download the Scripts, enter or copy-paste the git command below into the terminal and press Enter.\n\n\nCode\n\ngit clone https://github.com/Cloud-SPAN/aws-instances.git ~/_tmp_cloudspan_aws\n\nNow enter the command ls -a ~ to list all the files (visible and hidden) in your home directory which is represented by the ~ character:\n\n\nCode\n\nls -a ~\n\nThe terminal should now look similar to the following. If so, you have downloaded the Scripts into the **_tmp_cloudspan_aws** directory in your home directory.\n\n\n\n.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS CloudShell Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html",
+    "title": "Configure Your AWS Account",
+    "section": "",
+    "text": "Prerequisites\n\n\n\nPlease read Workshops Organisation if you haven’t done so. To complete this episode you will need:\n\nif you are self-studying the course or attending a workshop using your AWS account:\n\nto have opened your AWS account as described in the first episode of this lesson: Create Your AWS Account.\nto be logged in to your AWS account as the Root User (described also in that episode, at the end).\nideally, your mobile phone to add multi-factor authentication (MFA) to your AWS account. However, if you don’t have a mobile phone, you can skip this step and still use your AWS account.\n\nif you are attending a workshop using a Cloud-SPAN AWS account (and and AWS Linux instance), you don’t need to complete this episode.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html#introduction",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html#introduction",
+    "title": "Configure Your AWS Account",
+    "section": "Introduction",
+    "text": "Introduction\nThese are the main steps you will follow to configure your AWS account:\n\nChange the default region of your account to Ireland.\nAWS services are provided through many regions around the world and a region is allocated by default. You will need to change the region of your account to Ireland because the Amazon Machine Image from which you will create your AWS instance is stored in the Ireland region. But you can later change your account region if you wish.\nSecure your AWS Root User account.\nThe account your created in the last episode is your Root user account and can perform any operation including closing the account. It is best practice to use the Root user account only for high-level administration and to create the first IAM (Identity Access Managment) user account for day-to-day work and account management. It is also best practice to secure the Root user account with multi-factor authentication (MFA).\nCreate an IAM user account to create and manage AWS resources.\nIAM user accounts are attached to a User Group that has a set of specific permissions (such as reading, writing and deleting) on specified resources. We will create a User Group with predefined permissions and an IAM user account in that group.\nCreate an alias for your account id.\nYour Root user account id is a 12-digit number that is difficult to remember. We are going to create an alias that is easier to remember. This is especially useful because the alias will replace the 12-digit number in the web address for logging in to your account as IAM user.\nGrant your IAM user account the permissions to access the Billing Dashboard.\nThe Billing Dashboard of your account is only accessible to the Root user by default. As you will mostly be using your IAM user account, it is convenient that you can check your bills and related information with your IAM user account too. We are going set on the permissions that enable your IAM user account to access the Billing Dashboard.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html#change-the-default-region-of-your-account-to-ireland",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html#change-the-default-region-of-your-account-to-ireland",
+    "title": "Configure Your AWS Account",
+    "section": "1. Change the default region of your account to Ireland",
+    "text": "1. Change the default region of your account to Ireland\nOnce you have logged to your AWS Root user account, your browser will display a page showing the default region in the top right. This may be N. Virginia or another default.\nChange the region to Ireland: click on the region name that is shown and in the drop-down menu that pops up, select Europe (Ireland) eu-west-1.\n\n\n\n.\n\n\n\n\n\n\n\n\nNote\n\n\n\nYou can change the region any time you need.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html#secure-your-aws-root-user-account",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html#secure-your-aws-root-user-account",
+    "title": "Configure Your AWS Account",
+    "section": "2. Secure your AWS Root user account",
+    "text": "2. Secure your AWS Root user account\nWe now are going to add multi-factor authentication (MFA) to your Root user account as an extra security mechanism. This requires you to download an app to your mobile phone, as described below.\n\n\n\n\n\n\nNote\n\n\n\nNo mobile phone?\nIf you don’t have a mobile phone, don’t worry, you can skip this step and go straight to step 3.\nIf you are not using MFA it is best to use your AWS Root user account only from your personal computer or a trusted computer.\n\n\nType iam in the AWS search box at the top and press Enter.\n\n\n\n.\n\n\nYou will be presented with the “IAM Dashboard”. Click on Add MFA.\n\n\n\n.\n\n\nOn the page that appears, “Your Security Credentials”, click Activate MFA.\n\n\n\n.\n\n\nA pop-up window called “Manage MFA device” will appear. Select Virtual MFA device and Continue.\n\n\n\n.\n\n\nYou will now be presented with a pop-up windows called “Set up a virtual MFA device”. Do not select anything at the moment.\n\n\n\n.\n\n\nTo set up your mobile as MFA device you will need a Virtual MFA app on your mobile phone. We have tested both “Duo Mobile” and “Google Authenticator” and give instructions for both but you may already be using another app. AWS lists some options here: AWS MFAs.\nIf you do not have a Virtual MFA app on your mobile phone: Go to the app store on your phone, search for Duo Mobile or Google Authenticator, and install it.\nOnce you have installed an MFA app in your mobile: - Return to the above pop-up “Set up a virtual MFA device” on your computer and choose Show QR code. - Open the MFA app on your phone - Press + Add in Duo Mobile or + in Google Authenticator - Press Use QR code in Duo Mobile or Scan a QR code in Google Authenticator. Your camera will open to scan a QR code. - Point your camera at your computer screen showing the QR code to scan. You may need to adjust the zoom for the scan to occur. - Once the scan is successful, the MFA app will display a number for about 30 seconds, and then another number for the same time, and so on until you close the app. - Of those numbers shown in your mobile MFA, you need to enter two consecutive numbers into the fields MFA Code 1 and MFA Code 2 on the last pop-up window “Set up a virtual MFA device” on your computer. You may need to scroll down to see MFA Code 2. NB: enter the numbers with no space between them even if they are shown with a space in your mobile. - Click on Assign MFA.\nYou will see a success message which you can close.\nEvery time you login to your Root user account, you will be asked to enter your password and an MFA code number which you must read from your mobile by simply opening the MFA app.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html#create-an-iam-user-account-to-create-and-manage-aws-resources",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html#create-an-iam-user-account-to-create-and-manage-aws-resources",
+    "title": "Configure Your AWS Account",
+    "section": "3. Create an IAM user account to create and manage AWS resources",
+    "text": "3. Create an IAM user account to create and manage AWS resources\nWe are going to create an IAM user account with which you will be able to create and manage AWS resources. This involves first creating an IAM User Group with one or more security policies, and then your IAM user account within that User Group.\nWe will create a user group called Administrators, then a user account called YourName (your actual name), and finally attach the account to the group. As this is the first IAM group and IAM account to be created, we need to do this with the Root user account, but then it will be possible to do it with the IAM account we will create because it will have Administrator privileges.\n\nCreate the user group\nGo to the IAM Dashboard page by typing iam in the AWS search box at the top and pressing Enter. On the IAM Dashboard, click on “User groups” under “Access Management” on the left, and then on Create group on the right.\n\n\n\n.\n\n\nIn the page that appears, “Create user group”, type “Administrators” in the box “User group name” but don’t press Enter yet.\n\n\n\n.\n\n\nScroll down until you see the section “Attach permissions policy - Optional”. This section has a search box and a list of different policies.\nType “administratoraccess” in the search box and press Enter.\n\n\n\n.\n\n\nThis will bring the “AdministratorAccess” policy to the top of the list. Check the box next to that policy and then click on Create group.\n\n\n\n.\n\n\nThe screen displayed after creating the group may indicate it is loading users — it’s OK, ignore it.\nYou now have a user group called Administrators\n\n\n\n.\n\n\n\n\nCreate your IAM user account and add it to the Administrators group\nTo create your IAM user account, click on Users in the last page displayed in the previous step, on the left in the figure above.\nThe page titled “Users” will be displayed. Click on Add users.\n\n\n\n.\n\n\nThe page below will be displayed, where you can enter your IAM user account details by: - typing your user name (a single word of your choice) - checking the box “Access Key - Programmatic access” — this option enables you to use the AWS CLI - checking the box “Password - AWS Management Console access” - checking the box “Autogenerated password” and - checking the box “User must create a new password at next sign-in”\nThen click on Next: Permissions\n \nYou will be presented with a page that says “Add user - Set permissions”. The Add user to group option should be set (in blue). Leave it set — if it is not set, click on it to set it.\nCheck the box next to the group Administrators and then click on Next: Tags.\n\n\n\n.\n\n\nYou will be presented with a page that says “Add user - Add tags (optional)”, not shown here as we are not adding tags. Click on the button Next: Review.\n\n\n\n\n\n\nNote\n\n\n\nNote on tags\nAdding tags — or keywords — to an AWS resource is optional. You don’t need to tag your IAM user account because you only have one such account. Adding tags is useful when you are managing multiple user accounts/resources as it helps searching for specific resources based on their tags.\n\n\nYour will now be presented with a page displaying the options chosen for your IAM user account for review. If these are correct click on Create user.\n\n\n\n.\n\n\nYou will now see a page with the message Success — You successfully created the users shown below…\nYou need to download the .csv file indicated in this page by clicking on Download .csv. This file contains the credentials both to login to the AWS Console and to access AWS resources programmatically with your new IAM user account. Programmatically means access from software applications including the AWS CLI.\nFor security reasons you will not be able to access these credentials once you leave this page but you can create new credentials.\nClick on Download .csv to download and save the file in your computer.\n\n\n\n.\n\n\n\n\n\n\n\n\nWhat’s in the file?\n\n\n\nThe file you downloaded is a comma separated value (CSV) file that you can open in any text editor. Its content is something like this:\nUser name,Password,Access key ID,Secret access key,Console login link adminuser,0ji)8[bN3{F-X!h,BMZ4AD..KIAVQN34,o0/bSO3WJeO..Vgtc4E3LxXZVbQg,https://xxxxxxxxxxxx.signin.aws.amazon.com/console\nThe first line specifies the names of the comma-separated values in the second line — comma characters are not part of any of the values.\nThe values in the second line shown above will be different to those in your CSV file.\nThe first and second fields, adminuser and 0ji)8[bN3{F-X!h are the username and the password to access the AWS Console. The third and the fourth fields, BMZ4AD..KIAVQN34 and o0/bSO3WJeO..Vgtc4E3LxXZVbQg, are the access key ID and the secret access key which, combined, will enable you to use the AWS CLI and, more generally, to access AWS resources programmatically. The last field, https://xxxxxxxxxxxx.signin.aws.amazon.com/console, is the web address to login to the AWS Console with the IAM user account you have created, and other IAM accounts you may create later.\nNB: the first time you login to the AWS Console you will have to change the password.\nNB: we are representing here with “xxxxxxxxxxxx” the digits in the URL to login to the AWS Console, https://xxxxxxxxxxxx.signin.aws.amazon.com/console. This 12-digit number corresponds to your account id.\n\n\nOnce you close the success message above, in the page that appears you should see the user account you have just created, listed along with the Groups (Administrators) of which it is a member and other information, for example: “Never” under “Last activity” means you have not yet logged in.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html#create-an-alias-for-your-iam-user-acount",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html#create-an-alias-for-your-iam-user-acount",
+    "title": "Configure Your AWS Account",
+    "section": "4. Create an alias for your IAM user acount",
+    "text": "4. Create an alias for your IAM user acount\nA 12-digit number can be difficult to remember so let’s create an alias which is easier to remember. The alias can be used to login to your account.\nType iam in the AWS search box and press Enter to go to the “IAM Dashboard”.\nOn the right of the Dashboard, under the heading “AWS Account”, click on Create next to “Account Alias”\n\n\n\n.\n\n\nNow enter the alias you want to use — which might be some version of your name or date of birth. Note the new sign-in URL. Click on Save changes.\n\n\n\n.\n\n\nYou can now login to your account using either web address: the one with your 12-digit account number or the one with your alias.\n\n\n\n\n\n\nAccess your IAM user account with both URLs:\n\n\n\n\nopen two new tabs in your browser (but do not close this browser tab so that we can finish up setting up your IAM account with the last step below).\nenter https://xxxxxxxxxxxx.signin.aws.amazon.com/console in one of the tabs, but change “xxx..xxx” with your 12-digit account number.\nenter https://youralias.signin.aws.amazon.com/console in the other tab, but change “youralias” with your actual account alias.\nin both tabs use your actual username and password from your .csv file.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/02-configure-account.html#grant-your-iam-user-account-the-permissions-to-access-the-billing-dashboard",
+    "href": "docs/lesson01-setting-work-envs/02-configure-account.html#grant-your-iam-user-account-the-permissions-to-access-the-billing-dashboard",
+    "title": "Configure Your AWS Account",
+    "section": "5. Grant your IAM user account the permissions to access the Billing Dashboard",
+    "text": "5. Grant your IAM user account the permissions to access the Billing Dashboard\nTo grant your IAM user account the permissions to access the Billing Dashboard, go to the Account Settings page as follows:\n\non the navigation bar at the top, on the far right, click on your “account name” (or account number, if you did not setup an account alias), and\non the drop-down menu that pops up, click on Account\n\n\n\n\n.\n\n\nOn the page that appears:\n\nScroll down until you see the heading:\n\n        IAM User and Role Access to Billing Information\n\nTo the right of the heading, click on Edit.\nCheck Activate IAM Access.\nClick on Update.\n\nYou have now configured your AWS account for day-to-day use.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your AWS Account"
+    ]
+  },
+  {
+    "objectID": "docs/miscellanea/about.html",
+    "href": "docs/miscellanea/about.html",
+    "title": "About",
+    "section": "",
+    "text": "Cloud-SPAN is a collaboration between the University of York and The Software Sustainability Institute funded by the UKRI Innovation Scholars award. Project Reference: MR/V038680/1.\nCloud-SPAN trains researchers, and the research software engineers that support them, to run specialised analyses on cloud-based high-performance computing infrastructure. We are developing highly accessible resources which integrate with existing Carpentries courses.\nThis set of lessons is based on the Data Carpentries Genomics Workshop."
+  },
+  {
+    "objectID": "docs/miscellanea/about.html#our-handbook",
+    "href": "docs/miscellanea/about.html#our-handbook",
+    "title": "About",
+    "section": "Our Handbook",
+    "text": "Our Handbook\nThe Cloud-SPAN team are dedicated to providing a welcoming and supportive environment for all people, regardless of background or identity. We hope aim to develop a community of practice around our materials. We have a Handbook that gives:\n⭐ An introduction to the Cloud-SPAN project\n🤝 Our Code of Conduct\n🎓 More information on our Courses\n👪 An open invitation to the Cloud-SPAN Community\n📌 Information about the FAIR Principles\n📜 Cloud-SPAN Online Forum"
+  },
+  {
+    "objectID": "docs/miscellanea/about.html#licences",
+    "href": "docs/miscellanea/about.html#licences",
+    "title": "About",
+    "section": "Licences",
+    "text": "Licences\nThis instructional material is made available under the [Creative Commons Attribution license][cc-by-human]. The following is a human-readable summary of (and not a substitute for) the [full legal text of the CC BY 4.0 license][cc-by-legal].\nThe Cloud-SPAN Genomics course consists of materials derived from Data Carpentry’s Genomics Workshop. This material is not endorsed by Data Carpentry or the Carpentries in general.\nCloud-SPAN is a collaboration between the University of York and The Software Sustainability Institute funded by the UKRI Innovation Scholars award. Project Reference: MR/V038680/1."
+  },
+  {
+    "objectID": "docs/miscellanea/precourse-instructions.html",
+    "href": "docs/miscellanea/precourse-instructions.html",
+    "title": "Precourse Instructions",
+    "section": "",
+    "text": "To take the course Automated Management of AWS Instances you are expected to:\n\ninstall Git Bash — Windows users\ninstall or update Bash — Mac users\nuse a laptop or desktop computer with access to the Internet and a browser (such as Chrome) installed\n\nThis Setup section provides instructions to install Git Bash on Windows computers and to install or update Bash in Mac computers.\n\nIntroduction\nThe course teaches how to use a set of Bash scripts to manage (create, configure, stop, start and delete) one or multiple AWS instances with a single invocation of a script.\nTo run the scripts you need to use a terminal that runs the Bash shell. The terminal is a program that enables you to enter textual commands through the keyboard to instruct the operating sytem in your computer the operations you want to be performed such as running a program or copying or deleting files. The terminal is also widely known as the shell and the command-line interface (CLI). In this course we mostly use the term “terminal” and occasionally “shell” and “command line” where more meaningful. Bash stands for Bourne Again Shell. It is a powerful command programming language that was developed to serve as the CLI for the UNIX operating system. Bash is currently the most widely used shell and has a long and interesting history which you can read in the Wikipedia entry for Bash shell.\nLinux users don’t need to install any software as the terminal in Linux systems runs Bash by default.\nWindows users will need to install Git for Windows on their computer as described below prior to the course. Git for Windows includes Git Bash, a Windows version of the Unix Bash shell, ssh (secure shell) and many other useful programs. ssh is used to login to the AWS instances created with the scripts.\nMac users will need to install or update Bash on their computer as described below. Mac computers usually have installed both the Zsh shell and the Bash shell; and the terminal runs Zsh by default. Zsh and the Bash version usually installed (3.2.57 or so) cannot run the scripts that manage AWS instances. Hence you need to update Bash (the version we updated to in early 2023 was 5.2.15). Note that you can “run” the scripts from a terminal that runs Zsh, but as the first line of each script is this #!/usr/bin/env bash, a Zsh terminal will run Bash to actually run each script.\n\n\n\n\n\n\nInstall Git Bash (Git for Windows) — Windows users\n\n\n\n\n\nThe steps below correspond to the installation of Git for Windows version 2.33.1 from scratch. The installation of a more recent version, or updating a previously installed version, may show different wording in the screen messages mentioned below or may vary slightly in the number of steps to follow. Choose as many of the options below as possible.\n\nClick on this link: Git for Windows download page\nOnce in that page, click on Download to download the installer.\nOnce the installer is downloaded,\n\ndouble click on it\nyou will then be asked some questions and to select an option for each question.\neach question is shown below in Italics, and the selection to be made is shown in bold\n\nThe app you’re trying to install isn’t a Microsoft-verified app ..?\n\nClick on Install anyway\n\nDo you want to allow this app to make changes to your device?\n\nClick on Yes\n\nGNU General Public License\n\nclick on Next\n\nSelect Destination Location\n\nclick on Next (don’t change the location shown).\n\nSelect Components\n\nclick on Additional Icons (it will also select “On the Desktop” option)\nthen click on Next\n\nSelect Start Menu Folder\n\nclick on Next (don’t change the folder name shown)\n\nChoosing the default editor used by Git\nselect Use the nano editor by default and click on Next.\nNB: you may need to click on the dropdown menu and to scroll up with the mouse to see this option – see the figure:\n\n\n\n\n.\n\n\n\nAdjusting the name of the initial branch in new repositories\n\nkeep the selected (or select the) option Let Git decide and click on Next.\n\nAdjusting your PATH environment\n\nkeep the selected, Recommended option Git from the command line and also from 3rd-party software\nor select it, and click on Next.\nNB: if this option is not selected, some programs that you need for the course will not work properly. If this happens rerun the installer and select the appropriate option.\n\nChoosing the SSH executable\n\nkeep the selected (or select the) option Use bundled OpenSSH and click on Next.\n\nChoosing HTTPS transport backend\n\nkeep the selected (or select the) option Use the OpenSSL library and click on Next.\n\nConfiguring the line ending conversions\n\nkeep the selected (or select the) option Checkout Windows-style, commit Unix-style line endings and click on Next.\n\nConfiguring the terminal emulator to use with Git Bash\n\nkeep the selected (or select the) option Use MinTTy (the default terminal of MSYS2) and click on Next.\n\nChoose the default behaviour of git pull\n\nkeep the selected (or select the) option Default (fast-forward or merge) and click on Next.\n\nChoose a credential helper\n\nkeep the selected (or select the) option Git Credential Manager Core and click on Next.\n\nConfiguring extra options\n\nkeep the selected option (Enable File System Caching) and click on Next.\n\nConfiguring experimental options\n\nclick on Install without selecting any option\n\nClick on Finish\n\nRun Git Bash by double clicking on the Git Bash icon in your Desktop screen.\n\n\n\n.\n\n\nExit Git Bash by pressing the keys Ctrl and d (Ctrl-d) simultaneously.\n\n\n\n\n\n\n\n\n\nInstall or update Bash — Mac users\n\n\n\n\n\nTo install or update Bash, open a terminal and enter the brew command in the code box below. You can copy-paste the command but don’t include the dollar sign $.\n\n\nCode\n\n $ brew install bash\n\nYou will see an output like the following:\n\n\nOutput\n\n Running `brew update --auto-update`...\n ==&gt; Downloading https://formulae.brew.sh/api/formula.jws.json\n ######################################################################## 100.0%\n ==&gt; Downloading https://formulae.brew.sh/api/cask.jws.json\n ######################################################################## 100.0%\n ==&gt; Auto-updated Homebrew!\n Updated 1 tap (aws/aws).\n\n ==&gt; Fetching bash\n ==&gt; Downloading https://ghcr.io/v2/homebrew/core/bash/manifests/5.2.15\n ######################################################################## 100.0%\n ==&gt; Downloading https://ghcr.io/v2/homebrew/core/bash/blobs/&gt; sha256:05a5f9435c9e9ffe8377b03e0ca6b27bbb32cc\n ==&gt; Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/&gt; sha256:05a5f9435c9e9ffe8377\n ######################################################################## 100.0%\n ==&gt; Pouring bash--5.2.15.monterey.bottle.tar.gz\n 🍺  /usr/local/Cellar/bash/5.2.15: 162 files, 11.7MB\n ==&gt; Running `brew cleanup bash`...\n Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.\n Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).\n\nCheck the Bash version installed with the command:\n\n\nCode\n\n $ bash --version\n\nIf the package manager brew is not installed in your computer, you can install it with the command below (from the brew website):\n\n\nCode\n\n $ /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\n\n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/03-configure-terminal.html",
+    "href": "docs/lesson01-setting-work-envs/03-configure-terminal.html",
+    "title": "Configure Your Terminal Environment",
+    "section": "",
+    "text": "Prerequisites\n\n\n\nPlease read Workshops Organisation if you haven’t done so. To complete this episode you will need:\n\nif you are self-studying the course or attending a workshop using your AWS account:\n\nto have created and configured your AWS account as described in the two previous episodes: Create Your AWS Account and Configure Your AWS Account.\nyour AWS account programmatic access credentials (*):\n\nAccess Key ID\nSecret Access Key\n\nWindows users: to have installed Git Bash — see the Setup section.\nMac users: to have installed or updated Bash — see the Setup section.\nMac and Linux users: to have installed: git, curl, unzip, ssh\n\nif you are attending a workshop using a Cloud-SPAN AWS account (and an AWS Linux instance):\n\nto follow the instructions in this episode for Linux terminals.\nWindows users: to have installed Git Bash — see Workshops Organisation and the Setup section.\n\n\n(*) Those credentials are in the .csv file you downloaded once you created your IAM account as part of configuring your AWS account.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your Terminal Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/03-configure-terminal.html#download-the-scripts-from-github",
+    "href": "docs/lesson01-setting-work-envs/03-configure-terminal.html#download-the-scripts-from-github",
+    "title": "Configure Your Terminal Environment",
+    "section": "Download the Scripts from GitHub",
+    "text": "Download the Scripts from GitHub\nTo download the Scripts, open your (Git Bash, Linux or Mac) terminal and enter or copy-paste the git command below:\n\n\nCode\n\ngit clone https://github.com/Cloud-SPAN/aws-instances.git  ~/_tmp_cloudspan_aws",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your Terminal Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/03-configure-terminal.html#make-the-scripts-accessible-through-the-execution-path",
+    "href": "docs/lesson01-setting-work-envs/03-configure-terminal.html#make-the-scripts-accessible-through-the-execution-path",
+    "title": "Configure Your Terminal Environment",
+    "section": "Make the Scripts accessible through the execution path",
+    "text": "Make the Scripts accessible through the execution path\nThere are many ways to make the Scripts accessible through the execution path. To avoid any conflicts with the current configuration of your Linux machine, we are going to:\n\ncreate a new “bin” directory\ncopy the Scripts to the new bin directory\nadd the new bin directory to the execution path\n\nYou can copy-paste the commands below to carry out those three steps using ~/.local/bincsaws as the new bin directory, but note:\nIf ~/.local/bincsaws already exists in your environment (which you can check with the command ls ~/.local), choose another name for bincsaws and use the new name instead of bincsaws in the three commands below:\nClick the bar that corresponds to your terminal to display the next command you will type or copy-paste into your terminal:\n\n\n\n\n\n\nGit Bash and Linux terminal\n\n\n\n\n\n\n\nCode\n\necho \"PATH=\\\"\\$HOME/.local/bincsaws:\\$PATH\\\"\" &gt;&gt; ~/.bashrc\n\n\n\n\n\n\n\n\n\n\nMac terminal that runs Bash:\n\n\n\n\n\n\n\nCode\n\necho \"PATH=\\\"\\$HOME/.local/bincsaws:\\$PATH\\\"\" &gt;&gt; ~/.bash_profile\n\n\n\n\n\n\n\n\n\n\nMac terminal that runs Zsh shell:\n\n\n\n\n\n\n\nCode\n\necho \"PATH=\\\"\\$HOME/.local/bincsaws:\\$PATH\\\"\" &gt;&gt; ~/.zshrc\n\n\n\n\nThe last command echo \"PATH=\\\"\\$HOME ... adds an assignment shell statement at the end of your terminal shell configuration file (either ~/.bashrc or ~/.bash_profile or ~/.zshrc depending on your terminal).\nThe statement adds the new bin directory to the execution path which is held by the shell variable PATH.\nSince the terminal runs the commands in that configuration file every time it is launched, that is, every time your login to your instance, the assigment shell statement (we added) will add the “new” bin directory to the execution path on every subsequent launch of the terminal, thus making the Scripts accessible from any directory location.\nYou need to open (launch) a new terminal for the execution path to get updated (you can close the old terminal as you won’t use it anymore).\nOnce you have opened a new terminal, the Scripts will be accessible through the execution path and you should be able to run the command csinstances_create.sh as shown below. This script is one of the Scripts installed in ~/.local/bincsaws.\n\n\nCode\n\n$ csinstances_create.sh\n\nThe output of csinstances_create.sh in your terminal should look like this:\n\n\n\n.\n\n\nThe script csinstances_create.sh was found and run, but as it requires a parameter (the name of a file), it only displayed the usage message and finished.\n\n\n\n\n\n\nDon’t delete the directory ~/_tmp_cloudspan_aws where the Scripts were downloaded\n\n\n\nPlease don’t delete that directory just yet. We will use some files there in in the next lesson. Once we use those files you can delete that directory.",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments",
+      "Configure Your Terminal Environment"
+    ]
+  },
+  {
+    "objectID": "docs/lesson01-setting-work-envs/index.html",
+    "href": "docs/lesson01-setting-work-envs/index.html",
+    "title": "Setting Up Your Cloud and Terminal Environments",
+    "section": "",
+    "text": "Please read Workshops Organisation if you haven’t done so.\nThe Bash shell scripts that automatically manage multiple AWS instances will be referred to as the “Scripts” from now on.\nYou can use any of the following terminals to run the Scripts as instructed in this course:\n\nLinux terminals that run the Bash shell.\nWindows Git Bash terminals — see the Setup section.\nMac terminals that run the Bash shell or the Zsh shell — see the Setup section to install or update Bash; Bash version must be 5.0 or higher.\nthe AWS CloudShell terminal, a Linux terminal that runs the Bash shell by default. The AWS CloudShell is hosted on AWS and is used through the browser.\n\n\nOverview\nThe Scripts make use of the AWS Command Line Interface (AWS CLI), a software tool that enables you to interact with AWS through commands that can be run either within shell scripts or in any of those terminals above (and others). The Scripts run the AWS CLI to make requests to manage (create, allocate, …, and delete) AWS services such as instances, storage, domain names, etc. For such requests to be successful, the AWS CLI and the target AWS account, wherein services will be managed, need to be configured.\nThis lesson will guide you to: - create your AWS account. - configure your AWS account for daily work, including enabling access with the AWS CLI. - configure your terminal environment with the Scripts and the AWS CLI, the AWS CLI configured to manage resources within your AWS account.\n\nYour AWS account\nEpisodes 1 and 2 provide the instructions to create and configure your AWS account.\nWe organised the instructions in all episodes (4 episodes in lesson 1 and 4 in lesson 2) assuming that you are going to create and use your own AWS account, and hence you have full permissions to configure it as instructed in the course — we refer to such an account as an AWS personal account.\nHowever, you can use an existing AWS account you have access to. Throughout the course, where relevant, we point out what “extra steps” you may need to do to configure your account as required to run the Scripts.\nIf you already have an AWS account that you would like to use to run the Scripts, skip Episode 1 and configure your account as described in Episode 2. Specifically, to enable access with the AWS CLI, you need to have/create an IAM (Identity and Access Management) user account enabled with programmatic access based on Access key ID and Secret access key credentials. If the AWS account you are using is your personal account, you have full permissions to do the configuration presented in that section.\nIf the AWS account that you would like to use to run the Scripts is an institutional account, meaning that it was provided to you by your institution (company, school, organisation), skip Episode 1 and configure your account with programmatic access as mentioned above, if possible. However, you may need to contact your IT department to help you configure your account as required to run Scripts. Typically, institutional accounts are created and somewhat configured by the IT department of the institution first, and only then passed to a person for that person’s individual use. The configuration by an IT department may include using AWS services in a single region only (in USA, Europe, etc.), or accessing AWS services using specific security applications, among other regulations, see the callout below.\n\n\n\n\n\n\nAre you using an institutional AWS account?\n\n\n\nIf you are using an institutional account, you are very likely to be using specific security applications to access your account. For instance:\n\nto access the AWS Console with our institutional AWS account, we use the applications Shibboleth and Duo Mobile. Shibboleth runs in the browser to ask for our username, password, and a pushed notification from Duo Mobile in our mobile phone.\nto access AWS services through the AWS CLI, invoked either from a script or from our terminal (environment), we first need to run the application saml2aws to generate a token that is valid for 1 hour, and run it again as needed.\n\nThe course does not cover the configuration and use of those or similar security applications which may be used in your institution. Your IT department will be able to help you.\nNote that, using our institutional account, we have successfully run the Scripts to access AWS services through the AWS CLI using either saml2aws or the keys credentials mentioned above, which we created in the AWS Console. Thus our institutional account, as configured by our IT department, enables access through both saml2aws and keys credentials. Only the creation and use of keys credentials is presented in Episodes 2 and 3.\n\n\n\n\nYour terminal environment\nEpisode 3 provides the instructions to install the Scripts and the AWS CLI in your Git Bash, Linux or Mac terminal environment, and to configure the AWS CLI to use your credentials (private and public keys) when invoked within the Scripts to request AWS service operations. The credentials will be generated using the AWS Console when you configure your AWS account in Episode 2.\nEpisode 4 provides the instructions to configure the Scripts in the AWS CloudShell. The AWS CloudShell is “a browser-based [Linux Bash terminal] shell that gives you command-line access to your AWS resources” and has the AWS CLI already installed and ready to run using “credentials” derived from the information you use to login to the AWS Console. Hence you only need to configure the Scripts, but you must be logged in to your AWS account through the AWS Console to be able to run the AWS CloudShell and the Scripts.\nIn this course you will be using the AWS Console and, through the Scripts, the AWS CLI to manage AWS services but there are other ways to manage AWS services, see the callout below.\n\n\n\n\n\n\nWays to access and manage AWS services\n\n\n\nThere are four ways to access and manage AWS services:\n\nthe AWS Console, a browser-based graphical user interface (GUI)\nsoftware development kits (SDKs or libraries) for use with programming languages such as Python, JavaScript, Java, etc.\nthe AWS CLI\ninfrastructure as code (IaC) blueprints, which are textual descriptions of cloud resources and their dependencies.\n\nThe AWS Console is mostly used to open an AWS account, to do one-off configurations, and to browse the overall state of resources used by an account. Periodic, frequent or many interactions with AWS services are better managed through the other three options.\nSDKs are mostly used to develop browser- based and cloud-based applications for end users. The AWS CLI and IaC blueprints are typically used to manage resources under an admin role. The AWS CLI is probably the fastest way to get started because of familiarity: shell scripts have been used for decades in resource management.\nIaC blueprints are used with systems such as Terraform or AWS Cloud Formation. Basically, you write a blueprint of your infrastructure (service architecture) as code in a declarative language (that is: you specify “what you want”, as opposed to “how to do what you want”, which is typical of procedural languages, including the Bash shell). On “running” your blueprint, the services making up your infrastructure will be created, configured to some extent, and launched. If later you update your blueprint (say, delete or add more services), your infrastructure will be updated accordingly when you run your blueprint again. As blueprints are simple text files, you can use version control with Git and roll-back to a previous version of your system. The main issue with using IaC blueprints is the steep learning curve to get proficient in using the approach, the language and the target resources. IaC blueprints are suitable for managing systems that change often because of continuous improvements.\n\n\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Home",
+      "Setting Up Cloud/Terminal Environments"
+    ]
+  },
+  {
+    "objectID": "docs/lesson02-managing-aws-instances/index.html",
+    "href": "docs/lesson02-managing-aws-instances/index.html",
+    "title": "Automated Management of AWS Instances",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Home",
+      "Managing AWS Instances"
+    ]
+  },
+  {
+    "objectID": "docs/lesson02-managing-aws-instances/02-instances-management.html",
+    "href": "docs/lesson02-managing-aws-instances/02-instances-management.html",
+    "title": "Automated Management of AWS Instances",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Home",
+      "Managing AWS Instances",
+      "02-instances-management.html"
+    ]
+  },
+  {
+    "objectID": "docs/lesson02-managing-aws-instances/03-ami-management.html",
+    "href": "docs/lesson02-managing-aws-instances/03-ami-management.html",
+    "title": "Automated Management of AWS Instances",
+    "section": "",
+    "text": "Back to top"
+  }
+]

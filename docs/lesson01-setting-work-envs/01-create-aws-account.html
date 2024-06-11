@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Automated Management of AWS Instances - Create Your AWS Account</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../docs/lesson01-setting-work-envs/02-configure-account.html" rel="next">
+<link href="../../docs/lesson01-setting-work-envs/index.html" rel="prev">
+<link href="../../images/cloud-span-icon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/cloud-span-icon.png" alt="Cloud-SPAN logo." class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../docs/miscellanea/precourse-instructions.html"> 
+<span class="menu-text">Precourse Instructions</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../docs/miscellanea/about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../docs/lesson01-setting-work-envs/index.html">Setting Up Cloud/Terminal Environments</a></li><li class="breadcrumb-item"><a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../docs/lesson01-setting-work-envs/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setting Up Cloud/Terminal Environments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Create Your AWS Account</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure Your AWS Account</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docs/lesson01-setting-work-envs/03-configure-terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure Your Terminal Environment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docs/lesson01-setting-work-envs/04-configure-cloudshell.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configure Your AWS CloudShell Environment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../docs/lesson02-managing-aws-instances/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Managing AWS Instances</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01-configure-instances-internet.html</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02-instances-management.html</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+ <span class="menu-text">docs/lesson02-managing-aws-instances/03-amis-management.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">docs/lesson02-managing-aws-instances/03-scripts-design.qmd</span>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#sign-up-to-aws-with-your-email-and-password" id="toc-sign-up-to-aws-with-your-email-and-password" class="nav-link" data-scroll-target="#sign-up-to-aws-with-your-email-and-password">1. Sign-up to AWS with your email and password</a></li>
+  <li><a href="#select-your-account-type-personal-and-enter-your-contact-information" id="toc-select-your-account-type-personal-and-enter-your-contact-information" class="nav-link" data-scroll-target="#select-your-account-type-personal-and-enter-your-contact-information">2. Select your account type (Personal) and enter your contact information</a></li>
+  <li><a href="#enter-billing-information-your-credit-card-details" id="toc-enter-billing-information-your-credit-card-details" class="nav-link" data-scroll-target="#enter-billing-information-your-credit-card-details">3. Enter Billing Information: your credit card details</a></li>
+  <li><a href="#confirm-your-identity-to-aws-through-a-phone-call-or-sms-message" id="toc-confirm-your-identity-to-aws-through-a-phone-call-or-sms-message" class="nav-link" data-scroll-target="#confirm-your-identity-to-aws-through-a-phone-call-or-sms-message">4. Confirm your identity to AWS through a phone call or SMS message</a></li>
+  <li><a href="#select-support-plan-basic-and-complete-sign-up" id="toc-select-support-plan-basic-and-complete-sign-up" class="nav-link" data-scroll-target="#select-support-plan-basic-and-complete-sign-up">5. Select support plan (<strong>Basic</strong>) and complete sign-up</a></li>
+  <li><a href="#login-to-your-aws-account" id="toc-login-to-your-aws-account" class="nav-link" data-scroll-target="#login-to-your-aws-account">6. Login to your AWS account</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson01-setting-work-envs/01-create-aws-account.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../docs/lesson01-setting-work-envs/index.html">Setting Up Cloud/Terminal Environments</a></li><li class="breadcrumb-item"><a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Create Your AWS Account</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prerequisites
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Please read <a href="../../docs/miscellanea/precourse-instructions.html">Workshops Organisation</a></strong> if you haven’t done so. To complete this episode you will need: - if you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>: - an email address - a credit card — new accounts get one-year of AWS Free Tier but a card number must be entered on creating an account - the phone number associated with the credit card - the address associated with the credit card - if you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong> (and an AWS Linux instance), you <strong>don’t need</strong> to complete this episode.</p>
+</div>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>These are the main steps you will follow to open your AWS account:</p>
+<ol type="1">
+<li>Sign-up to AWS with your email (as username) and password.</li>
+<li>Select your account type (Personal) and enter your contact information.</li>
+<li>Enter Billing Information: your credit card details.</li>
+<li>Confirm your identity to AWS through a phone call or SMS message.</li>
+<li>Select support plan (Basic) and complete sign-up.</li>
+<li>Login to your AWS account.</li>
+</ol>
+</section>
+<section id="sign-up-to-aws-with-your-email-and-password" class="level2">
+<h2 class="anchored" data-anchor-id="sign-up-to-aws-with-your-email-and-password">1. Sign-up to AWS with your email and password</h2>
+<p>Go to the AWS <strong>sign-up</strong> page by going to <a href="https://portal.aws.amazon.com/billing/signup#/start">AWS sign-up</a> — for convenience, right click on the link and, in the menu that pops up, left click on <strong>Open link in new window</strong>; you can switch between this browser window and the sign-up page window to be opened by pressing the keys Alt-Tab simultaneously.</p>
+<p>Enter your email and password and a name for your account — you can change the name of your account later.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc04-signup-page-filled.PNG.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser with the boxes to enter email address, password and account name circled" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+New accounts
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>New accounts are all granted the one-year Free Tier (message on the left).</li>
+<li>The name of an account helps to identify the account once the user is logged in, as it is not uncommon for AWS users to have more than one AWS account.</li>
+</ol>
+</div>
+</div>
+<p>Once you have entered your email, password and account name, click on <strong>Continue (step 1 of 5)</strong> and complete the <strong>Security check</strong> box that will pop up by typing the characters displayed into the box. Click on <strong>Continue (step 1 of 5)</strong> again.</p>
+</section>
+<section id="select-your-account-type-personal-and-enter-your-contact-information" class="level2">
+<h2 class="anchored" data-anchor-id="select-your-account-type-personal-and-enter-your-contact-information">2. Select your account type (Personal) and enter your contact information</h2>
+<p>The next page asks you <strong>How do you plan to use AWS?</strong> Choose <strong>Personal</strong> and enter your name, phone number and address — your address must be the one associated with your credit card and this will be verified in the next step.</p>
+<p>Then read the <em>AWS Customer Agreement</em> and check the box <strong>I have read and agree to the terms of the AWS Customer Agreement</strong>. Finally, click on <strong>Continue (step 2 of 5)</strong> to move to step 3.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc07-signup-page-contact-details1.PNG.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser with the option to choose business or personal account and the boxes to enter name and phone number circled" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Account types
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>There is no functional difference between a business account and a personal account. Both have access to all AWS services and both support managing sub-accounts which, as we will see in the next episode, are more convenient for every day work.</li>
+<li>A personal account should not be opened with a work email address as you may change jobs after opening the account. A business account should be opened with a company or institution address linked to a roll or position and not to a person who may change jobs at some point.</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="enter-billing-information-your-credit-card-details" class="level2">
+<h2 class="anchored" data-anchor-id="enter-billing-information-your-credit-card-details">3. Enter Billing Information: your credit card details</h2>
+<p>Now you are asked for your credit card details. Note that your credit card will be <strong>verified</strong> once you click on the orange button <strong>Verify and Continue (step 3 of 5)</strong> and that you must select/provide the address associated with your credit card.</p>
+<p>Please note the Secure verification message on the left: AWS will make a small charge (equivalent to $1 USD) on your card to verify it and the charge will appear in your card account as a <strong>pending transaction</strong> that <strong>will not be confirmed</strong> by AWS, and hence it <strong>will not be charged</strong> and <strong>will disappear</strong> from your account in 3-5 days.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc10-signup-page-filling-card-details.PNG.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser with the boxes to enter billing information and a message about regarding a temporary, security card transaction circled" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>As part of the <strong>card verification</strong> process, a pop-up window from your bank or financial institution may appear and ask you to verify the AWS transaction. Choose the (Mobile or Home) phone registered with your card to receive the passcode, click on <strong>Confirm</strong>, and once you receive the passcode enter it as required.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc11-signup-page-validating-card.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser showing the pop up window asking the user to verify the security transaction" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="confirm-your-identity-to-aws-through-a-phone-call-or-sms-message" class="level2">
+<h2 class="anchored" data-anchor-id="confirm-your-identity-to-aws-through-a-phone-call-or-sms-message">4. Confirm your identity to AWS through a phone call or SMS message</h2>
+<p>You now need to confirm your identity to AWS through an SMS message or a phone call to the phone number that will be associated with your AWS account (we used the same phone number we entered in step 2).</p>
+<p>Please select SMS message or phone call, enter your phone number and the characters in the security check box, and finally click on <strong>Send SMS (step 4 of 5)</strong>. After you enter the code, you will receive the SMS or a phone call within a few seconds.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc13.1signup-page-verify-with-SMSmessage.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser with the option Text message (SMS) for user to receive identity verification code circled" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="select-support-plan-basic-and-complete-sign-up" class="level2">
+<h2 class="anchored" data-anchor-id="select-support-plan-basic-and-complete-sign-up">5. Select support plan (<strong>Basic</strong>) and complete sign-up</h2>
+<p>You must now select a support plan. Select the <strong>Basic support - Free</strong> plan and click on <strong>Complete sign-up</strong>. The Basic support plan is free and you don’t need more if this is your first AWS account.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc16signup-page-select-support-plan2.PNG.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser with the option Basic support - Free plan circled" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>The congratulations page will then be displayed.</p>
+<p>You will also receive three emails from AWS with the Subjects:</p>
+<ul>
+<li>“Welcome to Amazon Web Services”</li>
+<li>“AWS Support (Basic) Sign-Up Confirmation”</li>
+<li>“Your AWS Account is Ready - Get Started Now”</li>
+</ul>
+<p>These emails have links to useful information and resources.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/open-acc17signup-page-finished-congratulations.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign up page in a browser showing the Congratulations page and a button to Go to the AWS Management Console" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="login-to-your-aws-account" class="level2">
+<h2 class="anchored" data-anchor-id="login-to-your-aws-account">6. Login to your AWS account</h2>
+<p>From the congratulations page click on <strong>Go to the AWS Management Console</strong> where you will be able to sign in.</p>
+<p>Login to your <strong>Root user</strong> account by entering the email address that you used to open your account in step 1 and click on the <strong>Next</strong> button.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/using-acc01-signingin-as-root-page.PNG.jpg" class="img-fluid figure-img" alt="Screen shot of AWS sign in page in a browser showing the options Root user or IAM user to login and the first one circled" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>You will then be prompted to:</p>
+<ol type="1">
+<li>Enter some characters by a “Security check” box and then your password</li>
+<li>Select either the previous or the new version of the <strong>Console Home</strong> (please choose the new version)</li>
+<li>Select your cookie preferences (select as you prefer).</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Types of user
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>The login page gives the option to login either as the <strong>Root user</strong> or as an <strong>IAM user</strong> — IAM stands for Identity Access Managment.</li>
+<li>The Root user account is for the owner of the account who “performs tasks requiring unrestricted access”, such as updating billing information or deleting the account, while an IAM user account is for a user who “performs daily tasks” such as using AWS services.</li>
+<li>At this stage you can only login to the Root user account. In the next episode you will create an IAM account which you will use to create and manage AWS resources.</li>
+</ol>
+</div>
+</div>
+<p>Finally you will be logged in as Root user to the <strong>Console Home</strong> screen shown below, able to use your account. We will first configure your account in the next episode.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/open-acc/using-acc04-signedin-options-services-and-cookies.PNG.jpg" class="img-fluid figure-img" alt="Screen shot of AWS (management) Console in the browser showing the first page after you have logged in" width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>As you eventually will logout from your account, please make a note of the address to log back in to the AWS Managment Console: <strong>aws.amazon.com/console</strong> or <strong>https://aws.amazon.com/console</strong>.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Cloud-SPAN\.github\.io\/cloud-admin-guide-v2q\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../docs/lesson01-setting-work-envs/index.html" class="pagination-link" aria-label="Setting Up Cloud/Terminal Environments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Setting Up Cloud/Terminal Environments</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html" class="pagination-link" aria-label="Configure Your AWS Account">
+        <span class="nav-page-text">Configure Your AWS Account</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2021–24 by <a href="https://cloud-span.york.ac.uk/">Cloud-SPAN</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson01-setting-work-envs/01-create-aws-account.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/SpanCloud">
+      <i class="bi bi-twitter" role="img" aria-label="Quarto Twitter">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q">
+      <i class="bi bi-github" role="img" aria-label="Quarto GitHub">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
