@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Automated Management of AWS Instances</title>
+<title>Automated Management of AWS Instances - Instances Management Tasks Using the Scripts</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -117,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/index.html">Managing AWS Instances</a></li><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html">02-instances-management.html</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/index.html">Managing AWS Instances</a></li><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html">Instances Management Tasks Using the Scripts</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -176,13 +210,13 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01-configure-instances-internet.html</span></a>
+ <span class="menu-text">Configure Instances Internet Access</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">02-instances-management.html</span></a>
+ <span class="menu-text">Instances Management Tasks Using the Scripts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -198,17 +232,828 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#sections" id="toc-sections" class="nav-link" data-scroll-target="#sections">Sections</a></li>
+  </ul></li>
+  <li><a href="#the-scripts-running-environment" id="toc-the-scripts-running-environment" class="nav-link" data-scroll-target="#the-scripts-running-environment">1. The Scripts Running Environment</a>
+  <ul class="collapse">
+  <li><a href="#configuring-the-directory-structure" id="toc-configuring-the-directory-structure" class="nav-link" data-scroll-target="#configuring-the-directory-structure">Configuring the directory structure</a></li>
+  <li><a href="#configuring-the-file-instancesnames.txt" id="toc-configuring-the-file-instancesnames.txt" class="nav-link" data-scroll-target="#configuring-the-file-instancesnames.txt">Configuring the file <em>instancesNames.txt</em></a></li>
+  <li><a href="#configuring-the-file-resourcesids.txt" id="toc-configuring-the-file-resourcesids.txt" class="nav-link" data-scroll-target="#configuring-the-file-resourcesids.txt">Configuring the file <code>resourcesIDs.txt</code></a></li>
+  <li><a href="#configuring-the-file-tags.txt" id="toc-configuring-the-file-tags.txt" class="nav-link" data-scroll-target="#configuring-the-file-tags.txt">Configuring the file <code>tags.txt</code></a></li>
+  <li><a href="#running-the-scripts-overview-and-constraints" id="toc-running-the-scripts-overview-and-constraints" class="nav-link" data-scroll-target="#running-the-scripts-overview-and-constraints">Running the Scripts — overview and <strong>constraints</strong></a></li>
+  </ul></li>
+  <li><a href="#configure-the-scripts-running-environment" id="toc-configure-the-scripts-running-environment" class="nav-link" data-scroll-target="#configure-the-scripts-running-environment">2. Configure the Scripts Running Environment</a>
+  <ul class="collapse">
+  <li><a href="#create-the-directory-structure-coursesinstances-managementinputs" id="toc-create-the-directory-structure-coursesinstances-managementinputs" class="nav-link" data-scroll-target="#create-the-directory-structure-coursesinstances-managementinputs">Create the directory structure: <code>courses/instances-management/inputs</code></a></li>
+  <li><a href="#create-the-configuration-files-instancesnames.txt-resourcesids.txt-and-tags.txt" id="toc-create-the-configuration-files-instancesnames.txt-resourcesids.txt-and-tags.txt" class="nav-link" data-scroll-target="#create-the-configuration-files-instancesnames.txt-resourcesids.txt-and-tags.txt">Create the configuration files: <em>instancesNames.txt</em>, <code>resourcesIDs.txt</code> and <code>tags.txt</code></a></li>
+  </ul></li>
+  <li><a href="#create-the-instances" id="toc-create-the-instances" class="nav-link" data-scroll-target="#create-the-instances">3. Create the Instances</a></li>
+  <li><a href="#check-the-instances-are-accessible" id="toc-check-the-instances-are-accessible" class="nav-link" data-scroll-target="#check-the-instances-are-accessible">4. Check the Instances Are Accessible</a></li>
+  <li><a href="#understand-the-results-of-creating-instances" id="toc-understand-the-results-of-creating-instances" class="nav-link" data-scroll-target="#understand-the-results-of-creating-instances">5. Understand the Results of Creating Instances</a>
+  <ul class="collapse">
+  <li><a href="#each-instance-name-is-the-key-to-access-each-instance-results-files-in-the-outputs-directory" id="toc-each-instance-name-is-the-key-to-access-each-instance-results-files-in-the-outputs-directory" class="nav-link" data-scroll-target="#each-instance-name-is-the-key-to-access-each-instance-results-files-in-the-outputs-directory"><em>Each instance name is the key to access each instance results files in the</em> <code>outputs</code> <em>directory</em></a></li>
+  </ul></li>
+  <li><a href="#typical-instances-life-cycle-create-stop-start-and-delete-instances" id="toc-typical-instances-life-cycle-create-stop-start-and-delete-instances" class="nav-link" data-scroll-target="#typical-instances-life-cycle-create-stop-start-and-delete-instances">6. Typical Instances Life Cycle: create, stop, start and delete instances</a>
+  <ul class="collapse">
+  <li><a href="#creating-instances-one-or-more-days-before-a-workshop-starts" id="toc-creating-instances-one-or-more-days-before-a-workshop-starts" class="nav-link" data-scroll-target="#creating-instances-one-or-more-days-before-a-workshop-starts">Creating instances one or more days before a workshop starts</a></li>
+  <li><a href="#stopping-the-instances-shortly-after-within-minutes-they-are-created" id="toc-stopping-the-instances-shortly-after-within-minutes-they-are-created" class="nav-link" data-scroll-target="#stopping-the-instances-shortly-after-within-minutes-they-are-created">Stopping the instances shortly after (within minutes) they are created</a></li>
+  <li><a href="#re-starting-the-instances-just-before-the-workshop" id="toc-re-starting-the-instances-just-before-the-workshop" class="nav-link" data-scroll-target="#re-starting-the-instances-just-before-the-workshop">Re-starting the instances just before the workshop</a></li>
+  <li><a href="#deleting-the-instances-and-all-their-resources-once-the-workshop-is-over" id="toc-deleting-the-instances-and-all-their-resources-once-the-workshop-is-over" class="nav-link" data-scroll-target="#deleting-the-instances-and-all-their-resources-once-the-workshop-is-over">Deleting the instances and all their resources once the workshop is over</a>
+  <ul class="collapse">
+  <li><a href="#the-results-of-stopping-starting-and-deleting-instances-are-also-saved-to-files" id="toc-the-results-of-stopping-starting-and-deleting-instances-are-also-saved-to-files" class="nav-link" data-scroll-target="#the-results-of-stopping-starting-and-deleting-instances-are-also-saved-to-files">The results of stopping, starting and deleting instances are also saved to files</a></li>
+  </ul></li>
+  <li><a href="#create-instances-in-two-steps-to-avoid-unnecessary-costs" id="toc-create-instances-in-two-steps-to-avoid-unnecessary-costs" class="nav-link" data-scroll-target="#create-instances-in-two-steps-to-avoid-unnecessary-costs">Create instances in two steps to avoid unnecessary costs</a></li>
+  </ul></li>
+  <li><a href="#unforseen-instance-management" id="toc-unforseen-instance-management" class="nav-link" data-scroll-target="#unforseen-instance-management">7. Unforseen Instance Management</a>
+  <ul class="collapse">
+  <li><a href="#avoid-modifying-an-instancesnamesfile-that-you-have-already-used-to-create-intances" id="toc-avoid-modifying-an-instancesnamesfile-that-you-have-already-used-to-create-intances" class="nav-link" data-scroll-target="#avoid-modifying-an-instancesnamesfile-that-you-have-already-used-to-create-intances">Avoid modifying an “instancesNamesFile” that you have already used to create intances</a></li>
+  <li><a href="#the-scripts-check-instance-operations-are-valid-given-the-state-of-the-running-environment" id="toc-the-scripts-check-instance-operations-are-valid-given-the-state-of-the-running-environment" class="nav-link" data-scroll-target="#the-scripts-check-instance-operations-are-valid-given-the-state-of-the-running-environment">The Scripts <em>check</em> &nbsp;instance operations are <em>valid</em> &nbsp;given the state of the running environment</a></li>
+  <li><a href="#using-multiple-instancenamesfiles-to-manage-unforseen-instances-management-requests" id="toc-using-multiple-instancenamesfiles-to-manage-unforseen-instances-management-requests" class="nav-link" data-scroll-target="#using-multiple-instancenamesfiles-to-manage-unforseen-instances-management-requests">Using multiple “<em>instanceNamesFile</em>”s to manage unforseen instances management requests</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">8. Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#connection-timed-out-or-connection-refused-messages-persist" id="toc-connection-timed-out-or-connection-refused-messages-persist" class="nav-link" data-scroll-target="#connection-timed-out-or-connection-refused-messages-persist">“<em>Connection timed out</em>” or “<em>Connection refused</em>” messages persist</a></li>
+  <li><a href="#warning-remote-host-identification-has-changed" id="toc-warning-remote-host-identification-has-changed" class="nav-link" data-scroll-target="#warning-remote-host-identification-has-changed">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/02-instances-management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/index.html">Managing AWS Instances</a></li><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html">Instances Management Tasks Using the Scripts</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Instances Management Tasks Using the Scripts</h1>
+</div>
 
 
 
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prerequisites
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Please read <a href="https://cloud-span.github.io/cloud-admin-guide-0-overview#course-overview">Workshops Organisation</a></strong> if you haven’t done so. To complete this episode you will need:</p>
+<ul>
+<li>if you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>:
+<ul>
+<li>to have created your AWS account as described in <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a> (Episode 1, Lesson 1).</li>
+<li>to have configured your AWS account as described in <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html">Configure Your AWS Account</a> (Episodes 2, Lesson 1).</li>
+<li>to have configured your terminal enviroment as described in either of these episodes:
+<ul>
+<li><a href="../../docs/lesson01-setting-work-envs/03-configure-terminal.html">Configure Your Terminal Environment</a> (Episode 3, Lesson 1) — <strong>or</strong></li>
+<li><a href="../../docs/lesson01-setting-work-envs/04-configure-cloudshell.html">Configure Your AWS CloudShell Environment</a> (Episode 4, Lesson 1)</li>
+</ul></li>
+<li>to have configured instances internet access as described in <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html">Configure Instances Internet Access</a> (previous episode, this lesson).</li>
+<li>your <strong>base domain name</strong>.</li>
+<li>the AWS resource IDs of your: <strong>host zone</strong>, <strong>security group</strong>, and <strong>subnet</strong>.</li>
+<li>the AWS Console login details of your IAM user account: <strong>login page</strong>, <strong>username</strong> and <strong>password</strong>.</li>
+</ul></li>
+<li>if you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong> (and an AWS Linux instance), you <strong>will be given</strong> the necessary information at the workshop.</li>
+</ul>
+</div>
+</div>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>This episode will guide you through the main tasks involved in creating and managing AWS instances for a course/workshop, including: configuring the Scripts, running the Scripts, and auxiliary tasks such as managing worshop cancellations and troubleshooting.</p>
+<section id="sections" class="level2">
+<h2 class="anchored" data-anchor-id="sections">Sections</h2>
+<ol type="1">
+<li><p><strong>The Scripts Running Environment</strong><br>
+This section introduces the Scripts, the directory-file structure the Scripts require to run successfully, and the <strong>constraints you need to observe in configuring and running the Scripts</strong>.</p></li>
+<li><p><strong>Configure the Scripts Running Environment</strong><br>
+You will create a running environment for the Scripts within your terminal environment: a Git Bash terminal, a Linux terminal, a Mac terminal or the AWS CloudShell terminal. You will create the directory-file structure that will enable the Scripts to manage a few AWS instances.</p></li>
+<li><p><strong>Create the Instances</strong><br>
+You will create the instances specified in Section 2 and this will generate some results. The results generated and displayed to the terminal by the Scripts that create AWS resources (instances, login key files, etc.) will be explained to help you understand how the Scripts work.</p></li>
+<li><p><strong>Check Instances Are Accessible</strong><br>
+Once instances are created, it is convenient to check that they are accessible through <code>ssh</code> by logging in to a few of them. This section will show you how to login to instances in a way easier than using <code>ssh</code> directly.</p></li>
+<li><p><strong>Understand the Results of Creating Instances</strong><br>
+Creating AWS resources involves making AWS requests that return back results that are saved to files within the Scripts running environment. These files are crucial for the successful operation of the Scripts in stopping, starting and eventually deleting the created resources. These files are explained in this section to round up your understanding of how the Scripts work.</p></li>
+<li><p><strong>Typical Instances Life Cycle: create, stop, start and delete instances</strong><br>
+This section describes the typical use-case scenario of instances management for a workshop /course. It describes our approach to instances management using both the <strong>terminal</strong> and the AWS Console. This section also describes <strong>how to create instances in two steps</strong> in order to reduce costs when deploying relatively large instances in terms of storage.</p></li>
+<li><p><strong>Unforeseen Instance Management</strong><br>
+This section describes our approach to handle unforeseen instance management requests such as creating additional instances for a workshop due to late registrations, or deleting some (not all) instances before the end of a workshop due to cancellations.</p></li>
+<li><p><strong>Troubleshooting</strong><br>
+This section presents some problems we have come across in managing instances and how to solve them.</p></li>
+</ol>
+</section>
+</section>
+<section id="the-scripts-running-environment" class="level1">
+<h1>1. The Scripts Running Environment</h1>
+<p>These are Scripts that create and manage AWS instances</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_domainNames_create.sh</span>        aws_instances_configure.sh  csinstances_create.sh</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_domainNames_delete.sh</span>        aws_instances_launch.sh     csinstances_delete.sh</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_allocate.sh</span>       aws_instances_terminate.sh  csinstances_start.sh</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_associate2ins.sh</span>  aws_loginKeyPair_create.sh  csinstances_stop.sh</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_deallocate.sh</span>     aws_loginKeyPair_delete.sh</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_disassociate.sh</span>   colour_utils_functions.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The four scripts <code>csinstances_*.sh</code> (on the right) are to be run by the <strong>user of the Scripts</strong>, the person in charge of creating, configuring, stopping, starting and deleting AWS instances for a workshop /course. The scripts <code>aws_*.sh</code> are invoked by the scripts <code>csinstances_create.sh</code> or <code>csinstances_delete.sh</code> to either create or delete instances and the corresponding domain names, IP addresses, and login keys. The file <code>colours_utils_functions.sh</code> provides (is “sourced” by) the other scripts with text colouring functions (for the results of the other scripts to be easier to read) and other utility functions.</p>
+<section id="configuring-the-directory-structure" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-directory-structure">Configuring the directory structure</h3>
+<p>To run the Scripts successfully we first need to specify the following three items of information, each in a separate file: - the names of the instances to create (delete, etc.) - the AWS resources to be used: the Amazon Machine Image (AMI) template, base domain name, etc. - the tags to be used to label the instances and related resources</p>
+<p>The three files with that information must be placed <strong>inside</strong> a directory called <code>inputs</code>, and the <code>inputs</code> directory must be placed <strong>inside</strong> another directory whose name you can choose. We use this directory structure:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">courses</span>                         <span class="co">### you can omit this directory or use other name</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">genomics01</span>                   <span class="co">### course/workshop name; you can use other name</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      <span class="ex">inputs</span>                    <span class="co">### you **cannot** use other name</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         <span class="ex">instancesNames.txt</span>     <span class="co">### you can use other name </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         <span class="ex">resourcesIDs.txt</span>       <span class="co">### you **cannot** use other name</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="ex">tags.txt</span>               <span class="co">### you **cannot** use other name</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="ex">outputs</span>                   <span class="co">### created automatically by the Scripts - not to be changed</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">genomics02</span>                   <span class="co">### another course: inputs and outputs dirs. inside</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>   <span class="ex">metagenomics01</span>               <span class="co">### another course: inputs and outputs dirs. inside</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We handle a <em>courses</em> directory that contains a directory for each course /workshop that we run, for example: <em>genomics01</em>, <em>genomics02</em>, <em>metagenomics01</em>, etc. Each course directory has its <code>inputs</code> directory and inside the three three files mentioned above: <em>instancesNames.txt</em>, <code>resourcesIDs.txt</code>, and <code>tags.txt</code> (note that we are using <em>this style</em> for file/directory names you can choose and <code>this style</code> for names you cannot change).</p>
+<p>You must create the directory structure above, or a similar one, and those three files before running the Scripts to create the instances for a course. The <code>outputs</code> directory inside each course/workshop directory is created automatically by the Scripts to save the <strong>results</strong> of running the Scripts.</p>
+</section>
+<section id="configuring-the-file-instancesnames.txt" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-file-instancesnames.txt">Configuring the file <em>instancesNames.txt</em></h3>
+<p>You <strong>can use another name</strong> for the file <em>instancesNames.txt</em>. Inside the file you must specify each of the names of the instances to create (delete, etc.) in one line, like this:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">instance01</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">instance02</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">instance99</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instances names can use any alpha-numeric characters and hyphens/minus signs (<code>-</code>), for example: <em>genomics-instance01</em>, <em>metagenomics-course-instance-01</em>.</p>
+</section>
+<section id="configuring-the-file-resourcesids.txt" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-file-resourcesids.txt">Configuring the file <code>resourcesIDs.txt</code></h3>
+<p>You <strong>cannot use another name</strong> for the file <code>resourcesIDs.txt</code>. Inside the file you must specify all the following items of information:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb4" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">imageId</span>           ami-00c0ea23e53f48472</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">instanceType</span>      t3.small</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">securityGroupId</span>   sg-0771b63b387fde199</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">subnetId</span>          subnet-00ff83b7407dcdc83</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">hostZone</span>          cloud-span.aws.york.ac.uk  </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">hostZoneId</span>        Z01RCJ0WP2538133YP3UZ    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You <strong>cannot change the values on the left column</strong>.</p>
+<p>You can and should change the values on the right column. For this course, however, you will use the values specified for <code>imageId</code> and <code>instanceType</code>: <em>ami-00c0ea23e53f48472</em> and <em>t3.small</em>. But <strong>you must change</strong> the values for <code>securityGroupId</code>, <code>subnetId</code>, <code>hostZone</code>, and <code>hostZoneId</code>, <strong>to the values of your</strong> security group id, subnet id, host zone (domain name) and host zone id, of which you made a note in the previous episode.</p>
+<p>The value for <code>imageID</code>, <em>ami-00c0ea23e53f48472</em>, is the AWS resource ID of the Cloud-SPAN AMI we used for the Cloud-SPAN Genomics course. Later you may eventually need to use other AMIs to create instances, as discussed in the next episode.</p>
+<p>The value for <code>instanceType</code>, <em>t3.small</em>, specifies the type of virtualised hardware the instances you are going to create will use. The type <em>t3.small</em> has 2 processors (vCPUs) and 2 Giga Bytes of main memory. Later you may eventually need to choose smaller or greater instance types with fewer or more processors and smaller or larger main memory, as discussed in the next episode.</p>
+</section>
+<section id="configuring-the-file-tags.txt" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-file-tags.txt">Configuring the file <code>tags.txt</code></h3>
+<p>You <strong>cannot use another name</strong> for the file <code>tags.txt</code>. Inside the file you must specify all the following items of information:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">name</span>        instance</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">group</span>       BIOL</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">project</span>     cloud-span</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">status</span>      prod</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pushed_by</span>   manual</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">defined_in</span>  manual</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You <strong>cannot change the values on the left column</strong>.</p>
+<p>You can change the values on the right column. When creating and tagging each instance /resource, the Scripts change the value for the tag <code>name</code> (instance) to the actual name of each instance or with something like <em>resource-for-instanceName</em>. For this course, we recommend to use the values shown above.</p>
+</section>
+<section id="running-the-scripts-overview-and-constraints" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-scripts-overview-and-constraints">Running the Scripts — overview and <strong>constraints</strong></h3>
+<p>To run any of the Scripts you only need to pass the name of your file <em>instancesNames.txt</em> as a parameter to the script you want to run.</p>
+<p>The Scripts can access the files <code>resourcesIDs.txt</code> and <code>tags.txt</code> based on the location of <em>instancesNames.txt</em>.</p>
+<p>Assuming the directory structure and file names above, the script <code>csinstances_create.sh</code> should be run as shown in these two code boxes (see notes below):</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb6" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh  courses/genomics01/inputs/instancesNames.txt </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span>                                                                   <span class="co">### RESULTS  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb7" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd courses/</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~/courses</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh  genomics01/inputs/instancesNames.txt </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span>                                                                   <span class="co">### RESULTS </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the code boxes:</p>
+<ul>
+<li>we are showing our <strong>terminal prompt</strong> to highlight the current working directory from which <code>csinstances_create.sh</code> is being run.</li>
+<li>our shell prompt is configured to use two lines, displaying <code>csuser@cloud-admin-instance: working-dir</code> in the first line, and the dollar sign <code>$</code> on its own on the second line.</li>
+<li>the <strong><em>courses</em></strong> directory was created at the home (<code>~</code>) directory</li>
+<li>in the first code box, you are running <code>csinstances_create.sh</code> while being in the home directory; hence the file name (relative path) that you must pass to <code>csinstances_create.sh</code> is <code>courses/genomics01/inputs/instancesNames.txt</code></li>
+<li>in the second code box, you are first moving to the <em>courses</em> directory with the command <code>cd</code>; hence the file name (relative path) that you must pass to <code>csinstances_create.sh</code> is <code>genomics01/inputs/instancesNames.txt</code></li>
+</ul>
+<section id="dont-run-the-scripts-with-a-relative-path-that-does-not-include-the-name-of-the-courseworkshop-directory-they-will-fail" class="level4">
+<h4 class="anchored" data-anchor-id="dont-run-the-scripts-with-a-relative-path-that-does-not-include-the-name-of-the-courseworkshop-directory-they-will-fail"><strong>DON’T RUN</strong> the Scripts <strong>with a relative path that does not include the name of the “<em>course/workshop</em>”</strong> directory — <strong>they will fail</strong></h4>
+<p>Following the code examples above, you should not move into the <em>genomics01</em> directory and run the scripts as shown below:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb8" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~/courses</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd genomics01/</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~/courses/genomics01</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh  inputs/instancesNames.txt </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span>                                                 <span class="co">### FAILURE RESULTS</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>However, the following will work:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb9" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~/courses/genomics01</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh  ../genomics01/inputs/instancesNames.txt </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh  ~/courses/genomics01/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The reason to force the specification of the “course/workshop” directory name in running the Scripts is to prevent (reduce the likelihood of) running the Scripts in the wrong place, which can happen when you are managing instances for different courses or test runs at the same time.</p>
+</section>
+<section id="running-the-other-scripts" class="level4">
+<h4 class="anchored" data-anchor-id="running-the-other-scripts"><em>Running the other Scripts</em>:</h4>
+<p>All the Scripts are run in the same way, passing as parameter the name of your file <em>instancesNames.txt</em> as shown below. While the scripts <code>aws_*.sh</code> are meant to be run (invoked) only by the scripts <code>csinstances_*.sh</code>, <strong>running the scripts <code>aws_*.sh</code> directly by the user</strong> may be useful for improving them or fixing a failed step in creating multiple instances, as will be discussed later in this episode.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb10" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_stop.sh         genomics01/inputs/instancesNames.txt </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_start.sh        genomics01/inputs/instancesNames.txt </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_delete          genomics01/inputs/instancesNames.txt </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> aws_domainNames_create.sh   genomics01/inputs/instancesNames.txt </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> aws_loginKeyPair_delete.sh  genomics01/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="configure-the-scripts-running-environment" class="level1">
+<h1>2. Configure the Scripts Running Environment</h1>
+<p>This and the subsequent sections are hands-on. In this section you are going to configure the Scripts running environment for a sample course/workshop — in subsequent sections you will use this environment to create and manage instances. Your are going to:</p>
+<ul>
+<li>create the directory structure <code>courses/instances-management/inputs</code> at the home directory</li>
+<li>create the three configuration files: <em>instancesNames.txt</em>, <code>resourcesIDs.txt</code> and <code>tags.txt</code></li>
+</ul>
+<p>While you can choose a different name for the file <em>instancesNames.txt</em> and for the parent directories of the <code>inputs</code> directory, for this course we recommend that you use the names suggested as otherwise you will have to adapt the intructions below.</p>
+<section id="create-the-directory-structure-coursesinstances-managementinputs" class="level3">
+<h3 class="anchored" data-anchor-id="create-the-directory-structure-coursesinstances-managementinputs">Create the directory structure: <code>courses/instances-management/inputs</code></h3>
+<p>Open your (Git Bash, Linux, Mac, or AWS CloudShell) terminal where you installed the Scripts.</p>
+<p>Being at the home directory (<code>~</code>), type the <code>mkdir</code> command below and press Enter to create the directory structure:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb11" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir <span class="at">-p</span> courses/instances-management/inputs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The option <code>-p</code> (or <code>--parents</code>) tells <code>mkdir</code> to create parent directories as needed, and not to complain if any of the directories exist.</p>
+</section>
+<section id="create-the-configuration-files-instancesnames.txt-resourcesids.txt-and-tags.txt" class="level3">
+<h3 class="anchored" data-anchor-id="create-the-configuration-files-instancesnames.txt-resourcesids.txt-and-tags.txt">Create the configuration files: <em>instancesNames.txt</em>, <code>resourcesIDs.txt</code> and <code>tags.txt</code></h3>
+<p>You will normally use your preferred editor to create those files. However, to simplify things somewhat you are going to use the files that we have prepared beforehand, so that you will only need to edit the file <code>resourcesIDs.txt</code> to specify your domain name and the AWS resource IDs for your host zone, security group, and subnet.</p>
+<section id="copy-the-files-prepared-for-this-section" class="level4">
+<h4 class="anchored" data-anchor-id="copy-the-files-prepared-for-this-section"><em>Copy the files prepared for this section</em></h4>
+<p>The files we have prepared are in the directory where you downloaded the Scripts with <code>git clone ..</code> (in Lesson 1, Episode 3 or 4).</p>
+<p>Copy the files to your course <code>inputs</code> directory as follows (note that you must be in your home directory):</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb12" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp _tmp_cloudspan_aws/instances-management-course-data/inputs/<span class="pp">*</span> courses/instances-management/inputs</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls courses/instances-management/inputs/</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames.txt</span>  resourcesIDs.txt  tags.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="if-you-dont-have-the-directory-_tmp_cloudspan_aws" class="level4">
+<h4 class="anchored" data-anchor-id="if-you-dont-have-the-directory-_tmp_cloudspan_aws"><em>If you don’t have the directory</em> <code>~/_tmp_cloudspan_aws/</code></h4>
+<p>If you don’t have that directory in your terminal environment, download the Scripts again with the <code>git</code> command below and then do the copy in the code box above:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb13" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git clone https://github.com/Cloud-SPAN/aws-instances.git ~/_tmp_cloudspan_aws</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="check-the-contents-of-each-file" class="level4">
+<h4 class="anchored" data-anchor-id="check-the-contents-of-each-file"><em>Check the contents of each file</em></h4>
+<p>Let’s look at the contents of each file so you can later relate the inputs to the outputs of the Scripts. Also, <strong>you need to edit</strong> the last four lines of the file <code>resourcesIDs.txt</code>.</p>
+<p>The contents of the file <em>instancesNames.txt</em> you copied is below. We are going to create three instances with the names: instance01, instance02, instance03. We don’t need to create more instances to learn how to use the Scripts. We have used the Scripts to create up to 37 instances in one go in about 15 minutes.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb14" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat courses/instances-management/inputs/instancesNames.txt </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">instance01</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">instance02</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">instance03</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The contents of the file <code>tags.txt</code> you copied is below. The instances and related resources to be created will be labelled with the tags in this file.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb15" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat courses/instances-management/inputs/tags.txt </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">name</span>        instance</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">group</span>       BIOL</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">project</span>     cloud-span</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">status</span>      prod</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="ex">pushed_by</span>   manual</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="ex">defined_in</span>  manual</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The contents of the file <code>resourcesIDs.txt</code> you copied is below. <strong>You need to update the values on the right column of the last four rows</strong> with the values of your: security group id, subnet id, host zone (domain name), and host zone id — don’t change anything else.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb16" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat courses/instances-management/inputs/resourcesIDs.txt </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">imageId</span>         ami-00c0ea23e53f48472</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">instanceType</span>        t3.small</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">securityGroupId</span>     sg-07fde18971b673b39</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">subnetId</span>        subnet-00f3dc83b7407df8c</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="ex">hostZone</span>        cloud-span.aws.york.ac.uk  </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="ex">hostZoneId</span>      Z012538133CJ0WPYPR3UZ      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By not altering the first two rows, you are going to use the Cloud-SPAN AMI, whose id is <em>ami-00c0ea23e53f48472</em>, as template to create the instances of type <em>t3.small</em> which has 2 processors (vCPUs) and 2 Giga Bytes of main memory.</p>
+</section>
+<section id="edit-the-file-resourcesids.txt" class="level4">
+<h4 class="anchored" data-anchor-id="edit-the-file-resourcesids.txt"><em>Edit the file</em> <code>resourcesIDs.txt</code></h4>
+<p>You need to use a <strong>plain-text editor</strong> such as <code>nano</code>, <code>vim</code>, <code>emacs</code>, etc., to update the file <code>resourcesIDs.txt</code> so that no special characters get into the file which may cause the Scripts to fail.</p>
+<p>The editors <code>nano</code> and <code>vim</code> are available both in the Git Bash terminal and the AWS CloudShell terminal.</p>
+<p>If you are using the AWS CloudShell terminal, you can download the file to your machine and edit it there with your preferred <strong>plain text editor</strong>, and upload it back to your <em>AWS CloudShell enviroment</em>. The screenshot below shows the menu to download and upload files:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/01-aws-cloudshell-actions-menu.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser showing the AWS CloudShell terminal with the options Actions, Download File and Upload File circled." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+</section>
+<section id="create-the-instances" class="level1">
+<h1>3. Create the Instances</h1>
+<p>To create the instances specified in the previous section, you only need to run <code>csinstances_create.sh</code> as shown below while being at the home directory (use the <code>Tab</code> key to complete the names of the script, the directories and the file):</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb17" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once you press Enter the output you will see in your terminal will be like the one in the screenshot below. The script <code>csinstances_create.sh</code> will invoke each of the scripts that creates /configures AWS resources. Each of these scripts will first display in cyan colour what it does (“Creating login keys” for example); it will then display to the terminal <strong>part of</strong> the results of creating /configuring the resources, and save to files in the <code>outputs</code> directory all of those results.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/02-results-of-running-csinstance_create.sh.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the terminal prompt, the run of the command csinstances_create.sh courses/instances-management/inputs/instancesNames.txt, and part of the output results of that command." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>In the screenshot above, you can see that <strong>login keys</strong> are created first because their resource ID’s must be passed as parameters to create the corresponding <strong>instances</strong>, which are created second. Then <strong>IP addresses</strong> are allocated (see bottom of the screenshot above), and then the instances <strong>domain names</strong> are created because creating a domain name requires passing as parameter the IP address to which the domain name will be mapped.</p>
+<p>Once the domain names are created, the allocated <strong>IP addresses</strong> are <strong>associated to</strong> the corresponding <strong>instances</strong>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/03-results-of-running-csinstance_create.sh-associating-IPaddress.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the middle part of the output results of the command csinstances_create.sh run previously." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>The final step in creating instances is to <strong>configure each instance</strong>, see bottom of screenshot above and the screenshot below. We will look in some detail at the output of configuring instances in Section 8. Troubleshooting and in the next episode. For the time being you only need to know that configuring each instance consists of:</p>
+<ul>
+<li>enabling access to the <code>csuser</code> account — a newly created instance can only be accessed through the <code>ubuntu</code> user account</li>
+<li>configuring the “<strong>host name</strong>” to be the instance domain name (instead of the instance IP address), so that the terminal prompt, when accessing the instance with <code>ssh</code>, is something like this: <code>csuser@instance01:~ $</code> and <code>ubuntu@instance01.cloud-span.aws.york.ac.uk:~ $</code> — instead of something like this: <code>csuser@52.212.13.253:~ $</code> and <code>ubuntu@52.212.13.253:~ $</code>.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/04-results-of-running-csinstance_create.sh-configuring-instance.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the last part of the output results of the command csinstances_create.sh run previously." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="check-the-instances-are-accessible" class="level1">
+<h1>4. Check the Instances Are Accessible</h1>
+<p>You should now be able to login to the instances you just created. It is convenient to login to a few of the instances that you create for a course to verify that they are reachable, and hence everything went as expected.</p>
+<p>You can login to an instance as shown in the introduction to this lesson, running <code>ssh</code> specifying the login key, the <code>csuser</code> and the instance domain name, that is:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb18" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-i</span> login-key-instance001.pem  csuser@instance01.cloud-span.aws.york.ac.uk     <span class="co">### -i stands for identity file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>However, using <code>ssh</code> as shown above is adequate for the end user of the instance who will be using the same <code>ssh</code> command to access the same instance throughout a course, while being at the directory where the login key file is.</p>
+<p>As the manager of multiple instances, at times managing two or more courses or tests simultaneously, you need to be able to login to different instances more easily.</p>
+<p>The script <code>lginstance.sh</code> will help you do that — it was downloaded into your environment along with the Scripts. It is used specifying only the <em>instance login key file</em> and the user account to login to, either <code>csuser</code> or <code>ubuntu</code> — both users use the same login key files. Assuming the configuration files used above, and being at the home directory, logging into <em>instance01</em> would be thus:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb19" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> lginstance.sh courses/instances-management/outputs/login-keys/login-key-instance01.pem csuser</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">lginstance.sh:</span> logging you thus:              <span class="co">### this line and the next one are displayed by lginstance.sh</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ssh</span> <span class="at">-i</span> courses/instances-management/outputs/login-keys/login-key-instance01.pem csuser@instance01.cloud-span.aws.york.ac.uk</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">### Welcome message from instance01  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>lginstance.sh</code> builds the <code>ssh</code> command you need to login to an instance and runs it. The login keys are in the directory <code>~/courses/instances-management/outputs/login-keys/</code>, so you need to specify the relative path (from your current working directory) to the corresponding login key file.</p>
+<p>That long command is rather easy to enter using the <code>Tab</code> key for the shell to complete the name of the script <code>lginstance.sh</code>, the names of the intermediate directories and the name of the login key .pem file. <strong>Try it</strong>.</p>
+<p>What we found would get on the way (before developing <code>lginstance.sh</code>) was specifying the pair user@instance-domain-name (<code>csuser@instance01.cloud-span.aws.york.ac.uk</code>) because <strong>the shell cannot help you complete it</strong> using the <code>Tab</code> key.</p>
+<p><code>lginstance.sh</code> extracts the domain name from the <code>resourcesIDs.txt</code> file.</p>
+</section>
+<section id="understand-the-results-of-creating-instances" class="level1">
+<h1>5. Understand the Results of Creating Instances</h1>
+<p>The results of creating instances that you saw displayed at the terminal, <strong>and more</strong>, are saved to files in the <code>outputs</code> directory. The <code>outputs</code> directory and its content are created by the Scripts as needed. Run the <code>ls</code> command below to list the contents of the <code>outputs</code> directory:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb20" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls courses/instances-management/outputs/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The output of the <code>ls</code> command should be the list of sub-directories (in brown) in the screenshot below:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/05-results-of-running-csinstance_create.sh-outputs-dir.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the run of the command ls courses/instances-management/outputs/; the results show the names of the directories created by the scripts invoked by the scripts csinstances_create.sh." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>Each of the Scripts that creates or configures AWS resources <strong>makes/sends requests to AWS</strong>. AWS validates and performs each request if it is valid, and <strong>returns back</strong> the result of the request wich states whether the request was successful or not, and if <strong>successful</strong>, the <strong>resource ID</strong> of the created resource or configuration requested along with other information.</p>
+<p>Each of the Scripts that makes such requests creates a sub-directory within the <code>outputs</code> directory <strong>to save</strong> the results of each request, to a file whose name has, as a sub-string, the name of the relevant instance as specified in the input file <em>instancesNames.txt</em> that you use to create the instances.</p>
+<p>The files that were created for the above run of <code>csinstances_create.sh</code> are shown in the screenshot below — use the same <code>ls</code> commands in the screenshot to list the files in each sub-directory within your <code>outputs</code> directory. If you used the instances names we suggested to create the instances, the files created from your run of <code>csinstances_create.sh</code> should have the same names as in the screenshot:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/06-results-of-running-csinstance_create.sh-outputs-dir-files.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the run of the command ls for each of the subdirectories shown in the previous screenshot; the results of each ls command shows the names of the files created by the scripts invoked by the scripts csinstances_create.sh." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<section id="each-instance-name-is-the-key-to-access-each-instance-results-files-in-the-outputs-directory" class="level3">
+<h3 class="anchored" data-anchor-id="each-instance-name-is-the-key-to-access-each-instance-results-files-in-the-outputs-directory"><em>Each instance name is the key to access each instance results files in the</em> <code>outputs</code> <em>directory</em></h3>
+<p>Once an AWS resource is created, <strong>any further request on the resource</strong> to, for example, configure it, stop it, .., and delete it, <strong>must include the resource ID</strong> received when the resource was created.</p>
+<p>The naming convention of the results files mentioned above, that is, to include the name of the corresponding instance in each file name, enables the Scripts to identify the files related to each instance and <strong>extract the resource IDs</strong> in order to manage the instance and its login key, domain name, etc., through making further requests to AWS.</p>
+<p>The two screenshots below show the resource IDs of instance01 and its IP address that are extracted to further manage the instance and its IP address. We will look in more detail at the contents of the results files in the next episode.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/07-results-of-running-csinstance_create.sh-instance01-id.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the run of the command more courses/instances-management/outputs/instances-creation-output/instance01.txt which displays the contents of that file, with the InstanceID field and its value circled." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/08-results-of-running-csinstance_create.sh-eip-allocation-id.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the run of the command more courses/instances-management/outputs/ip-addresses-allocation-output/elastic-IPaddress-for-instance01.txt which displays the contents of that file, with the AllocationID field and its value circled." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="typical-instances-life-cycle-create-stop-start-and-delete-instances" class="level1">
+<h1>6. Typical Instances Life Cycle: create, stop, start and delete instances</h1>
+<p>When you create instances through running <code>csinstances_create.sh</code>, the instances and their related resources (login key files, etc.) are created and configured first; then the instances are run (launched/started) and are left running until you either stop them or delete them.</p>
+<p>Our typical scenario in managing instances is as follows. When a workshop is scheduled for delivery, say on day D, we usually send the workshop participants the instructions to login to their instances, along with their login key file, one or a few days before D. Thus we usually do the following: - <strong>create</strong> the instances before D for the login key files to be created. - <strong>stop</strong> the instances shortly after (within minutes) to reduce costs. - re-<strong>start</strong> the instances again some time before the workshop starts. - <strong>delete</strong> all the instances once the workshop is over.</p>
+<p>We perform those four tasks running the Scripts <code>csinstances_*.sh</code> in our terminal, <strong>but we usually are logged in</strong> to the <strong>AWS Console</strong> too, at the <strong>EC2 — Instances</strong> page, to check that the <strong>instances state</strong> changes according to the state intended by each script, as outlined below.</p>
+<p>Follow along: - login to the AWS Console (with your IAM user account), type EC2 (for Elastic Compute Cloud) in the AWS search box at the top and press Enter, and then click on <strong>Instances</strong> on the left menu pane, see the page below. - run the scripts below in your terminal</p>
+<section id="creating-instances-one-or-more-days-before-a-workshop-starts" class="level2">
+<h2 class="anchored" data-anchor-id="creating-instances-one-or-more-days-before-a-workshop-starts">Creating instances one or more days before a workshop starts</h2>
+<p><strong>Only run</strong> <code>csinstances_create.sh</code> <strong>if you did not run it in the previous section</strong>!!!</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb21" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create.sh courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once you have run <code>csinstances_create.sh</code>, the instances state in the AWS Console will be <strong>Running</strong> as shown below (you may need to refresh the page):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/09-ec2-instances-screen-showing-created-instances-running.png" class="img-fluid figure-img" alt="" width="900"></p>
+<figcaption>Screenshot of AWS Console EC2 Instances page in a browser showing the state, Running, of three instances previously created, circled.</figcaption>
+</figure>
+</div>
+<p>Once all the instances are created, you will be able to send the login key files to whoever is responsible for emailing the workshop participants. The login key files are in the directory <code>../outputs/login-keys/</code> (within your course/workshop-name directory — <em>instances-management</em> directory in the running example). We usually upload the <code>login-keys</code> directory to a shared GDrive directory and inform someone we have done so.</p>
+</section>
+<section id="stopping-the-instances-shortly-after-within-minutes-they-are-created" class="level2">
+<h2 class="anchored" data-anchor-id="stopping-the-instances-shortly-after-within-minutes-they-are-created">Stopping the instances shortly after (within minutes) they are created</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb22" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_stop.sh courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb23" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csinstances_stop.sh</span> is stopping instances specified in input file courses/instances-management/inputs/instancesNames.txt</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Stopping</span> instances:</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> directory to hold the results of stopping instances:</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ex">courses/instances-management/outputs/instances-stop-output20230101.182907</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> stopping instance: instance01</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> stopping instance: instance02</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> stopping instance: instance03</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once you run <code>csinstances_stop.sh</code>, the instances state in the AWS Console will change from <strong>Running</strong> to <strong>Stopping</strong> as shown below, and after a short while the state will change to <strong>Stopped</strong>, and will remain so until you run another script that changes the state of the instances.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/10-ec2-instances-screen-showing-created-instances-stopping.png" class="img-fluid figure-img" alt="Screenshot of AWS Console EC2 Instances page in a browser showing the state, Stopping, of three instances previously created and running, circled." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="re-starting-the-instances-just-before-the-workshop" class="level2">
+<h2 class="anchored" data-anchor-id="re-starting-the-instances-just-before-the-workshop">Re-starting the instances just before the workshop</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb24" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_start.sh courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb25" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csinstances_start.sh</span> is starting instances specified in input file courses/instances-management/inputs/instancesNames.txt</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Starting</span> instances:</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> directory to hold the results of starting instances:</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="ex">courses/instances-management/outputs/instances-start-output20230101.185724</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> starting instance: instance01</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> starting instance: instance02</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> starting instance: instance03</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once you run <code>csinstances_start.sh</code>, the instances state in the AWS Console will change from <strong>Stopped</strong> to <strong>Pending</strong> (momentarily), and then to <strong>Running</strong> and will remain so until you run another script that changes the instances state.</p>
+</section>
+<section id="deleting-the-instances-and-all-their-resources-once-the-workshop-is-over" class="level2">
+<h2 class="anchored" data-anchor-id="deleting-the-instances-and-all-their-resources-once-the-workshop-is-over">Deleting the instances and all their resources once the workshop is over</h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb26" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_delete.sh courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb27" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csinstances_delete.sh</span> is terminating instances specified in input file courses/instances-management/inputs/instancesNames.txt</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Terminating</span> instances:</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> directory to hold the results of deleting instances: </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> terminating instance: instance01</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Deleting</span> login key pairs:</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> deleting login-key: login-key-instance01<span class="kw">;</span> <span class="ex">instance:</span> instance01</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Deleting</span> domain names:</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> deleting domain: instance01.cloud-span.aws.york.ac.uk<span class="kw">;</span> <span class="ex">ip:</span> 99.80.179.133</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Disassociating</span> following elastic IP addresses:</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> disassociating elasticIP, instance: instance01<span class="kw">;</span> <span class="ex">eipAssociationId:</span> eipassoc-0ff7c16e5ff5f7178</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Deallocating</span> elastic IP addresses:</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="ex">Success</span> deallocating eip: 99.80.179.133<span class="kw">;</span> <span class="ex">instance:</span> instance01<span class="kw">;</span> <span class="ex">eipAllocationId:</span> eipalloc-0ccacb1c92d26ec7f</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can delete instances in any state — you don’t need to stop instances to delete them.</p>
+<p>Once you run <code>csinstances_delete.sh</code>, the instances state in the AWS Console will change from <strong>Stopped</strong> or <strong>Running</strong> to <strong>Shutting-down</strong>, and after some minutes to <strong>Terminated</strong>, and after some more minutes the terminated instances will no longer be shown in the AWS Console.</p>
+<p>The output box above shows only the main steps of <code>csinstances_delete.sh</code> in deleting instances and related resources, namely: - Terminating instances - Deleting login key pairs - Deleting domain names - Disassociating elastic IP addresses and - Deallocating elastic IP addresses</p>
+<p>You should always see a <strong>Success …</strong> message for each resource that is terminated, deleted or deallocated, but not always for <strong>disassociating elasticIP</strong>s. Instead, you may see the error in the callout below. There is nothing to worry about this message, ignore it. But you should not ignore an error in any other step — which should not happen if your configuration is valid; the Scripts have not failed since we got them right.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+“Error disassociating elasticIP, instance: instance01; …”.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This error may happen because instances are deleted first, and by the time the Script that disassociates IP addresses from instances is run, some of the associations of IP addresses to instances may no longer be valid/existant. This is more likely to happen if an instance is stopped when <code>csinstances_delete.sh</code> is run. If an instance is running, shutting it down and then terminating it will take longer, and hence its association of IP address to instance is more likely to be valid when it is to be disassociated, which will result in successfully disassociating the IP address.</p>
+</div>
+</div>
+<section id="the-results-of-stopping-starting-and-deleting-instances-are-also-saved-to-files" class="level3">
+<h3 class="anchored" data-anchor-id="the-results-of-stopping-starting-and-deleting-instances-are-also-saved-to-files">The results of stopping, starting and deleting instances are also saved to files</h3>
+<p>The results of running <code>csinstances_stop.sh</code>, <code>csinstances_start.sh</code> and <code>csinstances_delete.sh</code> are also saved within sub-directories in the <code>../outputs/</code> directory.</p>
+<p>Run the <code>ls</code> command below to look at the sub-directories that were created after running those scripts.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb28" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls courses/instances-management/outputs/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The output of <code>ls</code> should be similar to this one:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/11-terminal-listing-of-outpus-dir-after-stopping-starting-deleting-instances.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the output of the command ls courses/instances-management/outputs/ after stopping, re-starting and deleting the three instances; the output shows the new directories created by the scripts that stopped, started and deleted the instances." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>The newly created sub-directories are those in boxes; their names are suffixed with the date and time when the relevant script was run. Inside each sub-directory there is a file for each request made by the relevant script, one request for each instance or related resource.</p>
+<p>We won’t look into these files. Their main use is to register the results of AWS requests in case of errors happening. They were essential while developing the Scripts to get them right.</p>
+</section>
+</section>
+<section id="create-instances-in-two-steps-to-avoid-unnecessary-costs" class="level2">
+<h2 class="anchored" data-anchor-id="create-instances-in-two-steps-to-avoid-unnecessary-costs">Create instances in two steps to avoid unnecessary costs</h2>
+<p>You can avoid some of the cost of deploying instances by “creating instances” <strong>in two steps</strong>. You will first run the script <code>csinstances_create1stPart.sh</code>, and a few days later (just before the relevant workshop starts) the script <code>csinstances_create2ndPart.sh</code>. As shown below, you run those two scripts in the same way as you run all the other scripts, passing in the “instancesNamesFile” that contains the names of the instances to create:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb29" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create1stPart.sh  courses/instances-management/inputs/instancesNames.txt </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">##### and a few days later:</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="ex">csuser@cloud-admin-instance:~</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> csinstances_create2ndPart.sh  courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Doing so will save a significant cost if you are running a workshop that requires relatively large instances in terms of compute and storage capacity, up to about US $300 per day (as at 20230414), for 50 instances of type t3.2xlarge, each instance with 240GB storage. The savings come out as follows. Recall that the script <code>csinstances_create.sh</code> first runs the script that creates the <strong>login keys</strong>, then the script that creates the <strong>instances</strong>, then .. the <strong>IP addresses</strong> and finally .. the <strong>domain names</strong>. Of all these resources, it is the instances that are more costly. The script <code>csinstances_create1stPart.sh</code> only creates the login keys, the IP addresses and the domain names. You will then be able to send the workshop participants their login key and instance domain name, say, on a Friday. On the following Monday you will then run <code>csinstances_create2ndPart.sh</code> to create the instances, associate the instances to the IP addresses, and to configure the instances.</p>
+</section>
+</section>
+<section id="unforseen-instance-management" class="level1">
+<h1>7. Unforseen Instance Management</h1>
+<p>The Scripts use-case scenario outlined above is typical of short workshops that last 1-4 days in a row. Yet sometimes it doesn’t go that smoothly. Sometimes you won’t be able to run the scripts <code>csinstances_*.sh</code> using the same file “instancesNamesFile”.</p>
+<p>Sometimes you will receive requests like those in the list below after you have both created an “instancesNamesFile” and run the script <code>csinstances_create.sh</code> with that file, that is: some instances have been created, and then, you receive requests like:</p>
+<ul>
+<li>can you create N more instances? — We received N last-minute registrations to the workshop.</li>
+<li>can you delete instance A? — The participant is ill and cancelled.</li>
+<li>can you leave the instances B and C running after the workshop until <em>date</em>? — The participants have not yet managed to cover the course but are very keen to do it.</li>
+<li>can you stop instance D (don’t delete it) until further notice? — The participant has started the workshop but something urgent happened and will get back to it asap.</li>
+</ul>
+<p>If you are to fulfill such requests, then you <strong>need to manage multiple</strong> “instancesNamesFile”s. This is because the Scripts create (configure, stop, start or delete) <strong>all the instances</strong> whose names you specify in an “instancesNamesFile” you pass in to the Scripts.</p>
+<p>For <strong>example</strong>, suppose the following scenario: (<strong>1</strong>) you have created the three instances as instructed in Section <a href="#3-create-the-instances">3 Create the Instances</a> — you used the file <em>instancesNames.txt</em> &nbsp;to create the instances named <em>instance01</em>, <em>instance02</em>, and <em>instance03</em>; (<strong>2</strong>) you are then asked to create another instance (for a latecomer to the workshop you are running); and (<strong>3</strong>) for the new instance you decide to use the name <em>instance04</em>.</p>
+<p>Now you need to create another “instancesNamesFile”, say, <em>instancesNames-04.txt</em>, that contains only the instance name <em>instance04</em>, and then run <code>csinstances_create.sh instancesNames-04.txt</code>.</p>
+<section id="avoid-modifying-an-instancesnamesfile-that-you-have-already-used-to-create-intances" class="level2">
+<h2 class="anchored" data-anchor-id="avoid-modifying-an-instancesnamesfile-that-you-have-already-used-to-create-intances">Avoid modifying an “instancesNamesFile” that you have already used to create intances</h2>
+<p>In the example above, you <strong>should not add</strong> the instance name <em>instance04</em> &nbsp;to the file <em>instancesNames.txt</em> &nbsp;(that you previously used to create <em>instances01</em>, <em>..02</em> and &nbsp;<em>..03</em>), and then <strong>run again</strong> <code>csinstances_create.sh instancesNames.txt</code> — <strong>it will fail</strong> as shown in the screenshot below:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/13-results-of-running-csinstance_create.sh-AGAIN-aborted.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the run of csinstance_create.sh and the abort message for having found that some instances or related resources have already been created." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-scripts-check-instance-operations-are-valid-given-the-state-of-the-running-environment" class="level2">
+<h2 class="anchored" data-anchor-id="the-scripts-check-instance-operations-are-valid-given-the-state-of-the-running-environment">The Scripts <em>check</em> &nbsp;instance operations are <em>valid</em> &nbsp;given the state of the running environment</h2>
+<p>Recall (from Section <a href="#3-create-the-instances">3 Create the Instances</a>) that login keys are created first, then instances, etc. Login keys are created by the script <code>aws_loginKeyPair_create.sh</code> which, as you can see in the screenshot above, first checks whether the login key files for the instances to be created exist or not, <strong>aborting</strong> its execution if any such file exists. In the run shown in the screenshot, <code>aws_loginKeyPair_create.sh</code> found the login key files for <em>instances01</em>, <em>..02</em>, &nbsp;and <em>..03</em>, and hence displayed the message shown and aborted its execution which, in turn, caused <code>csinstances_create.sh</code> to abort its execution as well.</p>
+<p>As stated in that message, the files that were found contain the <strong>AWS resource IDs</strong> of login keys <strong>already created</strong>. Those resource IDs are needed to delete the login keys from your AWS account. The Scripts <strong>do not overwrite</strong> files that contain such resources IDs. If those files are <strong>overwritten</strong>, or lost, <strong>before you delete</strong> the corresponding instances and related resources (running <code>csinstances_delete.sh</code>), <strong>you will need to use the AWS Console to delete manually</strong> the corresponding instances, login keys, IP addresses and domain names.</p>
+<p>If you want to create instances <strong>with names</strong> you <strong>have already used</strong>, you <strong>must first delete</strong> the instances already created and their related resources (running <code>csinstances_delete.sh</code>), then delete or rename the <code>../outputs/</code> parent directory, and finally create the instances. We have done so only for some testing, see the Troubleshooting section.</p>
+<p>All the Scripts that <strong>create</strong> AWS resources carry out a similar <strong>check</strong> to that carried out by <code>aws_loginKeyPair_create.sh</code>. For each instance name in the “instancesNamesFile” passed in to <strong><code>csinstances_create.sh</code></strong>, each script checks whether the instance, or the resource for that instance, has been created or not, which amounts to checking whether the file with the corresponding AWS resource ID exists or not. If any such file <strong>does</strong> exist, the script aborts its execution <strong>without</strong> issuing any AWS request to create resources.</p>
+<p>All the Scripts that <strong>delete</strong> AWS resources carry out a similar check but <strong>act on the opposite</strong>. … If any such file <strong>does not</strong> exist, the script aborts its execution <strong>without</strong> issuing any AWS request to delete resources. The script <code>aws_instances_configure.sh</code> does this check.</p>
+<p>Given a set of instances names as specified in an “instancesNamesFile”, the two checks above guarantee that all or none of the instances, and/or related resources, are created or deleted.</p>
+<p>Finally, all the Scripts <code>aws_*.sh</code> check that the “instancesNamesFile” passed in to them has only one value (one instance name) in each line. Thus, if you inadvertently passed in to the Scripts the file name <code>resourcesIDs.txt</code> or <code>tags.txt</code>, which both have two values in each line, the Scripts will abort their execution.</p>
+</section>
+<section id="using-multiple-instancenamesfiles-to-manage-unforseen-instances-management-requests" class="level2">
+<h2 class="anchored" data-anchor-id="using-multiple-instancenamesfiles-to-manage-unforseen-instances-management-requests">Using multiple “<em>instanceNamesFile</em>”s to manage unforseen instances management requests</h2>
+<p>There is no problem with having multiple “instancesNamesFile”s in an <code>../inputs/</code> directory.</p>
+<p>The main issue is how to name those multiple files so that you <strong>keep track</strong> of what happens, regarding instance management, throughout a workshop.</p>
+<p>The listing below illustrates the naming convention we follow to name multiple “instancesNamesFile”s to handle similar requests to the ones described in the introduction to this section.</p>
+<p>The listing shows the files in the <code>inputs</code> directory of a workshop we ran through late October and November 2022:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Output</strong></pre>
+</div>
+<div class="sourceCode" id="cb30" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221028-create-301-25.txt</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221031-create-326.txt</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221031-create-327.txt</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221031-create-328.txt</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221101-create-329.txt</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221109-delete-307.txt</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221114-delete-303,315,321.txt</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221115-create-again-321.txt</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221121-delete-310,314,320,321,323,325.txt</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221123-stop-306.txt</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221128-delete-302,304-05,308-09,311-13,316-19,322,324,326-29.txt</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="ex">instancesNames20221130-delete-301.txt</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="ex">resourcesIDs.txt</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="ex">tags.txt</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The workshop used instances of type <em>t3.2xlarge</em>, each instance with 8 processors and 32 GigaBytes of main memory and 240 GB of secondary storage — not cheap. The instances were to run for 4 weeks unless the participants would not make progress which we checked weekly looking at the command history and whether relevant results files existed. We would delete instances that showed no progress was made.</p>
+<p>From the file listing above we can recall the following:</p>
+<ul>
+<li>On 28 October we created the 1st file at the top and run <code>csinstances_create.sh courses/../inputs/instancesNames20221028-create-301-25.txt</code> in order to create 25 instances named: instance301, instance302, instance303, …, instance325.</li>
+<li>On 31 October we received 3 requests, at different times, to create one more instance. Upon receiving each request, we created another “instanceNameFile” (2nd, 3rd and 4th files in listing above) with only one instance name inside (instance326, instance327, instance328 respectively), and run <code>csinstances_create.sh</code> with each file.</li>
+<li>On 1 Novemeber we received another request to create one more instance and handled it as just described to create instance329.</li>
+<li>On 9 November we deleted instance307 (for not showing progress):
+<ol type="1">
+<li>we made a copy of <em>instancesNames20221028-create-301-25.txt</em> onto <em>instancesNames20221109-delete-307.txt</em>.</li>
+<li>opened the latter with our text editor and deleted all lines except the line with the instance name instance307.</li>
+<li>we then run <code>csinstances_delete.sh courses/../inputs/instancesNames20221109-delete-307.txt</code>.</li>
+</ol></li>
+</ul>
+<p>The other “instancesNamesFile”s in the list were handled similarly to the way the event on 9 November was handled, namely: - creating a new file containing only the names of the target instances. - naming the file <em>instancesNames</em><strong>Date</strong>-<strong>operation</strong>-<strong>instancesNumbersList</strong>.txt — where <strong>operation</strong> is create, stop, start, or delete. - running the relevant <code>csinstances_*.sh</code> script to create, stop, start or delete the target instances.</p>
+<p>The tedious part of this file naming convention is specifying the <strong>intancesNumbersList</strong>. However, it is not required often and it gives you an accurate overview of the instances operations you have performed.</p>
+</section>
+</section>
+<section id="troubleshooting" class="level1">
+<h1>8. Troubleshooting</h1>
+<p>This last section presents the problems we have come across using the Scripts and how we solved them.</p>
+<section id="connection-timed-out-or-connection-refused-messages-persist" class="level3">
+<h3 class="anchored" data-anchor-id="connection-timed-out-or-connection-refused-messages-persist">“<em>Connection timed out</em>” or “<em>Connection refused</em>” messages persist</h3>
+<p>Those messages are related to accessing an instance with <code>ssh</code>. We have come across those messages in two scenarios:</p>
+<ul>
+<li>when an instance is to be configured — recall that <em>instance configuration</em> is the last step in creating instances; and</li>
+<li>when an instance is to be accessed by the end user (after the instance has been configured)</li>
+</ul>
+<p><strong>The first scenario</strong> is shown below. It has to do with the SSH server in the instance not yet being ready to accept any login request, and hence the client (the script <code>aws_instances_configure.sh</code> which is invoked last by <code>csinstances_create.sh</code>) receives an unsuccessful response and displays either the message “Connection timed out” or “Connections refused”, or both. This situation is “normal” because we know the instance has just been launched. It’s only a matter of waiting for the SSH server to be ready.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/02-instances-management/12-results-of-running-csinstance_create.sh-configuring-instance2.png" class="img-fluid figure-img" alt="Screenshot of Linux terminal showing the last part of the output of running the command csinstances_create.sh; that part corresponds to the configuration step of each instance and the screenshot shows the Connection timed out and Connection refused messages circled that may arise during the configuration step." width="900"></p>
+<figcaption>.</figcaption>
+</figure>
+</div>
+<p>Note in the screenshot the message in brown “<strong>Please wait for SSH server (you may see a few ‘Connection timed out/Connection refused’ messages)</strong>”, and the <code>ssh</code>-related message in white just below “<strong>ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -i courses/…</strong>”. The script <code>aws_instances_configure.sh</code> prints those messages and then gets into a loop to repeatedly issue that <code>ssh</code> command until it is successful. In the screenshot, three issues of that <code>ssh</code> command were unsuccessful and the message “<strong>ssh: connect to host instance01… port 22: Connection refused</strong>” was displayed three times. Once that <code>ssh</code> command is successful, <code>aws_instances_configure.sh</code> proceedes to issue the <code>ssh</code> commands that configures the instance. That is, the sole purpose of the <code>ssh</code> command that is issued within the loop is to ensure the SSH server in the instance is ready.</p>
+<p><strong>How many “Connection timed out/Connection refused” (unsuccessful <code>ssh</code>) messages would be “normal”?</strong></p>
+<p>We have seen up to about 15 of those messages and then <code>ssh</code> succeeds.</p>
+<p>Sometimes it is network congestion during peak hours that will cause those messages — sometimes you will not see any of those messages.</p>
+<p>Usually those messages will be displayed for the first instances to be configured and not for subsequent instances because the SSH server in subsequent instances has some more time to get ready.</p>
+<p>However, an instance configuration step may indeed get stuck displaying those messages no end. It has happened to us under two conditions that we will call test conditions and normal conditions.</p>
+<section id="test-conditions" class="level4">
+<h4 class="anchored" data-anchor-id="test-conditions"><strong>Test conditions</strong></h4>
+<p>By test conditions we mean creating instances to test something (as opposed to creating instances for a workshop: normal conditions). In testing something, we have sometimes created a few instances and immediately after realised we forgot somethineg, corrected it, deleted the instances and created the instances again using the same instances names, and then got those messages no end.</p>
+<p>We had to delete the instances, and create new ones with different names. We believe the problem is the too close subsequent requests to map the same domain names to different IP addresses. The AWS domain name system, Route 53, needs sometime to propagate the changes to its servers, etc. It has not been worth trying to solve this. They are only tests and we can use other instances names.</p>
+</section>
+<section id="normal-conditions" class="level4">
+<h4 class="anchored" data-anchor-id="normal-conditions"><strong>Normal conditions</strong></h4>
+<p>Creating instances for a workshop is normal conditions. We have got those messages under normal conditions and the following has always worked for us:</p>
+<ul>
+<li><p><strong>abort</strong> the run of the script <code>csinstances_create.sh</code> by pressing <code>Ctrl-c</code> (the keys Ctrl and c simultaneously) a few times until you get back the prompt of your terminal. You will be aborting the script <code>aws_instances_configure.sh</code> first, the one that displays those messages, and then the script <code>csinstances_create.sh</code> which invoked <code>aws_instances_configure.sh</code> as the <strong>last step</strong> of creating instances.<br>
+Note that <strong>the AWS resources of all instances have already been created</strong> when you abort the Scripts while seeing the messages “Connection timed out” or “Connection refused”. It is only the <strong>instances configuration</strong> phase that has not been completed.</p></li>
+<li><p><strong>reboot</strong> the instance that got stuck in the configuration phase — the instance should be <strong>Running</strong> if all the previous steps were succesful (they should; check the messages displayed to your terminal). We usually <strong>reboot</strong> an instance in the AWS Console. Go to the <strong>EC2 - Instances</strong> page - check the box to the left of the instance name - click on <strong>Instances state</strong> drop-down menu at the top - select <strong>Reboot Instance</strong>.</p></li>
+<li><p><strong>wait a few minutes</strong> — even if the instance state changes to Running in the AWS Console: the SSH server needs to get ready.</p></li>
+<li><p><strong>run</strong> <code>aws_instances_configure.sh</code> as you ran <code>csinstances_create.sh</code>, for example:</p></li>
+</ul>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb31" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_instances_configure.sh</span> courses/instances-management/inputs/instancesNames.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>this run will configure all the instances specified in the file <em>instancesNames.txt</em>. There is no problem if some instances were previously configured (before aborting the Scripts) and are configured again.</li>
+<li>alternatively, you may want to deal only with the instance on which the configuration step got stuck. In this case you need to create another “instancesNamesFile” containing the name of that instance only and run <code>aws_instances_configure.sh</code> with that file (see the previous section), for example:</li>
+</ul>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb32" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_instances_configure.sh</span> courses/instances-management/inputs/instancesNames20230104-configure-10.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Alternatively, you may try first all of the steps above except <strong>rebooting</strong> the instance. It has worked for us. We believe the benefit of rebooting the instance is the cleaning/deleting of any previous <code>ssh</code> requests enqueued somewhere waiting to be served.</li>
+</ul>
+<p><strong>The other scenario</strong> where <code>Connection timed out /Connection refused</code> messages may be displayed is when an instance is to be accessed by the end user (after the instance has been configured and is running). In this case, it is the configuration of the server the end user is connected to gain access to the Internet. The server is blocking <code>ssh</code> communication, either from the end user <code>ssh</code> client to reach the instance or from the instance SSH server to reach the end user machine, or both. If you have a mobile phone handy, turn on the “Mobile Hotspot” WiFi, ask the end user to connect to it, and then to connect to the instance. If this works, the end user needs to ask the IT department responsible for the server to solve the issue.</p>
+</section>
+</section>
+<section id="warning-remote-host-identification-has-changed" class="level3">
+<h3 class="anchored" data-anchor-id="warning-remote-host-identification-has-changed">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED</h3>
+<p>The error behind this message has also to do with accessing and instance with <code>ssh</code>. It used to happen to us and happened to a workshop participant whose instance was created, deleted and created again with the same name.</p>
+<p>The participant was sent the login key file the first time the instance was created. We then deleted the instance (instance321) in the file listing in section 7 due to not seeing any progress. The participant asked the instance to be created again. We created the instance again using the same name and send the participant the new login key file. When using <code>ssh</code> to login to the newly created instance, the participant got that message.</p>
+<p>The solution was to tell the participant to run the command below before running <code>ssh</code> so that the instance host domain is removed from the participant’s <code>~/.ssh/known_hosts</code> file.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb33" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-f</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/.ssh/known_hosts"</span> <span class="at">-R</span> instance321.cloud-span.aws.york.ac.uk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The error used to happen to us when developing the Scripts out of carrying out multiple tests using the same instances names. So we decided to add that <code>ssh-keygen</code> command within the script <code>aws_instances_configure.sh</code> just before invoking <code>ssh</code> — see the screenshot above, fourth line from the top.</p>
+
+
+</section>
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -620,10 +1465,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="pagination-link" aria-label="01-configure-instances-internet.html">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">01-configure-instances-internet.html</span>
+      <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="pagination-link" aria-label="Configure Instances Internet Access">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Configure Instances Internet Access</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -637,7 +1482,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/02-instances-management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/02-instances-management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

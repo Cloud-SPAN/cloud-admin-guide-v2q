@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Automated Management of AWS Instances</title>
+<title>Automated Management of AWS Instances - Managing AWS Instances</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -177,13 +211,13 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01-configure-instances-internet.html</span></a>
+ <span class="menu-text">Configure Instances Internet Access</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">02-instances-management.html</span></a>
+ <span class="menu-text">Instances Management Tasks Using the Scripts</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -199,17 +233,85 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#episode-1-configure-instances-internet-access" id="toc-episode-1-configure-instances-internet-access" class="nav-link" data-scroll-target="#episode-1-configure-instances-internet-access">Episode 1: Configure Instances Internet Access</a></li>
+  <li><a href="#episode-3-amis-management" id="toc-episode-3-amis-management" class="nav-link" data-scroll-target="#episode-3-amis-management">Episode 3: AMIs Management</a></li>
+  <li><a href="#episode-4-the-scripts-design" id="toc-episode-4-the-scripts-design" class="nav-link" data-scroll-target="#episode-4-the-scripts-design">Episode 4: The Scripts Design</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Managing AWS Instances</h1>
+</div>
 
 
 
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<p>Please read <strong><a href="../../index.html#course-overview">Workshops Organisation</a></strong> if you haven’t done so.</p>
+<p>The environments and configurations presented in the previous lesson, <a href="../../docs/lesson01-setting-work-envs/index.html">Setting Up Your Cloud and Terminal Environments</a>, comprise a <strong>base development environment</strong> to create and manage AWS services with both the AWS Console and the AWS CLI (command line interface). If you are using an AWS <strong>personal account</strong> (that you created and configured as described in that lesson), you can create and manage <strong>any service in any AWS region</strong>, as your account was configured with the AdministratorAccess permissions policy which “<em>Provides full access to AWS services and resources</em>”.</p>
+<p>Towards using the Scripts to create and manage AWS instances, we will first need to configure <strong>Internet access</strong> for the instances. The instances configuration and the Scripts were designed for each instance to be accessed through a <strong>domain name</strong> and with the program <code>ssh</code> using an encrypted login key, as outlined below. Hence, we will create a <strong>base domain name</strong> from which the Scripts will create, for each instance, a <strong>subdomain</strong> name to identify and make each instance accessible with <code>ssh</code>. Creating a domain name in your AWS account will incur some cost, as low as US $5.00 per year or more depending on the <em>suffix /top-level domain</em> (TLD) that you choose for your base domain name. Examples of TLDs include: <code>.com</code>, <code>.net</code>, <code>.org</code>, <code>.link</code>, among many others (the cheapest in AWS is <code>.link</code>). If you already have a domain name in place, you can use that instead. Your account will also incur costs for any service you launch that is not included in the <strong>AWS Free Tier</strong> — check the lesson <a href="https://cloud-span.github.io/create-aws-instance-3-costs-explained/">AWS Costs Explained</a> from another Cloud-SPAN course, so you know your free limits.</p>
+<p>If you are using an AWS <strong>institutional account</strong> (that was created and configured by the IT department in your institution), you will most likely not be directly responsible for the cost of using a domain name or any other service with your account. However, you may need to ask your IT department to configure a base domain name for you, or to follow some guidelines to specify the domain name. Your account may also have restrictions as to the <strong>AWS region where you can create and manage AWS services</strong>. For instance, the AWS institutionl account of the Cloud-SPAN project can only make use of services in the eu-west-1 Ireland region, and the Cloud-SPAN base domain name was suggested and configured by our IT department. If your institutional account is restricted to use an AWS region other than Ireland, you may need to ask your IT department to make a copy, to your AWS account, of the Amazon Machine Image (<strong>AMI</strong>) template used by the Scripts to create AWS instances. <strong>Your IT department should be able to help you</strong> with this and other matters; just let them know what you need to configure in your AWS account to use the Scripts, and whenever you come accross <strong>Access Denied</strong> or similar messages when using the Scripts.</p>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>We use the Scripts to create and manage multiple AWS instances for training. When running a workshop, a number of instances is created as a copy of an AMI that is configured with ’omics data and software analysis tools that are relevant to the workshop. Each student is granted exclusive access to one instance.</p>
+<p>Each instance is created to be accessed through a <strong>domain name</strong> using <code>ssh</code> and an encrypted login key file.</p>
+<p>For example, using the base domain name of the Cloud-SPAN project, <code>cloud-span.aws.york.ac.uk</code>, the (sub) domain name for an instance named <code>instance001</code> would be <code>instance001.cloud-span.aws.york.ac.uk</code>.</p>
+<p>Using the base domain name of an AWS personal account, for example, <code>awsplaicloud.com</code>, the domain name for the same instance name would be <code>instance001.awsplaicloud.com</code>.</p>
+<p>Once an instance is created, the end user will access the instance <code>csuser</code> account with <code>ssh</code> providing the name of the corresponding login key file as shown below.</p>
+<p>Using the AWS Cloud-SPAN institutional account base domain name:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb1" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-i</span> login-key-instance001.pem  csuser@instance001.cloud-span.aws.york.ac.uk     <span class="co">### -i stands for identity file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using the personal account based domain name:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Code</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ssh <span class="at">-i</span> login-key-instance001.pem  csuser@instance001.awsplaicloud.com              </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Each instance domain name is mapped to an IP address. Domain names, IP addresses, and login keys are created <em>automatically</em> on creating the corresponding instances, and deleted likewise when the corresponding instances are deleted.</p>
+<section id="episode-1-configure-instances-internet-access" class="level3">
+<h3 class="anchored" data-anchor-id="episode-1-configure-instances-internet-access">Episode 1: Configure Instances Internet Access</h3>
+<p>Episode 1 will guide you to configure internet access for the instances you will create with the Scripts. This involves: - creating a base domain name - creating a few access rules for the communication ports used by the <code>ssh</code> program - selecting an AWS network to which the instances will be attached so that they can be reached from anywhere with <code>ssh</code></p>
+<p><!-- this reference is to a section in a another page file is right -- don't delete [Create a Base Domain Name](01-configure-instances-internet-access#1-create-a-base-domain-name). --> ### Episode 2: Instances Management Tasks Using the Scripts</p>
+<p>Episode 2 is the guide to using the Scripts to create and manage multiple instances for a course /workshop. The episode shows: - how to configure the Scripts with the names of the instances to create and the AWS resources to use (base domain name, AMI template, etc.). - how to organise the Scripts configuration files for multiple courses. - how to use /run the Scripts and manage unforseen instances management requests such as cancellations by workshop participants - some troubleshooting</p>
+</section>
+<section id="episode-3-amis-management" class="level3">
+<h3 class="anchored" data-anchor-id="episode-3-amis-management">Episode 3: AMIs Management</h3>
+<p>Episode 3 is about managing Amazon Machine Images (AMIs). As AWS instances are copies of an AMI, you need to create a new AMI if the software or data used in a course change, but there are other reasons that may require creating a new AMI. The episode presents the management of AMIs that we have done as part of managing AWS instances with the Scripts.</p>
+</section>
+<section id="episode-4-the-scripts-design" class="level3">
+<h3 class="anchored" data-anchor-id="episode-4-the-scripts-design">Episode 4: The Scripts Design</h3>
+<p>Episode 4 presents the organisation and workings of the Scripts, how the Scripts were developed using the AWS CLI Command Reference, and a few ideas to improve the Scripts.</p>
+
+
+</section>
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -621,15 +723,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="../../docs/lesson01-setting-work-envs/04-configure-cloudshell.html" class="pagination-link" aria-label="Configure Your AWS CloudShell Environment">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Configure Your AWS CloudShell Environment</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="pagination-link" aria-label="01-configure-instances-internet.html">
-        <span class="nav-page-text">01-configure-instances-internet.html</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../docs/lesson02-managing-aws-instances/01-configure-instances-internet.html" class="pagination-link" aria-label="Configure Instances Internet Access">
+        <span class="nav-page-text">Configure Instances Internet Access</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -641,7 +743,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
