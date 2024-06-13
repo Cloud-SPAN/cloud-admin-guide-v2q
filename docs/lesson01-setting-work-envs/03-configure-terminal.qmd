@@ -1,48 +1,53 @@
 ---
 title: "Configure Your Terminal Environment"
 ---
+
 ::: callout-warning
 ## Prerequisites
-**Please read [Workshops Organisation](https://cloud-span.github.io/cloud-admin-guide-0-overview#course-overview)** if you haven't done so. To complete this episode you will need:
 
- - if you are self-studying the course **or** attending a workshop using **your AWS account**:
-   - to have created and configured your AWS account as described in the two previous episodes: [Create Your AWS Account](./01-create-aws-account.qmd) and [Configure Your AWS Account](./02-configure-account.qmd).
-   - your AWS account programmatic access credentials (\*):
-     - Access Key ID 
-     - Secret Access Key
-   - **Windows users**: to have installed Git Bash --- see the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
-   - **Mac users**: to have installed or updated Bash --- see the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
-   - **Mac** and **Linux users**: to have installed: `git`, `curl`, `unzip`, `ssh`
- - if you are attending a workshop using a **Cloud-SPAN AWS account** (and an AWS Linux instance):
-   - to follow the instructions in this episode for Linux terminals.
-   - **Windows users**: to have installed Git Bash --- see [Workshops Organisation](/index.qmd#course-overview) and the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
+**Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need:
 
-(\*) Those credentials are in the .csv file you downloaded once you created your IAM account as part of configuring your AWS account. 
+-   if you are self-studying the course **or** attending a workshop using **your AWS account**:
+    -   to have created and configured your AWS account as described in the two previous episodes: [Create Your AWS Account](./01-create-aws-account.qmd) and [Configure Your AWS Account](./02-configure-account.qmd).
+    -   your AWS account programmatic access credentials (\*):
+        -   Access Key ID
+        -   Secret Access Key
+    -   **Windows users**: to have installed Git Bash --- see the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
+    -   **Mac users**: to have installed or updated Bash --- see the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
+    -   **Mac** and **Linux users**: to have installed: `git`, `curl`, `unzip`, `ssh`
+-   if you are attending a workshop using a **Cloud-SPAN AWS account** (and an AWS Linux instance):
+    -   to follow the instructions in this episode for Linux terminals.
+    -   **Windows users**: to have installed Git Bash --- see [Workshops Organisation](/index.qmd#course-overview) and the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
+
+(\*) Those credentials are in the .csv file you downloaded once you created your IAM account as part of configuring your AWS account.
 :::
 
 # Introduction
-This episode will guide you to configure your **terminal environment** so that you can run the Scripts to create and manage instances. 
 
-**Configuring** your terminal environment consists of: 
+This episode will guide you to configure your **terminal environment** so that you can run the Scripts to create and manage instances.
 
-- installing the **Scripts**
-- installing and configuring the **AWS CLI** to use your AWS account.
+**Configuring** your terminal environment consists of:
 
-**Installing** the Scripts and the AWS CLI includes **downloading** each and **configuring** the execution path of your terminal so that the Scripts and the AWS CLI can be run from any directory location only specifying their name. 
+-   installing the **Scripts**
+-   installing and configuring the **AWS CLI** to use your AWS account.
+
+**Installing** the Scripts and the AWS CLI includes **downloading** each and **configuring** the execution path of your terminal so that the Scripts and the AWS CLI can be run from any directory location only specifying their name.
 
 These are the main steps you will follow to configure your Linux machine:
 
-1. **Installing the Scripts**\
-You will download the Scripts from GitHub and make them accessible through the execution path in your Linux machine.
+1.  **Installing the Scripts**\
+    You will download the Scripts from GitHub and make them accessible through the execution path in your Linux machine.
 
-2. **Install the AWS CLI**\
-You will download the AWS CLI and make it accessible through the execution path in your Linux machine.
+2.  **Install the AWS CLI**\
+    You will download the AWS CLI and make it accessible through the execution path in your Linux machine.
 
-3. **Configure the AWS CLI**\
-You will configure the AWS CLI to use the access key ID and a secret access key of your AWS IAM user account. 
+3.  **Configure the AWS CLI**\
+    You will configure the AWS CLI to use the access key ID and a secret access key of your AWS IAM user account.
 
-# 1. Installing the Scripts 
+# 1. Installing the Scripts
+
 ## Download the Scripts from GitHub
+
 To download the Scripts, open your (Git Bash, Linux or Mac) terminal and enter or copy-paste the git command below:
 
 ``` {.bash filename="Code"}
@@ -50,11 +55,12 @@ git clone https://github.com/Cloud-SPAN/aws-instances.git  ~/_tmp_cloudspan_aws
 ```
 
 ## Make the Scripts accessible through the execution path
+
 There are many ways to make the Scripts accessible through the execution path. To avoid any conflicts with the current configuration of your Linux machine, we are going to:
 
-1. create a new "bin" directory
-2. copy the Scripts to the new bin directory
-3. add the new bin directory to the execution path
+1.  create a new "bin" directory
+2.  copy the Scripts to the new bin directory
+3.  add the new bin directory to the execution path
 
 You can copy-paste the commands below to carry out those three steps using `~/.local/bincsaws` as the new bin directory, **but note**:
 
@@ -86,7 +92,7 @@ echo "PATH=\"\$HOME/.local/bincsaws:\$PATH\"" >> ~/.zshrc
 ```
 :::
 
-The last command `echo "PATH=\"\$HOME ...` **adds** an assignment shell **statement** at the end of your terminal shell configuration file (either `~/.bashrc` or `~/.bash_profile` or `~/.zshrc` depending on your terminal). 
+The last command `echo "PATH=\"\$HOME ...` **adds** an assignment shell **statement** at the end of your terminal shell configuration file (either `~/.bashrc` or `~/.bash_profile` or `~/.zshrc` depending on your terminal).
 
 The statement adds the new bin directory to the execution path which is held by the shell variable PATH.
 
@@ -115,16 +121,14 @@ Please don't delete that directory just yet. We will use some files there in in 
 # 2. Install the AWS CLI
 
 ::: {.callout-note collapse="true"}
-
 ## **Linux instructions**
 
 To install the AWS CLI in your Linux computer:
 
- - if you installed the Scripts in the suggested directory `~/.local/bincsaws`, follow the instructions under "Automatic installation".
- - if you installed the Scripts somewhere else, follow the instructions under "Tailored automatic installation".
+-   if you installed the Scripts in the suggested directory `~/.local/bincsaws`, follow the instructions under "Automatic installation".
+-   if you installed the Scripts somewhere else, follow the instructions under "Tailored automatic installation".
 
 ::: {.callout-note collapse="true"}
-
 ## Automatic installation
 
 The script `aws_cli_install_update_linux.sh` is one of the Scripts that you installed in the previous section. It installs or updates the AWS CLI in the directory `~/.local/bincsaws`. Open a terminal and enter its name and press `y` when prompted as to whether to continue, as shown below:
@@ -141,11 +145,12 @@ Once the script is finished, go to section 3 to configure the AWS CLI.
 :::
 
 ::: {.callout-note collapse="true"}
-
 ## Tailored automatic installation
+
 The script `aws_cli_install_update_linux.sh` is one of the Scripts that you installed in the previous section. It installs or updates the AWS CLI in the directory `~/.local/bincsaws`.
 
 ### **Tailor the script `aws_cli_install_update_linux.sh`**
+
 You are going to edit `aws_cli_install_update_linux.sh` so that it will install the AWS CLI in the directory where you install the Scripts in the previous section. You need to edit only two lines: **replacing** `.local/bincsaws` with the name of the directory where you installed the Scripts. **Open** `aws_cli_install_update_linux.sh` with your preferred text editor. The lines you need to edit are 33 and 34 and are shown below:
 
 ``` {.bash filename="Code"}
@@ -161,6 +166,7 @@ echo "complete -C $HOME/MYDIRECTORY/aws_completer aws" >> ~/.bashrc
 ```
 
 ### **Install the AWS CLI**
+
 Now open a terminal and run `aws_cli_install_update_linux.sh` to install the AWS CLI. Press `y` when prompted as to whether to continue:
 
 ``` {.bash filename="Code"}
@@ -176,7 +182,6 @@ Once the script is finished, go to section 3 to configure the AWS CLI.
 :::
 
 ::: {.callout-note collapse="true"}
-
 ## **Mac instructions**
 
 To install the AWS CLI in your Mac computer, enter or copy-paste the `brew` command below in your terminal (the [Setup](/docs/miscellanea/precourse-instructions.qmd) section shows how to install `brew` if you need to):
@@ -226,16 +231,14 @@ Once the install is finished, go to section 3 to configure the AWS CLI.
 :::
 
 ::: {.callout-note collapse="true"}
-
 ## Windows
 
-To install the AWS CLI in your Windows computer, you need to use the Windows "terminal" program called `Command Prompt` as described below. Once the installation is complete, the AWS CLI will be available to the Git Bash terminal. 
-### **Open Windows `Command Prompt`**
-Go to the Windows search box (bottom left in the screenshot below) and type the word "command" in it. A window will pop up on the left, listing **Command Prompt app** at the top. Click on **Command Prompt app**.
+To install the AWS CLI in your Windows computer, you need to use the Windows "terminal" program called `Command Prompt` as described below. Once the installation is complete, the AWS CLI will be available to the Git Bash terminal. \### **Open Windows `Command Prompt`** Go to the Windows search box (bottom left in the screenshot below) and type the word "command" in it. A window will pop up on the left, listing **Command Prompt app** at the top. Click on **Command Prompt app**.
 
 ![.](/images/config-linux-env/09-searchin-running-windows-command-prompt.png){width="900px" fig-alt="Screenshot of Windows Desktop showing Windows search box with the word command typed in circled"}
 
 ### **Launch the installation of the AWS CLI**
+
 You will now be presented with the `Command Prompt` terminal, shown below. In it, type or copy-paste the following command and press Enter to launch the installation of the AWS CLI:
 
 ``` {.bash filename="Code"}
@@ -245,38 +248,38 @@ msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
 ![.](/images/config-linux-env/10-windows-command-prompt-entering-command-to-install-awscli.png){width="900px" fig-alt="Screenshot of Linux terminal with the name of the script csinstances_create.sh circled"}
 
 ### **Complete the installation of the AWS CLI**
+
 A series of windows will pop up once you launch the installation. The heading of each window is listed below in *italics* and in **bold** what you need to click, check or select on each window (only the first window in the list is shown below):
 
- - *Welcome to the AWS Command Line Interface v2 Setup Wizard*
-   - click  **Next**
- - *End-User License Agreement*
-   - check the box for **I accept the terms in the Licence Agreement**
-   - click  **Next**
- - *Custom Setup*
-   - click **Next**  (change nothing) 
- - *Ready to install AWS Command Line Interface v2*
-   - click **Install**
- - *Installing AWS Command Line Interface v2*
- - *Do you want to allow this app to make changes to your device?*
-   - click **Yes**
- - *Completed the AWS Command Line Interface v2 Setup Wizard*
-   - click **Finish**
-   
+-   *Welcome to the AWS Command Line Interface v2 Setup Wizard*
+    -   click **Next**
+-   *End-User License Agreement*
+    -   check the box for **I accept the terms in the Licence Agreement**
+    -   click **Next**
+-   *Custom Setup*
+    -   click **Next** (change nothing)
+-   *Ready to install AWS Command Line Interface v2*
+    -   click **Install**
+-   *Installing AWS Command Line Interface v2*
+-   *Do you want to allow this app to make changes to your device?*
+    -   click **Yes**
+-   *Completed the AWS Command Line Interface v2 Setup Wizard*
+    -   click **Finish**
+
 ![.](/images/config-linux-env/11-windows-installing-awscli-w-command-prompt-n-msg-options.png){width="900px" fig-alt="Screenshot of Linux terminal with the name of the script csinstances_create.sh circled"}
 
-Go to section 3 to configure the AWS CLI.  You can use both the `Command Prompt` terminal or the `Git Bash` terminal to configure the AWS CLI. We used the `Git Bash` terminal.
-
+Go to section 3 to configure the AWS CLI. You can use both the `Command Prompt` terminal or the `Git Bash` terminal to configure the AWS CLI. We used the `Git Bash` terminal.
 :::
 
 # 3. Configure the AWS CLI
 
-The installation of the AWS CLI, as instructed in the previous section, is made **local** (within your HOME directory) on Linux, and **system-wide** (for all users) on Mac and Windows. Hence, Mac and Windows users may need to open a new terminal so that the execution path gets updated with the location where the AWS CLI was installed. Otherwise you may see the message `aws: command not found` when trying to configure the AWS CLI whose name as a program is `aws`. 
+The installation of the AWS CLI, as instructed in the previous section, is made **local** (within your HOME directory) on Linux, and **system-wide** (for all users) on Mac and Windows. Hence, Mac and Windows users may need to open a new terminal so that the execution path gets updated with the location where the AWS CLI was installed. Otherwise you may see the message `aws: command not found` when trying to configure the AWS CLI whose name as a program is `aws`.
 
-To configure the AWS CLI, run the command `aws configure` as shown below, entering the following information when prompted: 
+To configure the AWS CLI, run the command `aws configure` as shown below, entering the following information when prompted:
 
-- the access key ID and the secret access key associated with your IAM user account
-- for default region name, enter `eu-west-1` (Ireland)
-- for default output format, enter: `json`
+-   the access key ID and the secret access key associated with your IAM user account
+-   for default region name, enter `eu-west-1` (Ireland)
+-   for default output format, enter: `json`
 
 ``` {.bash filename="Code"}
 aws configure
@@ -320,6 +323,7 @@ An error occurred (AuthFailure) when calling the GetVpnConnectionDeviceTypes ope
 ```
 
 <!-- > ## Note -->
-<!-- > You can change the region any time you need.  -->
-<!-- {: .callout} -->
 
+<!-- > You can change the region any time you need.  -->
+
+<!-- {: .callout} -->

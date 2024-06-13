@@ -5,7 +5,7 @@ title: "Configure Your AWS Account"
 ::: callout-warning
 ## Prerequisites
 
-**Please read [Workshops Organisation](/docs/miscellanea/precourse-instructions.qmd)** if you haven't done so. To complete this episode you will need:
+**Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need:
 
 -   if you are self-studying the course **or** attending a workshop using **your AWS account**:
     -   to have opened your AWS account as described in the first episode of this lesson: [Create Your AWS Account](/docs/lesson01-setting-work-envs/01-create-aws-account.qmd).

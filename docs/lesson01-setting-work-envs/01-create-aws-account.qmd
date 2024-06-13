@@ -5,7 +5,7 @@ title: "Create Your AWS Account"
 ::: callout-warning
 ## Prerequisites
 
-**Please read [Workshops Organisation](/docs/miscellanea/precourse-instructions.qmd)** if you haven't done so. To complete this episode you will need: - if you are self-studying the course **or** attending a workshop using **your AWS account**: - an email address - a credit card --- new accounts get one-year of AWS Free Tier but a card number must be entered on creating an account - the phone number associated with the credit card - the address associated with the credit card - if you are attending a workshop using a **Cloud-SPAN AWS account** (and an AWS Linux instance), you **don't need** to complete this episode.
+**Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need: - if you are self-studying the course **or** attending a workshop using **your AWS account**: - an email address - a credit card --- new accounts get one-year of AWS Free Tier but a card number must be entered on creating an account - the phone number associated with the credit card - the address associated with the credit card - if you are attending a workshop using a **Cloud-SPAN AWS account** (and an AWS Linux instance), you **don't need** to complete this episode.
 :::
 
 ## Introduction
@@ -18,7 +18,6 @@ These are the main steps you will follow to open your AWS account:
 4.  Confirm your identity to AWS through a phone call or SMS message.
 5.  Select support plan (Basic) and complete sign-up.
 6.  Login to your AWS account.
-
 
 ## 1. Sign-up to AWS with your email and password
 
