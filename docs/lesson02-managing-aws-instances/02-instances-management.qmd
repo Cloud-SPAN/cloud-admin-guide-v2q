@@ -3,12 +3,12 @@ title: "Instances Management Tasks Using the Scripts"
 ---
 ::: callout-warning
 ## Prerequisites
-**Please read [Workshops Organisation](https://cloud-span.github.io/cloud-admin-guide-0-overview#course-overview)** if you haven't done so. To complete this episode you will need:
+**Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need:
 
 - if you are self-studying the course **or** attending a workshop using **your AWS account**:
   - to have created your AWS account as described in [Create Your AWS Account](/docs/lesson01-setting-work-envs/01-create-aws-account.qmd) (Episode 1, Lesson 1).
   - to have configured your AWS account as described in [Configure Your AWS Account](/docs/lesson01-setting-work-envs/02-configure-account.qmd) (Episodes 2, Lesson 1).
-  - to have configured your terminal enviroment as described in either of these episodes:
+  - to have configured your terminal environment as described in either of these episodes:
     - [Configure Your Terminal Environment](/docs/lesson01-setting-work-envs/03-configure-terminal.qmd) (Episode 3, Lesson 1) --- **or** 
     - [Configure Your AWS CloudShell Environment](/docs/lesson01-setting-work-envs/04-configure-cloudshell.qmd) (Episode 4, Lesson 1)
    - to have configured instances internet access as described in [Configure Instances Internet Access](./01-configure-instances-internet.qmd) (previous episode, this lesson). 
