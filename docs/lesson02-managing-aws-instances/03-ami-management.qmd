@@ -5,7 +5,7 @@ title: "AMIs Management"
 ## Prerequisites
 **Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need:
 
-- to have completed the previous episode: [Instances Management Tasks Using the Scripts](./02-instances-management-tasks/).
+- to have completed the previous episode: [Instances Management Tasks Using the Scripts](./02-instances-management.qmd).
 - if you are self-studying the course **or** attending a workshop using **your AWS account**:
   - to have created your AWS account as described in [Create Your AWS Account](/docs/lesson01-setting-work-envs/01-create-aws-account.qmd) (Episode 1, Lesson 1).
   - to have configured your AWS account as described in [Configure Your AWS Account](/docs/lesson01-setting-work-envs/02-configure-account.qmd) (Episodes 2, Lesson 1).
@@ -27,13 +27,13 @@ A software enviroment is called an **Amazon Machine Image** (AMI) in AWS termino
 
 In the last episode we used the Scripts to create multiple AWS instances through **specifying** (in configuration files) the **instances names**, the id of the **AMI** from which to create the instances, etc. For each request to create an instance, AWS **makes** a copy of the specified AMI, **attaches** the copy to the specified "hardware platform" (we specified *t3.small*), and **configures** the copy which then becomes a proper runnable and accessible instance. The Cloud-SPAN project uses Linux Ubuntu AMIs, and hence the configuring **by AWS** of each AMI copy includes enabling the **ubuntu** user to login, through adding the **public key** part of the login key created to access the instance to the file `/home/ubuntu/.ssh/authorized_keys` in the **ubuntu** account. Finally, each instance is configured (by our script `aws_instances_configure.sh`) to enable the **csuser** to login, through copying that file in the ubuntu account to the file `/home/csuser/.ssh/authorized_keys` in the **csuser** account.
 
-**AMIs are created from AWS instances** in three main steps: (**1**) **creating** an instance, (**2**)  **configuring** the instance as *required* regarding software and data, and (**3**) **requesting** AWS *to create* an AMI from the instance --- AWS copies the instance *software environment* into an AMI *software enviroment* from which other instances can be created. Steps 1 and 3 are the same for any AMI and hence are **mechanical**. Step 2, **configuring** an instance to become AMI, may be simple or rather complex depending on what software/data needs updating, and may involve design.
+**AMIs are created from AWS instances** in three main steps: (**1**) **creating** an instance, (**2**)  **configuring** the instance as *required* regarding software and data, and (**3**) **requesting** AWS *to create* an AMI from the instance --- AWS copies the instance *software environment* into an AMI *software enviroment* from which other instances can be created. Steps 1 and 3 are the same for any AMI and hence are **mechanical**. Step 2, **configuring** an 'instance-to-become-AMI', may be simple or rather complex depending on what software/data needs updating, and may involve design.
 
 This episode presents the management of AMIs that we do as part of managing AWS instances with the Scripts. The first 3 sections cover the **mechanical part**, steps 1 and 3 above, which are rather simple once you have gone through the tasks involved. The last 3 sections cover our approach to and experience in **configuring** instances to-become-AMIs. Knowing the configuring we have done and some scripts we have developed to facilitate common configuring tasks will help you not to start from scratch.
 
 ## Sections
-1. **Create an instance to become AMI**\
-In this section you are going to create an instance to become AMI using the file-directory structure we use to manage such instances. 
+1. **Create an 'instance-to-become-AMI'**\
+In this section you are going to create an 'instance-to-become-AMI' using the file-directory structure we use to manage such instances. 
 
 2. **Create an AMI and make it Public in the AWS Console**
 
@@ -43,16 +43,16 @@ We use the AWS Console to create an AMI, to make it public or private, and to de
 4. **Instances management for courses, AMIs and tests**\
 Section 4 introduces the file-directory structure we use to manage instances to-become-AMIs. This section describes other AMI management practices we follow.
 
-5. **When to configure an instance to become AMI**\
+5. **When to configure an 'instance-to-become-AMI'**\
 Based on our experience in configuring instances to-become-AMIs within the Cloud-SPAN project, this section presents our viewpoint as to when and how to create an AMI.
 
-6. **Configure an instance to become AMI**\
+6. **Configure an 'instance-to-become-AMI'**\
 This section shows our approach to update both system software and end-user software using various scripts we have developed to automate some of the tasks involved.
 
-# 1. Create an instance to become AMI
-This section shows how to create an instance to become AMI using the file-directory structure that we use to manage such instances. 
+# 1. Create an 'instance-to-become-AMI'
+This section shows how to create an 'instance-to-become-AMI' using the file-directory structure that we use to manage such instances. 
 
-The file structure is similar to the one we use to manage **courses**, that is: we use a directory called **amis** that contains a directory for each AMI we create, and inside each such directory the `inputs` directory with the Scripts configuration files to create and manage an instance to become AMI. And we handle our **courses** and **amis** directories at the same level as shown below:
+The file structure is similar to the one we use to manage **courses**, that is: we use a directory called **amis** that contains a directory for each AMI we create, and inside each such directory the `inputs` directory with the Scripts configuration files to create and manage an 'instance-to-become-AMI'. And we handle our **courses** and **amis** directories at the same level as shown below:
 
 ``` {.bash filename="Output"}
 amis            
@@ -70,7 +70,7 @@ courses
    metagenomics01
 ```
 
-Let's create the directory-file structure you need to create the instance to become AMI. Type or copy-paste the commands in the code box below. For convenience, our full prompt (`csuser@cloud-admin-instance:~`) is only shown for the first command.
+Let's create the directory-file structure you need to create the 'instance-to-become-AMI'. Type or copy-paste the commands in the code box below. For convenience, our full prompt (`csuser@cloud-admin-instance:~`) is only shown for the first command.
 
 ``` {.bash filename="Code"}
 csuser@cloud-admin-instance:~
@@ -111,7 +111,7 @@ As mentioned in the introduction, you will normally create an AMI in the AWS Con
 
 ::: callout-note
 ## You can create an AMI any time you deem necessary/useful.
-This is rather useful when the configuration of an instance to become AMI is long, .., complex. You can create various intermediate AMIs at different levels of progress and roll back to any of them if needed --- kind of managing multiple **commits** with `git`. If you need to roll back to an intermediate AMI, say, AMI02, you will create an AWS instance from AMI02 and that instance will become your new instance to become AMI. 
+This is rather useful when the configuration of an 'instance-to-become-AMI' is long, .., complex. You can create various intermediate AMIs at different levels of progress and roll back to any of them if needed --- kind of managing multiple **commits** with `git`. If you need to roll back to an intermediate AMI, say, AMI02, you will create an AWS instance from AMI02 and that instance will become your new 'instance-to-become-AMI'. 
 :::
 
 ## Login to the AWS Console with your IAM account user
@@ -127,7 +127,7 @@ Creating an AMI involves **making a copy** of the source **instance** *software 
 
 On your  "Instances" page:
 
-- select your instance to become AMI if it is running: **check** the box to the left of the instance name.\
+- select your 'instance-to-become-AMI' if it is running: **check** the box to the left of the instance name.\
   we have selected "cloud-admin-instance" in the page below.
 - click on the drop-down menu **Instance state** at the top.
 - click on **Stop instance**.
@@ -141,9 +141,9 @@ You may have already seen a message like the one below after updating the operat
 
  "*Your computer needs to restart for changes to take effect.*"
 
-If you have updated the operating system in the instance to become AMI as part of the configuration you intend for the new AMI, then **you need to reboot the instance** first and then stop it before creating an AMI from it. If **you don't**, if you create the AMI without rebooting the instance, then each of the instances that you create with that AMI will have to be rebooted after being launched. Hence you just delay doing it and will have it multiplied.
+If you have updated the operating system in the 'instance-to-become-AMI' as part of the configuration you intend for the new AMI, then **you need to reboot the instance** first and then stop it before creating an AMI from it. If **you don't**, if you create the AMI without rebooting the instance, then each of the instances that you create with that AMI will have to be rebooted after being launched. Hence you just delay doing it and will have it multiplied.
 
-We always reboot an instance to become AMI even if we only update end-user software applications or data so that any state or data is flushed from main memory onto secondary storage (which is the software environment to copy).  The page above shows the option to **Reboot** an instance.
+We always reboot an 'instance-to-become-AMI' even if we only update end-user software applications or data so that any state or data is flushed from main memory onto secondary storage (which is the software environment to copy).  The page above shows the option to **Reboot** an instance.
 :::
 
 ## Select the instance and the options to create an image (AMI) from it
@@ -159,11 +159,11 @@ Once your instance is stopped, do as follows (see page below):
 ## Enter a name and other info for the AMI and click on **Create image**
 You will now be presented with the page below: "Create image". Type a **name** and a **description** for your AMI in the first two highlighed fields from the top. The description field is optional; but it's useful to write a brief description of the AMI configuration so you can easily recall what the AMI is about.
 
-The highlighted option below, **No reboot** and its checkbox **Enable**, should be as shown: **unchecked**. Uncheck it if it is checked. By default, AWS **shuts down** and **reboots** the instance to become AMI **if it is running** in order to get a consistent state of the instance storage. If you check it, you **Enable** (both no shut down and) **No reboot**. And AWS **cannot guarantee** a consistent state for the AMI. This option is not applicable if you (reboot and) stop the instance as suggested.
+The highlighted option below, **No reboot** and its checkbox **Enable**, should be as shown: **unchecked**. Uncheck it if it is checked. By default, AWS **shuts down** and **reboots** the 'instance-to-become-AMI' **if it is running** in order to get a consistent state of the instance storage. If you check it, you **Enable** (both no shut down and) **No reboot**. And AWS **cannot guarantee** a consistent state for the AMI. This option is not applicable if you (reboot and) stop the instance as suggested.
 
 The highlighted option below and to the right, **Delete on termination** and its checkbox **Enable**, should be as shown: **checked**. Check it if it is unchecked. This option means that, for all instances created from the AMI you are about to create, once the instances are **terminated**/deleted, their storage/volumes should be deleted. We want this behaviour --- we don't want to delete each such volume individually: **the Scripts don't handle deleting those volumes**. On the other hand, you may find usefull to delete an instance but not its storage: you will no longer be able to stop, start and login to the instance, but you will be able to attach its storage to another (runnable) instance. We did something along these lines to reduce the size of the disk and file system of an AMI. 
 
-The value of the field **Size**, at the bottom of the page in the middle, is 30 GB, and is the size of the storage of the instance to become AMI. The same size will be used for the storage of the AMI to be created unless you increase it. You **cannot decrease** it: it is assumed that the operating system inside is controlling all the storage (even if it is not) --- decreasing it would corrupt the file system.
+The value of the field **Size**, at the bottom of the page in the middle, is 30 GB, and is the size of the storage of the 'instance-to-become-AMI'. The same size will be used for the storage of the AMI to be created unless you increase it. You **cannot decrease** it: it is assumed that the operating system inside is controlling all the storage (even if it is not) --- decreasing it would corrupt the file system.
 
 ![.](/images/03-amis-management/03-ami-management-tasks-enter-ami-details.png){width="900px" fig-alt="Screenshot of AWS Console Create image page in a browser showing the following items circled: the Image name box to enter an image name, the Image description - optional box to enter an image description, the No reboot option and its checkbox unchecked, the Delete on termination option and its checkbox checked"}
 
@@ -171,7 +171,7 @@ Scroll down the "Create image" page until you see the end of the page as shown b
 
 Finally, click on **Create image** at the bottom right. You will be presented with the "Instances" page again, showing at the top a message like this one (our emphasis):
 
-"\*Currently creating AMI ami-0f6c9742b2f6824bb from instance i-00c65a40a9d194cfc. Check that the AMI status is 'Available' **before deleting the instance** or carrying out other actions related to this AMI*".
+"Currently creating AMI ami-0f6c9742b2f6824bb from instance i-00c65a40a9d194cfc. Check that the AMI status is 'Available' **before deleting the instance** or carrying out other actions related to this AMI".
 
 ![.](/images/03-amis-management/04-ami-management-tasks-enter-ami-tags.png){width="900px" fig-alt="Screenshot of AWS Console Create image page, scrolled down to the end, in a browser showing the following items circled: the option Tag image and snapshots together selected, a Key box to enter a tag name, Value - optional box to enter a tag value, and the Create image button"}
 
@@ -285,7 +285,7 @@ $ ls
 ```{.bash filename="Output"}
 amis  courses  tests  the-Scripts
 ```
-{.output}
+
 
 And we run the Scripts specifying:
 
@@ -304,7 +304,7 @@ $ csinstances_create.sh tests/t003-cloud-admin-course-instance-UoYacc20221107/in
 
 The file-directory structure is rather flexible. We are only bound to specify first (the type of the target instances through the name of the directory)  `amis` or `courses` or `tests`, and down the path the `inputs` directory just before the target *instancesNames.txt* whose name we can choose according to need. 
 
-The path in the first example has two **intermediate** directories while the two other examples have only one (as in all the code examples we showed before). In the **first example**, we started the configuration of the meteganomics instance to become AMI using the AWS instance type `t2.medium` which we inherited from the Data Carpentries AMI. Instance type `t2` cannot scale as much as we needed to, while instance type `t3` can. So we changed to type `t3` which involve creating a new temporary AMI and we decided to handle it on a new intermediate directory called `metagenomicsT3instance` under `ami09-metagenomics-instance`. We could also have handled it as `ami09-metagenomics-T3instance` under **amis**.
+The path in the first example has two **intermediate** directories while the two other examples have only one (as in all the code examples we showed before). In the **first example**, we started the configuration of the meteganomics 'instance-to-become-AMI' using the AWS instance type `t2.medium` which we inherited from the Data Carpentries AMI. Instance type `t2` cannot scale as much as we needed to, while instance type `t3` can. So we changed to type `t3` which involve creating a new temporary AMI and we decided to handle it on a new intermediate directory called `metagenomicsT3instance` under `ami09-metagenomics-instance`. We could also have handled it as `ami09-metagenomics-T3instance` under **amis**.
 
 ## Instances names we use
 The actual names we use when creating instances are suffixed with the name of the AMI template from which the instances are created. You don't need to follow this naming convention but it is helpful under some circumstances.
@@ -317,7 +317,7 @@ cloud-admin-instance-srcCS-AMI08
 metagenomics-instance001-srcCS-AMI09-MetaGen
 metagenomics-Joao-srcCS-AMI09-MetaGen
 ```
-{.output}
+
 
 The instance name proper, the one that is used for the instance domain name and hostname of each instance, is the substring from the beginning of each line up to before the substring `-src` (for source AMI name). After `src` you can add the name of your AMI. The Scripts extract the instance proper name to configure the instance domain name and host name within each instance. But use the whole name as the value for the instance tag **Name** which is displayed in the AWS Console, as shown below:
 
@@ -336,14 +336,14 @@ We currently manage three AMIs. One AMI for the Cloud-SPAN Prenomics and Genomic
 How would you manage the instances for such a code retreat within the **courses** directory?
 :::
 
-# 5. When to configure an instance to become AMI
-This section presents some of our experince in **configuring** instance to become AMIs --- the second step of the three main steps to create an AMI mentioned earlier:
+# 5. When to configure an 'instance-to-become-AMI'
+This section presents some of our experince in **configuring** 'instance-to-become-AMI's --- the second step of the three main steps to create an AMI mentioned earlier:
 
 1. creating an instance (Section 1)
 2. configuring the instance as required regarding software and data, and 
 3. requesting AWS to create an AMI from the instance (Section 2)
 
-We use in this section the term "*creating an AMI*" to mean **both** "*configuring an instance to become AMI*" **and** "*creating an AMI from that instance in the AWS Console*". 
+We use in this section the term "*creating an AMI*" to mean **both** "*configuring an 'instance-to-become-AMI'*" **and** "*creating an AMI from that instance in the AWS Console*". 
 
 ## Requirements for which we have created a new AMI
 
@@ -473,24 +473,24 @@ By the way, you can change the instance type of an instance in the AWS Console a
 - change the instance type: click on **Actions** at the top, then on **Instance settings**, and then on **Change instance type**. A new page will appear where you will be able to change the instance type --- save the changes
 - restart the instance. 
 
-# 6. Configure an instance to become AMI
+# 6. Configure an 'instance-to-become-AMI'
 
-This section presents our approach to configure an instance to become AMI including:
+This section presents our approach to configure an 'instance-to-become-AMI' including:
 
-6.1. [Updating system software](#61-updating-system-software)\
-6.2. [Changing the end-user username](#62-changing-the-end-user-username)\
-6.3. [Updating end-user software applications](#63-updating-end-user-software-applications)\
-6.4. [Increasing storage size](#64-increasing-storage-size)\
-6.5. [Before creating your AMI: last trimmings and deleting all login keys](#65-before-creating-your-ami-last-trimmings-and-deleting-all-login-keys)
+6.1. Updating system software\
+6.2. Changing the end-user username\
+6.3. Updating end-user software applications\
+6.4. Increasing storage size\
+6.5. Before creating your AMI: last trimmings and deleting all login keys
 
 Our approach uses a few scripts that we developed to automate some of the tasks of installing and updating software. The scripts organisation is such that steps **6.1, 6.2** and **6.3** must be performed **in that order**, but you can omit step **6.2** if you don't need to change the Cloud-SPAN `csuser` to a username of your choice. Step **6.4**, increasing storage size, is performed by simply running the Bash script `aws_storageEBS_increase.sh` (EBS: Elastic Block Storage), either before or after or in-between the other steps --- but you must wait 24 hours since the last run of the script to run it again. 
 
 Steps 6.1 to 6.5 are presented using an instance (to become AMI) created from the Cloud-SPAN Genomics AMI which is relatively small: 30 GigaBytes (GB). If you use this AMI as starting point to configure **your own AMIs**, you are more likely to only need to increase storage size --- which is good, as reducing storage size is rather complex. **At the end of those steps** you will have a new Genomics AMI with (1) an updated Ubuntu Linux, (2) your new end-user username (instead of the Cloud-SPAN `csuser`), (3) updated end-user software applications (newer versions of the Genomics applications already installed), and (4) increased secondary storage. 
 
-As you are likely to face configuring an instance to become AMI that requires **other** (end-user) **software applications**, we will discuss how to update our scripts so that you can automatically install other software applications or delete others in configuring your own AMI. Please click on the bar below for some background to our approach.
+As you are likely to face configuring an 'instance-to-become-AMI' that requires **other** (end-user) **software applications**, we will discuss how to update our scripts so that you can automatically install other software applications or delete others in configuring your own AMI. Please click on the bar below for some background to our approach.
 
 :::{.callout-note collapse="true"}
-## Background to our approach to configuring instances to become AMIs.
+## Background to our approach to configuring instances-to-become-AMIs.
 The Cloud-SPAN project currently manages the Genomics AMI and two Metagenomics AMIs to create instances for four different workshops. Click on the bar below to see the workshops, AMIs, and instance types used in each workshop.
 
 :::{.callout-note collapse="true"}
@@ -565,15 +565,15 @@ These are  the scripts we have created in the order we created them:
 - `softwareInstall_genomics_ubuntusr.sh`
 - `softwareInstall_genomics_csuser.sh`
 
-You are to run these scripts in pairs, on an instance to become AMI created from the Genomics AMI CS-AMI08b, where all those scripts are installed along with the Scripts you used in the last episode to create and manage instances.
+You are to run these scripts in pairs, on an 'instance-to-become-AMI' created from the Genomics AMI CS-AMI08b, where all those scripts are installed along with the Scripts you used in the last episode to create and manage instances.
 
 Only the last two scripts, `softwareInstall_genomics_ubuntusr.sh` and `softwareInstall_genomics_csuser.sh`, once you run them as described later in this section, will get you a new Genomics AMI with the latest versions of the Genomics applications installed.
 
 The scripts `softwareInstall_metagen*.sh`, both versions `1v` and `2v`, will run successfully but **will not get you** a Metagenomics AMI **with the proper configuration** because such configuration involved a few experts in Metagenomics whose work is not incorporated in the scripts. The first Metagenomics AMI was created as follows. Once we successfully ran the first versions `1v` of the scripts, we handed in an instance to the experts in Metagenomics who designed and were in charge of delivering the corresponding course. They  configured some applications further to use some specific databases which they also installed. The instance size was increased up to 500 GB, among other tuning and network configuration. Once the experts were happy with the instance configuration, the instance was given back to us with the requirements that the AMI should be of size 240 GB and some applications should be removed as they were no longer needed --- they were only needed  to generate some data. The `2v` versions of the scripts do not install these applications. After we handed in a new instance with the "final" configuration, while running some applications, it was realised that more changes were needed. These were the last changes. We then created the first Metagenomics AMI, and from this the second Metagenomics AMI whose data was also configured by another expert in Metagenomics. 
 :::
 
-### Create and login to your instance to become AMI that you will configure
-To create your instance to become AMI, first **create the file-directory structure** as you did above in Section 1, that is: within the **amis** directory, create a new ami directory, and inside the **inputs** directory with the Scripts configuration files --- you can use the commands below (where our new ami directory is **ami02-myFirstAMIConfig** and you are assumed to be in your home directory `~` --- you can choose another name but you won't be able to copy-paste the code below):
+### Create and login to your 'instance-to-become-AMI' that you will configure
+To create your 'instance-to-become-AMI', first **create the file-directory structure** as you did above in Section 1, that is: within the **amis** directory, create a new ami directory, and inside the **inputs** directory with the Scripts configuration files --- you can use the commands below (where our new ami directory is **ami02-myFirstAMIConfig** and you are assumed to be in your home directory `~` --- you can choose another name but you won't be able to copy-paste the code below):
 
 ``` {.bash filename="Code"}
 csuser@cloud-span-admin-instance:~
@@ -583,21 +583,20 @@ $ ls amis/ami02-myFirstAMIConfig/inputs
 instancesNames.txt  resourcesIDs.txt  tags.txt
 ```
 
-Now you need to **edit** the file **instancesNames.txt** to have only the name of your instance to become AMI. The name of our instance is: *instanceToBecomeAMI02-Jorge-srcCS-AMI08b*. 
+Now you need to **edit** the file **instancesNames.txt** to have only the name of your 'instance-to-become-AMI'. The name of our instance is: *instanceToBecomeAMI02-Jorge-srcCS-AMI08b*. 
 
 If you are attending a workshop **using a Cloud-SPAN AWS account**, please use a similar name but change "Jorge" for your name or surname so your instance can be distinguished from other participants’ instance in our AWS Console.
 
-**Create your instance to become AMI**:
+**Create your 'instance-to-become-AMI'**:
 
 ``` {.bash filename="Code"}
 csuser@cloud-span-admin-instance:~
 $ csinstances_create.sh amis/ami02-myFirstAMIConfig/inputs/instancesNames.txt 
 ```
-{.bash}
 
 Wait a 2-3 minutes .. then:
 
-**Login to your instance to become AMI** using the Cloud-SPAN script `lginstance.sh` as shown in the code below, passing as parameters (1) the path of the login key file of your instance and (2) `ubuntu` as the username to login:
+**Login to your 'instance-to-become-AMI'** using the Cloud-SPAN script `lginstance.sh` as shown in the code below, passing as parameters (1) the path of the login key file of your instance and (2) `ubuntu` as the username to login:
 
 ``` {.bash filename="Code"}
 csuser@cloud-span-admin-instance:~
@@ -647,15 +646,15 @@ $
 
 The prompt of the `ubuntu` user is configured to show the entire instance domain name, while the prompt of the `csuser` to show only the instance name.
 
-If you are attending a workshop **using a Cloud-SPAN AWS account** and an AWS instance, then you just have used the program `ssh` twice in a chain: to login from your personal computer to your workshop-assigned instance, and from the latter to your instance to become AMI.
+If you are attending a workshop **using a Cloud-SPAN AWS account** and an AWS instance, then you just have used the program `ssh` twice in a chain: to login from your personal computer to your workshop-assigned instance, and from the latter to your 'instance-to-become-AMI'.
 
 ## 6.1 Updating system software
-The Linux version installed in the instance to become AMI that you are about to configure is **Ubuntu 20.04.4 LTS**. LTS stands for Long Term Support version.  "*Updating system software*" for an LTS version can mean either **updating** the LTS version with bugs and security patches (that address errors or security vulnerabilities), or **updating** the LTS version to the next LTS version if available, or **both**. We will use the term "*updating system software*" for the first meaning, and the term "*updating to the next LTS*" for the second meaning. 
+The Linux version installed in the 'instance-to-become-AMI' that you are about to configure is **Ubuntu 20.04.4 LTS**. LTS stands for Long Term Support version.  "*Updating system software*" for an LTS version can mean either **updating** the LTS version with bugs and security patches (that address errors or security vulnerabilities), or **updating** the LTS version to the next LTS version if available, or **both**. We will use the term "*updating system software*" for the first meaning, and the term "*updating to the next LTS*" for the second meaning. 
 
 We are going to do the following:
 
 - **updating to the next LTS** typing each of the commands typically used to update any Ubuntu version to the next LTS, see the bar "Ubuntu LTS versions" below
-- **updating system software** running our script `softwareInstall_genomics_ubuntusr.sh`, which performs typical "updating system software" **in addition to** installing the **system libraries required** by the Genomics end-user software applications already installed in the instance to become AMI. Updating system software (with `softwareInstall_genomics_ubuntusr.sh`) can be performed without updating to the next LTS --- we have tried this out only with the Genomics AMI.
+- **updating system software** running our script `softwareInstall_genomics_ubuntusr.sh`, which performs typical "updating system software" **in addition to** installing the **system libraries required** by the Genomics end-user software applications already installed in the 'instance-to-become-AMI'. Updating system software (with `softwareInstall_genomics_ubuntusr.sh`) can be performed without updating to the next LTS --- we have tried this out only with the Genomics AMI.
 - discussing the way to **installing and removing end-user software applications - first part**, which must be performed with the `ubuntu` user  --- a **second part**, which must be performed with the `csuser` or the new user you create (in step 6.2), is discussed in step 6.3 "Updating end-user software applications".
 
 ::: callout-note
@@ -670,7 +669,7 @@ Updating LTS versions is explained in [How To Upgrade to Ubuntu 22.04 Jammy Jell
 :::
 
 ### Updating to the next LTS
-You are logged in as the `ubuntu` user on your instance to become AMI. You will enter the following commands one by one:
+You are logged in as the `ubuntu` user on your 'instance-to-become-AMI'. You will enter the following commands one by one:
 - `sudo apt-get update`
 - `apt-get upgrade -y`
 - `sudo apt-get dist-upgrade`
@@ -958,28 +957,29 @@ Learn more about enabling ESM Apps service at https://ubuntu.com/esm
 ```
 
 ### Updating system software
-Updating system software is carried out by running the script `softwareInstall_genomics_ubuntusr.sh`, which also installs the system libraries required by the Genomics end-user software applications installed in the instance to become AMI. 
+Updating system software is carried out by running the script `softwareInstall_genomics_ubuntusr.sh`, which also installs the system libraries required by the Genomics end-user software applications installed in the 'instance-to-become-AMI'. 
 
-You are logged in as the `ubuntu` user on your instance to become AMI. Run  `softwareInstall_genomics_ubuntusr.sh` as shown below:
-```
+You are logged in as the `ubuntu` user on your 'instance-to-become-AMI'. Run  `softwareInstall_genomics_ubuntusr.sh` as shown below:
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ softwareInstall_genomics_ubuntusr.sh
 ```
-{.bash}
-```
+
+``` {.bash filename="Output"}
 softwareInstall_genomics_ubuntusr.sh upgrades and configures the Ubuntu system.
 This script must be run before running the script that installs the genomics software analysis
 tools (softwareInstall_genomics_csuser.sh) in the csuser account.
 Do you want to continue (y/n)?:
 ```
-{.output}
 
 The message in the output above will be explained shortly.
 
 You only need to type `y` for the script to start running. See the output of the script in the bar below where our comments (###) highlight the main commands issued by the script.
 
+::: {.callout-note collapse="true"}
 ## Output --- softwareInstall_genomics_ubuntusr.sh
-```
+``` {.bash filename="Output"}
 Do you want to continue (y/n)?: y
 Creating directory logs
 
@@ -1062,44 +1062,44 @@ message reads "0 updates can be applied immediately" - you may want to make a no
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $
 ```
-{.output}
-{.solution}
+:::
 
 At the end, the output of the script suggests that we run:
 - `sudo apt autoremove` and
 - `sudo apt-get --with-new-pkgs upgrade --yes` if, after rebooting the system, you find that the system welcome message says that some (1 or more) "updates can be applied immediately", and that we reboot the system and run that command again until that message reads "0 updates can be applied immediately".
 
 Let's run `sudo apt autoremove` first (before rebooting the system):
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~ 
 $ sudo apt autoremove
 ```
-{.bash}
-```
+
+``` {.bash filename="Output"}
 Do you want to continue? [Y/n] y
 (Reading database ... 223713 files and directories currently installed.)
 Removing libcurl3-nss:amd64 (7.81.0-1ubuntu1.15) ...
 Processing triggers for libc-bin (2.35-0ubuntu3.5) ...
 ```
-{.output}
 
 Let's now reboot the system (and ignore the message "ERROR: could not .." as before):
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~ 
 $ sudo shutdown --reboot now
 ```
-{.bash}
-```
+
+``` {.bash filename="Output"}
 $ Connection to instancetobecomeami02-jorge.cloud-span.aws.york.ac.uk closed by remote host.
 Connection to instancetobecomeami02-jorge.cloud-span.aws.york.ac.uk closed.
 
 ERROR: could not login, check the username ubuntu is correct - try with  "ubuntu" (with no quotes).
 ...
 ```
-{.output}
 
 Login again with `lginstance.sh ... ubuntu` after 2 minutes or so, scroll up the screen with the mouse right button and check whether the system welcome message says that some (1 or more) "updates can be applied immediately". If that is the case, (1) run the command `sudo apt-get --with-new-pkgs upgrade --yes`, (2) reboot the system, (3) login again, and (4) check that message again. Repeat those four steps until that message reads "0 updates can be applied immediately".
-```
+
+``` {.bash filename="Output"}
 Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-91-generic x86_64)
 ...
 Expanded Security Maintenance for Applications is not enabled.
@@ -1112,14 +1112,13 @@ Expanded Security Maintenance for Applications is not enabled.
    | |___| | (_) | |_| | (_| | |___| ____)  |  __ / ___ \| |\ | |
     \____|_|\___/ \___/ \__,_|       \_____/|_|  /_/   \_|_| \__|
 ```
-{.output}
 
 ### Installing other applications and removing applications --- first part
-Recall that the script `softwareInstall_genomics_ubuntusr.sh` (run in the previous section) carries out both updating system software and **installing the system libraries required by the Genomics software applications** already installed in your instance to become AMI. 
+Recall that the script `softwareInstall_genomics_ubuntusr.sh` (run in the previous section) carries out both updating system software and **installing the system libraries required by the Genomics software applications** already installed in your 'instance-to-become-AMI'. 
 
 As such, if you are to install other (not yet installed Genomics or other kind of) applications that require installing system libraries under our approach, **you will need to modify** that script, adding to it  the corresponding `sudo` commands that install the required system libraries. Doing so as in the example below corresponds to the **first part** of installing other applications (alluded in the heading above).  The **second part** corresponds to modifying the script `softwareInstall_genomics_csuser.sh`, adding to it the commands that install the "other applications" in the `csuser` account as described in step 6.3. [Updating end-user software applications](#63-updating-end-user-software-applications).
 
-**Modifying `softwareInstall_genomics_ubuntusr.sh` to install other system libraries**
+#### Modifying `softwareInstall_genomics_ubuntusr.sh` to install other system libraries
 
 The script `softwareInstall_genomics_ubuntusr.sh` has these three main sections:
 - at the top, the "about" message and the option to cancel or let the script run the update
@@ -1128,10 +1127,12 @@ The script `softwareInstall_genomics_ubuntusr.sh` has these three main sections:
 
 You will add in the middle section the `sudo` commands to install the system libraries required by the "other applications" you want to install.
 
-For example, let's suppose that the Genomics application `bcftools` is not yet installed in the instance to become AMI that you are configuring and that you need to install it as described in the [bcftools install page](http://samtools.github.io/bcftools/howtos/install.html).  This page  (visited on 22 Jan 2024) has two sections: "For the impatient" and ["Detailed instructions"](https://raw.githubusercontent.com/samtools/bcftools/develop/INSTALL). 
+For example, let's suppose that the Genomics application `bcftools` is not yet installed in the 'instance-to-become-AMI' that you are configuring and that you need to install it as described in the [bcftools install page](http://samtools.github.io/bcftools/howtos/install.html).  This page  (visited on 22 Jan 2024) has two sections: "For the impatient" and ["Detailed instructions"](https://raw.githubusercontent.com/samtools/bcftools/develop/INSTALL). 
 
-## `bcftools` --- "For the impatient" install instructions
-```
+::: {.callout-note collapse="true"}
+### `bcftools` --- "For the impatient" install instructions
+
+``` {.bash filename="Code"}
 git clone --recurse-submodules https://github.com/samtools/htslib.git
 git clone https://github.com/samtools/bcftools.git
 cd bcftools
@@ -1139,18 +1140,18 @@ cd bcftools
  #   autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters
 make
 ```
-{. bash}
-{.solution}
+:::
 
 We obviously tried first the instructions for the impatient but as these failed, we proceeded to follow the detailed instructions for Debian/Ubuntu (there are detailed instructions for other versions of Linux, for MacOs and  for Windows). The detailed instructions for Debian/Ubuntu are these:
-```
+
+``` {.bash filename="Code"}
  sudo apt-get update        # Ensure the package list is up to date
  sudo apt-get install autoconf automake make gcc perl zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev libperl-dev libgsl0-dev
 ```
-{. bash}
 
 Eventually, the instructions for the impatient were placed in the script `softwareInstall_genomics_csuser.sh` (see step 6.3. [Updating end-user software applications](#63-updating-end-user-software-applications).), and the detailed instructions (the two `sudo apt-get ..` commands above) in the script `softwareInstall_genomics_ubuntusr.sh`, as shown in the bar below (comments in CAPITALS are not part of the script, please read them): 
 
+::: {.callout-note collapse="true"}
 ## `softwareInstall_genomics_ubuntusr.sh` --- bcftools system libraries install
 ```
 #!/usr/bin/env bash
@@ -1190,8 +1191,7 @@ CHECK the log file $(colour lb "$logfile").
 You may need to reboot, login again  and run the above command a few times until the system
 message reads \"0 updates can be applied immediately\" - you may want to make a not the command\n"  $logfile
 ```
-{.bash}
-{.solution}
+:::
 
 You will notice that, in adding the `sudo` commands that install the required system libraries by `bcftools` (or by any other application for that matter), we also added the following code:
 - `message "$(colour lg "sudo apt-get -y install LIBRARY-NAMES")" $logfile` so that the command is written to the log file.
@@ -1200,15 +1200,15 @@ You will notice that, in adding the `sudo` commands that install the required sy
 
 You will also notice that the first sudo command required by `bcftools`, namely, `sudo apt-get update`, is run twice, at the beginning and at the end of the script for all the system libraries installed. 
 
-**Modifying `softwareInstall_genomics_ubuntusr.sh` to remove system libraries**
+#### Modifying `softwareInstall_genomics_ubuntusr.sh` to remove system libraries
 
 We have not removed any system library explicitly but have stopped installing some libraries by commenting the commands that install them.
 
 If you would like to remove some system libraries, place the relevant commands in between the two system update-upgrades (at the beginning and at the end) of the script.
 
-**Should you modify `softwareInstall_genomics_ubuntusr.sh` before running it?**
+#### Should you modify `softwareInstall_genomics_ubuntusr.sh` before running it?
 
-Yes, you should add as many of the commands that install the libraries required by the applications you want installed in your instance to become AMI. 
+Yes, you should add as many of the commands that install the libraries required by the applications you want installed in your 'instance-to-become-AMI'. 
 
 However, don't expect that a single run of the script will suffice. Once you modify and run the script, you will then have to modify and run the script that installs the applications in the `csuser` account and then check that the applications run. They may or may not run, as they may depend on other applications being present. For instance, `bcftools` and `samtools` both require that you also  install `htslib` --- but we realised this after installing `bcftools`. 
 
@@ -1219,17 +1219,18 @@ If you are to change the Cloud-SPAN `csuser` to a username of your liking, **you
 
 If you plan **to install** other applications not yet installed in the Genomics AMI, or **to remove** some or all of the applications in the Genomics AMI, or both, **first change** the end-user username (after updating system software) and then update the Genomics applications as described in step 6.3 [Updating end-user software applications](#63-updating-end-user-software-applications). This will give you and stable instance with your new username. Then install and/or remove applications through *updating system software* and *updating end-user software applications*, that is, through modifying and running the scripts `softwareInstall_genomics_ubuntusr.sh` and `softwareInstall_genomics_csuser.sh`. In so doing, you may need to increase the storage as described in step 6.4 [Increasing storage size](#64-increasing-storage-size), but it is straightforward.
 
-**Create your new end-user username**
+### Create your new end-user username
 
-Login as the `ubuntu` user to your instance to become AMI (use `lginstance .. ubuntu`) and enter the command below (we are using `nwuser` as our new username --- choose yours). The option `--disabled-password` means that the new username will not be required a password but a login key to login to an instance created from the AMI you are configuring. 
-```
+Login as the `ubuntu` user to your 'instance-to-become-AMI' (use `lginstance .. ubuntu`) and enter the command below (we are using `nwuser` as our new username --- choose yours). The option `--disabled-password` means that the new username will not be required a password but a login key to login to an instance created from the AMI you are configuring. 
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ sudo adduser --disabled-password nwuser
 ```
-{.bash}
 
 You will be asked to enter a **Full Name**, **Room Number**, etc. Type what you like and press `Enter` until the prompt appears again:
-```
+
+``` {.bash filename="Output"}
 Adding user `nwuser' ...
 Adding new group `nwuser' (1004) ...
 Adding new user `nwuser' (1002) with group `nwuser' ...
@@ -1245,25 +1246,25 @@ Enter the new value, or press ENTER for the default
 Is the information correct? [Y/n] Y
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 ```
-{.output}
 
 **Move all the files in the Cloud-SPAN `csuser` home directory to the home directory of your new username** with the `sudo mv ..` command below:
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ sudo mv -f /home/csuser/{.,}* /home/nwuser
 ```
-{.bash}
 
 You will see the output below. Ignore it, the files have been moved. The purpose of moving the files is to have your new user configured as the `csuser` is, which includes its login key so that the new user can login, but there are other configurations files that we don't want to setup from scratch. Also,  it is not convenient to copy the files with `cp` as it will take much longer and we are going to delete the `csuser` anyway.
-```
+
+``` {.bash filename="Output"}
 mv: cannot move '/home/csuser/.' to '/home/nwuser/.': Device or resource busy
 mv: '/home/csuser/..' and '/home/nwuser/..' are the same file
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 ```
-{.output}
 
 **Change the ownership of all the files** in the new user home directory and list the files with `ls -al` to check the new user is the owner:
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ sudo chown -R nwuser:nwuser /home/nwuser
 
@@ -1272,8 +1273,8 @@ $ ls -al ../nwuser/
 ```
 
 The output should look like this one:
-{.bash}
-```
+
+``` {.bash filename="Output"}
 total 164
 drwxr-xr-x 23 nwuser nwuser 4096 Jan 23 15:35 .
 drwxr-xr-x  6 root   root   4096 Jan 23 15:21 ..
@@ -1285,40 +1286,40 @@ drwxrwxr-x  2 nwuser nwuser 4096 Mar  1  2022 bin
 drwxrwxr-x  2 nwuser nwuser 4096 Oct 26  2021 .conda
 ...
 ```
-{.output}
 
 **Delete the** `csuser`:
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:/home
 $ sudo deluser --remove-home csuser
 ```
-{.bash}
-```
+
+``` {.bash filename="Output"}
 Looking for files to backup/remove ...
 Removing files ...
 Removing user `csuser' ...
 Warning: group `csuser' has no more members.
 Done.
 ```
-{.output}
 
-**Change `csuser` for your new username (ours `nwuser`) everywhere in the script ~/bin/usersAuthorizedKeys-activate.sh**
+### Change `csuser` for your new username everywhere in the script ~/bin/usersAuthorizedKeys-activate.sh
 
 You are logged in as the `ubuntu` user and that script is in your home (`~`) bin directory. You have the `nano` and `emacs` text editors to do that change. These are the lines in that file where you need to change `csuser` for your new username:
-```
+
+``` {.bash filename="Output"}
 ...
 echo Copying .ssh/authorized_keys to user csuser
 sudo cp ~/.ssh/authorized_keys ~/../csuser/.ssh
 sudo chown -R csuser:csuser ~/../csuser/.ssh/authorized_keys
 ```
-{.output}
 
-Once your instance to become AMI does become an AMI, and instances are created from it, the Script `aws_instances_configure.sh` will configure access to each instance by remotely invoking in each instance the script `/home/ubuntu/bin/usersAccessKeys-setup-MAIN.sh`. This script in turn invokes the script that you have just modified which, as you can see by the modified code lines, will then copy the instance authorised keys to your new username so that it can be logged in with the same key used with the `ubuntu` user.
+Once your 'instance-to-become-AMI' does become an AMI, and instances are created from it, the Script `aws_instances_configure.sh` will configure access to each instance by remotely invoking in each instance the script `/home/ubuntu/bin/usersAccessKeys-setup-MAIN.sh`. This script in turn invokes the script that you have just modified which, as you can see by the modified code lines, will then copy the instance authorised keys to your new username so that it can be logged in with the same key used with the `ubuntu` user.
 
-**Edit or delete the "message of the day" file: /etc/motd**
+## Edit or delete the "message of the day" file
 
 If you want to edit or delete the Cloud-SPAN welcome message shown below, you need to edit or delete the file `/etc/motd`. It is write protected so you need to run `nano` or `emacs` as sudo: `sudo emacs /etc/motd`. 
 
+::: {.callout-note collapse="true"}
 ## The Cloud-SPAN welcome message:
 ```
     _____________________________
@@ -1342,16 +1343,16 @@ If you want to edit or delete the Cloud-SPAN welcome message shown below, you ne
    Type "csguide" (and the Enter (↵) key) for some guidance
    _____________________________________________________________
 ```
-{.output}
-{.solution}
+:::
 
-**Login to your new username** with `lginstance.sh .. nwuser`:
+### Login to your new username
+
 You can now logout (from the `ubuntu` user) and login to your new username thus:
-```
+
+``` {.bash filename="Code"}
 csuser@cloud-span-admin-instance:~
 $ lginstance.sh amis/ami02-myFirstAMIConfig/outputs/login-keys/login-key-instanceToBecomeAMI02-Jorge.pem nwuser
 ```
-{.bash}
 
 ## 6.3 Updating end-user software applications
 Updating end-user software applications is carried out by running the script `softwareInstall_genomics_csuser.sh` as the `csuser` (or as the new user you may have created). The script should be run only after updating system software by running the script `softwareInstall_genomics_ubuntusr.sh` as the `ubuntu` user.
@@ -1359,7 +1360,8 @@ Updating end-user software applications is carried out by running the script `so
 We have changed `csuser` to `nwuser`, logged in thus `lginstance.sh .. nwuser`, and are about to update end-user software applications.
 
 We will first delete the file and directory shown below as they are of no use and **were created out** of changing the username (the file examples.destop) and updating to the next LTS (the directory snap). 
-```
+
+``` {.bash filename="Output"}
 nwuser@instanceToBecomeAMI02-Jorge:~
 $ ls 
 bin  examples.desktop  shell_data  snap  software
@@ -1367,16 +1369,16 @@ $ rm -r examples.desktop snap/
 $ ls
 bin  shell_data  software
 ```
-{.output}
 
-### You can install the Genomics applications or print the versions installed
+### Install Genomics applications or print versions installed
 The script `softwareInstall_genomics_csuser.sh` can be run with one of two options that are displayed when the script is run on its own (with no parameters):
-```
+
+``` {.bash filename="Code"}
 nwuser@instanceToBecomeAMI02-Jorge:~
 $ softwareInstall_genomics_csuser.sh
 ```
-{.bash}
-```
+
+``` {.bash filename="Output"}
 softwareInstall_genomics_csuser.sh installs all genomics software analysis tools.
 
 This script should be run before creating a genomics AMI, and after running the script that
@@ -1386,15 +1388,15 @@ updates the Ubuntu system, softwrInstall_genomics_ubuntusr.sh, in the ubuntu acc
              - use option go to install all applications - you will have the option to cancel.
              - use option versions to see the versions installed.
 ```
-{.output}
 
-The option `go` installs the applications while the option `versions` runs all the applications installed to print their versions.   The option `versions` **will
-only work** if you have logged in as `csuser` --- it **will not work** if you have logged in with your new user name.  This is because installing the applications configures some files, to locate the applications, using the username running the installing. Hence, as the applications in your instance to become AMI were installed using the `csuser`, they will not be found if run with another username.  See the output of the script run with the `versions` option on the instance we have changed the username (`nwuser`) and on an instance where `csuser` has not been changed.
-```
+The option `go` installs the applications while the option `versions` runs all the applications installed to print their versions.   The option `versions` **will only work** if you have logged in as `csuser` --- it **will not work** if you have logged in with your new user name.  This is because installing the applications configures some files, to locate the applications, using the username running the installing. Hence, as the applications in your 'instance-to-become-AMI' were installed using the `csuser`, they will not be found if run with another username.  See the output of the script run with the `versions` option on the instance we have changed the username (`nwuser`) and on an instance where `csuser` has not been changed.
+
+``` {.bash filename="Code"}
 nwuser@instanceToBecomeAMI02-Jorge:~
 $ softwareInstall_genomics_csuser.sh versions
 ```
-{.bash}
+
+::: {.callout-note collapse="true"}
 ## Output (`nwuser`) --- `softwareInstall_genomics_csuser.sh versions` 
 ```
 Versions of genomics software tools installed:
@@ -1411,9 +1413,9 @@ vcfutils.pl   (prints no version - is installed by bcftools)
 trimmomatic
 nwuser@instanceToBecomeAMI02-Jorge:~
 ```
-{.output}
-{.solution}
+:::
 
+::: {.callout-note collapse="true"}
 ## Output (`csuser`) --- `softwareInstall_genomics_csuser.sh versions`
 ```
 Versions of genomics software tools installed:
@@ -1434,21 +1436,23 @@ Using htslib 1.14-1-g7060387
 vcfutils.pl   (prints no version - is installed by bcftools)
 trimmomatic 0.39
 ```
-{.output}
-{.solution}
+:::
 
 ### Installing the Genomics applications
-The script `softwareInstall_genomics_csuser.sh` installs the latest applications from scratch for any user: `csuser` or your new username --- it does not try to only update the applications for `csuser`. The applications are installed in the directories `~/software` and `~/.miniconda3, and before the installation begins, all files in those directories are deleted. 
+The script `softwareInstall_genomics_csuser.sh` installs the latest applications from scratch for any user: `csuser` or your new username --- it does not try to only update the applications for `csuser`. The applications are installed in the directories `~/software` and `~/.miniconda3`, and before the installation begins, all files in those directories are deleted. 
 
-The script runs in two steps. **Step 1** configures the software package manager `conda` and installs a few applications that do not require `conda` to be installed. **Step 2** installs the applications that require `conda` but, **before running step 2**, you must **logout** and **login** again for the `conda` configuration made in  step 1 to take place. If after step 2 some applications cannot be found, you mostly likely forgot to logout and login in before --- happened to us.
+The script runs in two steps. **Step 1** configures the software package manager `conda` and installs a few applications that do not require `conda` to be installed. 
 
-You run both steps in exactly the same way: 
-```
+**Step 2** installs the applications that require `conda` but, **before running step 2**, you must **logout** and **login** again for the `conda` configuration made in  step 1 to take place. If after step 2 some applications cannot be found, you mostly likely forgot to logout and login in before --- happened to us.
+
+You run both steps in exactly the same way:
+
+``` {.bash filename="Code"}
 nwuser@instanceToBecomeAMI02-Jorge:~
 $ softwareInstall_genomics_csuser.sh go
 ```
-{.bash}
 
+::: {.callout-note collapse="true"}
 ## Output (`nwuser`) --- `softwareInstall_genomics_csuser.sh go`     ### step 1
 ```
 softwareInstall_genomics_csuser.sh is about to INSTALL genomics software, step 1 (of 2)
@@ -1471,11 +1475,11 @@ Please logout and login again, and then run this script again (as below) to comp
 
      softwareInstall_genomics_csuser.sh go
 ```
-{.output}
-{.solution}
+:::
 
 **Logout** and **login**, and then run the script again the same way: `softwareInstall_genomics_csuser.sh go` and check the output at the end.
 
+::: {.callout-note collapse="true"}
 ## Output (`nwuser`) --- `softwareInstall_genomics_csuser.sh go`     ### step 2
 ```
 softwareInstall_genomics_csuser.sh is about to INSTALL genomics software, step 2 (of 2)
@@ -1489,11 +1493,11 @@ Please logout and login again for environment changes to take effect.
 The installation logs of steps 1 and 2 are in this file:
 /home/nwuser/.genomics_sftw_logs/genomics_sftwre_install.sh20240108.160203.txt
 ```
-{.output}
-{.solution}
+:::
 
 **Logout** and **login** (!), and now run the script with the `versions` option to check the versions installed: `softwareInstall_genomics_csuser.sh  versions`:
 
+::: {.callout-note collapse="true"}
 ## Output (`nwuser`) --- `softwareInstall_genomics_csuser.sh  versions`   ### vers installed
 ```
 $ softwareInstall_genomics_csuser.sh versions
@@ -1515,8 +1519,7 @@ Using htslib 1.19-3-g67f3ab0f
 vcfutils.pl   (prints no version - is installed by bcftools)
 trimmomatic 0.39
 ```
-{.output}
-{.solution}
+:::
 
 ### Installing other applications and removing applications — second part
 Recall that if you are to install other (not yet installed) applications that require installing system libraries you need to:
@@ -1525,8 +1528,10 @@ Recall that if you are to install other (not yet installed) applications that re
 
 Clearly, if the other applications you are to install do not require system libraries, then you don't need to go through the first part, but you still need to go through the second part, as described below. 
 
-#### **Modifying `softwareInstall_genomics_csuser.sh` to install other applications**
+#### Modifying `softwareInstall_genomics_csuser.sh` to install other applications
+
 The script `softwareInstall_genomics_csuser.sh` has two main sections:
+
 - at the beginning, a number of functions that each installs an application and possibly other related application/s, and the function `print_all_versions()` that runs all the installed applications to print their version.
 - at the end, a kind of main function that:
   - displays the usage message
@@ -1534,14 +1539,16 @@ The script `softwareInstall_genomics_csuser.sh` has two main sections:
   - runs the `versions` option, invoking `print_all_versions()`
   - runs the `go` option, Step 1 or 2, calling the relevant functions that install the application in each step.
 
-The organisation into functions facilitates trying out different options in installing applications, as you only need to comment or uncomment a function invocation in the main function to deactivate or activate installing an application. The script `softwareInstall_genomics_csuser.sh` is relatively small, as it only installs 9 applications, of which only 3 are somewhat complex to install. But the organisation into functions was first designed to configure the Cloud-SPAN Metagenomics AMI, which required installing over 25 applications. 
+The organisation into functions facilitates trying out different options in installing applications, as you only need to comment or uncomment a function invocation in the main function to deactivate or activate installing an application. The script `softwareInstall_genomics_csuser.sh` is relatively small, as it only installs 9 applications, of which only 3 are somewhat complex to install. But the organisation into functions was first designed to configure the Cloud-SPAN Metagenomics AMI, which required installing over 25 applications.
 
 To modify the script in order to install other applications, for each application you need to:
+
 - design and add the function that installs the application (`go` option)
 - add the invocation of the function in the main function in Step 1 or Step 2  (`go` option)
 - add to `print_all_versions()` the invocation of the application to print its version (`versions` option)
 
-For example, let’s suppose again that the Genomics application `bcftools` is not yet installed in the instance to become AMI that you are configuring and that you need to install it as described in the [bcftools install page](http://samtools.github.io/bcftools/howtos/install.html) which,  you will recall has two sections: 
+For example, let’s suppose again that the Genomics application `bcftools` is not yet installed in the 'instance-to-become-AMI' that you are configuring and that you need to install it as described in the [bcftools install page](http://samtools.github.io/bcftools/howtos/install.html) which,  you will recall has two sections: 
+
 - "For the impatient" and 
 - ["Detailed instructions"](https://raw.githubusercontent.com/samtools/bcftools/develop/INSTALL)
 
@@ -1549,8 +1556,10 @@ You may  also recall that we mentioned that "Eventually, the instructions for th
 
 The code in the three bars below show (**1**) the commands "For the impatient" to install `bcftools` (shown before but repeated here for convenience), (**2**) our function `install_bcftools()` containing those commands and a few more that install `bcftools` locally and write the commands used and their outputs to a log file (using the `message` function), and (**3**) the invocation of `install_bcftools()` by the main function; check our comments in CAPITALS.
 
+::: {.callout-note collapse="true"}
 ## `bcftools` --- "For the impatient" (FTI) install instructions
-```
+
+``` {.bash filename="Code"}
 git clone --recurse-submodules https://github.com/samtools/htslib.git
 git clone https://github.com/samtools/bcftools.git
 cd bcftools
@@ -1558,8 +1567,7 @@ cd bcftools
  #   autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters
 make
 ```
-{. bash}
-{.solution}
+:::
 
 Note the following differences between the instructions "For the impatient" (FTI) and their coding in our function `install_bcftools()`. The first FTI command, `git clone --recurse-submodules https://github.com/samtools/htslib.git`, **is not** used by our function `install_bcftools()`. This is because `htslib` is installed before `bcftools` and thus is already available when `bcftools` is being installed. We installed `htslib` separately because it is also needed by `samtools` and we seem to remember that `htslib` could not be found if it was installed inside `bcftools` through that first command.
 
@@ -1569,8 +1577,10 @@ The third of those three commands, `./configure`, is missing the second option `
 
 The point is: installing other applications will sometimes go nicely smoothly, but sometimes you will have to improvise. The scripts only help in trying different things more efficiently. There are plenty of comments in the scripts including the links to the instructions to install each application.
 
+::: {.callout-note collapse="true"} 
 ## `install_bcftools()` function in `softwareInstall_genomics_csuser.sh` 
-```
+
+``` {.bash filename="Code"}
 function install_bcftools() {
     message "installing `colour lb bcftools`" $1
     message "cd ~/software" $1
@@ -1600,15 +1610,15 @@ function install_bcftools() {
     vcfutils.pl 2&1 | tee -a $1
 }
 ```
-{.bash}
-{.solution}
+:::
 
 In the bar below, the invocation of `install_bcftools()` by the main function was placed in Step 1 (of 2) because `bcftools` is installed through its own installation script which is run with the `make` program. The other applications installed in Step 1, `conda`, `htslib`, and `samtools`, are installed likewise with their own installation scripts.
 
 The applications installed in Step 2 need `conda` or `pip` to be installed. `conda` and `pip` are software package managers. `conda` is installed locally in the end-user directory `~/.miniconda3` and it also installs `pip`, but we also installed first some libraries at **system level** with the command `sudo apt-get install python3-pip` in the script `softwareInstall_genomics_ubuntusr.sh`.
 
+::: {.callout-note collapse="true"}
 ## invocation of `install_bcftools()` by the main function in `softw..csuser.sh` 
-```
+``` {.bash filename="Code"}
 ...
 ### carry out step 1 or 2 of genomics software install
 if [ ! -f ~/.genomics_sftw_logs/continue_install ]; then           ### STEP 1
@@ -1645,8 +1655,7 @@ $logfile\n" $logfile
     ### $(basename $0) versions			### logout and login again is needed otherwise it may print errors.
     exit 0
 ```
-{.bash}
-{.solution}
+:::
 
 Thus, if the other applications you are to install **do not require** a package manager to install them, you invoke the functions that install each application in Step 1.
 
@@ -1660,12 +1669,12 @@ Finally, check also the following scripts, which have plenty of examples as to h
 - `softwareInstall_metagen_ubuntu2v.sh`
 - `softwareInstall_metagen_csuser2v.sh`
 
-These scripts were used to create the first Metagenomics AMI configuring (starting with) an instance to become AMI created from the 30GB Genomics AMI. **However**, remember that running these scripts **will not give** you a properly configured Metagenomics AMI because, as mentioned in the [**Background to our approach to configuring instances to become AMIs**](#background-to-our-approach-to-configuring-instances-to-become-amis), some Metagenomics experts configured some databases and applications both in between and after running the two versions of the scripts. 
+These scripts were used to create the first Metagenomics AMI configuring (starting with) an 'instance-to-become-AMI' created from the 30GB Genomics AMI. **However**, remember that running these scripts **will not give** you a properly configured Metagenomics AMI because, as mentioned in the [**Background to our approach to configuring instances-to-become-AMIs**](#background-to-our-approach-to-configuring-instances-to-become-amis), some Metagenomics experts configured some databases and applications both in between and after running the two versions of the scripts. 
 
 ## 6.4 Increasing storage size
 Increasing storage size is carried out by running the script `aws_storageEBS_increase.sh` as the `ubuntu` user **in the instance whose storage you want to increase** --- yes, while the instance is running.  **Before running** the script, you need both to **install** and to **configure** the `aws` CLI in the instance with programmatic access credentials, that is: (1) an *access key ID* and (2) a *secret access key* --- which you will remember are generated with your AWS IAM user account in the AWS Console. 
 
-You **don't need** to create new credentials to increase the storage of your instance to become AMI (though you can if you want to). We are going to use the same credentials we have been using to create instances in this and the last episode.  We are going to **copy** such credentials to our instance to become AMI, **increase** the storage, and then **delete** the credentials. We want to delete the credentials because we don't want them to be in each instance created from the AMI that your instance to become AMI will be. You could invalidate the credentials in the AWS Console instead, or both. It's up to you. We are going to delete them as mentioned.
+You **don't need** to create new credentials to increase the storage of your 'instance-to-become-AMI' (though you can if you want to). We are going to use the same credentials we have been using to create instances in this and the last episode.  We are going to **copy** such credentials to our 'instance-to-become-AMI', **increase** the storage, and then **delete** the credentials. We want to delete the credentials because we don't want them to be in each instance created from the AMI that your 'instance-to-become-AMI' will be. You could invalidate the credentials in the AWS Console instead, or both. It's up to you. We are going to delete them as mentioned.
 
 We are going to perform the following:
 - delete current `aws` CLI --- an old version installed at system level
@@ -1674,10 +1683,11 @@ We are going to perform the following:
 - increase storage --- running `aws_storageEBS_increase.sh`
 
 ### Delete the current `aws` CLI installed at system level 
-Login to your instance to become AMI as the `ubuntu` user (`lginstance.sh .. ubuntu`) and enter the commands below to delete the old version of the `aws` CLI. 
+Login to your 'instance-to-become-AMI' as the `ubuntu` user (`lginstance.sh .. ubuntu`) and enter the commands below to delete the old version of the `aws` CLI. 
 
 For clarity and convenience we will be showing the prompt only before the first command and below each command its output: 
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ which aws
 /usr/local/bin/aws
@@ -1693,15 +1703,15 @@ $ sudo rm -rf /usr/local/bin/aws /usr/local/bin/aws_completer /usr/local/aws-cli
 $ which aws
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~                        ### no path: aws no longer found
 ```
-{.bash}
 
 First, the `which` command gives us the path of the `aws` CLI.  With that path, `ls -l ../aws*` tells whether  `aws` is a link and whether there are other AWS programs installed. There are two AWS programs installed which are both links: `aws` and `aws_completer`. Both links point to the actual programs which are stored in the directory: `/usr/local/aws-cli`
 
 With `ls -a /usr/local/aws-cli` we check whether there is anything else stored in that directory:  only version `v2` is therein.  With `sudo rm ..` we then delete the directory and the links to the programs we found earlier. **To prevent mistakes**, we copy-pasted the paths of the directory and the links to the `sudo rm ..` command.
 
 ### Install the latest `aws` CLI locally in the `ubuntu` account 
-Enter the following command to install the latest version of the `aws` CLI and press `y` to continue: 
-```
+Enter the following command to install the latest version of the `aws` CLI and press `y` to continue:
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ aws_cli_install_update_linux.sh
 
@@ -1725,7 +1735,6 @@ lrwxrwxrwx 1 ubuntu ubuntu    66 Jan 26 11:23 aws_completer -/home/ubuntu/.local
 $ ls .aws
 ls: cannot access '.aws': No such file or directory
 ```
-{.bash}
 
 The `aws` CLI is installed along with the Scripts, in the directory `~/.local/bincsaws/`.
 
@@ -1733,29 +1742,29 @@ The last command `ls .aws` is to show that the directory `~/.aws` does not exist
 
 We need to **logout** and **login** again for the installation configuration to take place (see the last line of the file `~/.bashrc` which was added to activate the `aws_completer`).
 
-We also need to logout to copy the credentials which are in the `~/.aws` directory in the machine where we created the instance to become AMI.
+We also need to logout to copy the credentials which are in the `~/.aws` directory in the machine where we created the 'instance-to-become-AMI'.
 
-### Configure the `aws` CLI: copy the AWS credentials you have been using to your instance to become AMI
-You have logged out of your instance to become AMI; *you are now in the machine where you created that instance* --- our prompt has changed to `csuser@cloud-span-admin-instance:~` in the code below.
+### Configure the `aws` CLI: copy the AWS credentials you have been using to your 'instance-to-become-AMI'
+
+You have logged out of your 'instance-to-become-AMI'; *you are now in the machine where you created that instance* --- our prompt has changed to `csuser@cloud-span-admin-instance:~` in the code below.
 
 The command `ls -a .aws` (while in our home directory) shows that the directory `~/.aws` exists and has two files: `config` and `credentials`.
 
-```
+``` {.bash filename="Code"}
 csuser@cloud-span-admin-instance:~
 $ ls -a .aws
 config  credentials
 ```
-{.bash}
 
-#### **Copy the `.aws` directory to your instance to become AMI**
-Enter the command `cptoInstance.sh` as shown below to copy the `.aws` directory to your instance to become AMI, passing as parameters (1) the `-u` option, (2) the path of the login key file of your instance to become AMI and (3) the name of the directory to copy, `.ami`.
-```
+#### **Copy the `.aws` directory to your 'instance-to-become-AMI'**
+Enter the command `cptoInstance.sh` as shown below to copy the `.aws` directory to your 'instance-to-become-AMI', passing as parameters (1) the `-u` option, (2) the path of the login key file of your 'instance-to-become-AMI' and (3) the name of the directory to copy, `.ami`.
+
+``` {.bash filename="Code"}
 csuser@cloud-span-admin-instance:~
 $ cptoInstance.sh -u amis/ami02-myFirstAMIConfig/outputs/login-keys/login-key-instanceToBecomeAMI02-Jorge.pem .aws
 credentials                                                           100%  116   231.4KB/s   00:00
 config                                                                100%   43    92.6KB/s   00:00
 ```
-{.bash}
 
 `cptoinstance.sh` works similarly to `lginstance.sh` in that you need to specify the login key of the instance to which you want to copy a file or directory. The `-u` option means to copy to the `ubuntu` account as opposed to the `csuser` account which is the default. 
 
@@ -1763,13 +1772,15 @@ You also have available the script `cpfromInstance.sh` which works similarly but
 
 For this course, we only modified `lginstance.sh` to work with any username --- it used to work only for the usernames `ubuntu` and `csuser`. That is, if you changed the end-user username, you need to modify `cptoInstance.sh` and `cpfromInstance.sh` to work with your new username.
 
+::: {.callout-note collapse="true"}
 ## How `cptoInstance.sh` works:
 `cptoInstance.sh` was installed along with the Scripts on your computer --- it is already installed on your AWS instance if you are attending a workshop using a Cloud-SPAN AWS account. **Run** `cptoInstance.sh` with no parameters to see its usage message. 
-```
+
+``` {.bash filename="Code"}
 $ cptoInstance.sh
 ```
-{.bash}
-```
+
+``` {.bash filename="Output"}
 cptoInstance.sh copies a local file/directory to the csuser account of an AWS instance.
 
 usage:
@@ -1792,19 +1803,20 @@ usage:
   cptoInstance.sh -u gc_data/outputs/login-keys/login-key-instance017.pem  shell_data  shell_data2
   - copies  data/shell_data to instance017.cloud-span.aws.york.ac.uk:/home/ubuntu/shell_data2
 ```
-{.output}
-**Don't forget** to use the `Tab` key to complete `cptoInstance.sh` **and** the file paths of the login key and the file/dir to copy.
-{.solution}
 
-### Increase the storage of your instance to become AMI
-Login to your instance to become AMI as the `ubuntu` user (`lginstance.sh .. ubuntu`). 
+**Don't forget** to use the `Tab` key to complete `cptoInstance.sh` **and** the file paths of the login key and the file/dir to copy.
+:::
+
+### Increase the storage of your 'instance-to-become-AMI'
+Login to your 'instance-to-become-AMI' as the `ubuntu` user (`lginstance.sh .. ubuntu`). 
 
 Enter the following commands to check:
+
 - the credentials have been copied 
 - how to run the script `aws_storageEBS_increase.sh` and
 - the current size of the instance storage
 
-```
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ ls .aws                                        ### we have the credentials
 config  credentials
@@ -1825,12 +1837,12 @@ $ df -h .                                        ### print file system disk spac
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p1   30G   21G  7.5G  74% /
 ```
-{.bash}
 
 We need to run `aws_storageEBS_increase.sh` specifying the size in GBs that we want the storage and file system to be. The last command `df -h .` prints the current size of the storage which is 30 GBs. 
 
 We are going to increase the storage by 5 GB only. So we need to run the script specifying 35 GB:
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ aws_storageEBS_increase.sh 35
 Disk current size is 30 and is going to be increased to 35.
@@ -1853,13 +1865,13 @@ Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p1   35G   21G   13G  63% /
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 ```
-{.bash}
 
 The script `aws_storageEBS_increase.sh` runs the command `df -h .` at the end to show the new size of the storage and file system. 
 
-#### **Try to increase the storage again**
+#### Try to increase the storage again
 If you try to increase the storage again shortly after you have increased it, the script will fail as in the example below where we tried to increase the storage to be 40 GB:
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ aws_storageEBS_increase.sh 40
 
@@ -1869,19 +1881,19 @@ Increasing disk size from 35 to 40 GBs. Please wait:
 aws ec2 modify-volume --size 40 --volume-id vol-0481c9665b82e23ad logs/aws_storage_increase.sh20240126.164447.txt 2&1
 Error extending disk size, please check the log file logs/aws_storage_increase.sh20240126.164447.txt for details.
 ```
-{.bash}
 
 Check the log file specified in the last line of your output. You will find a message like the following (among other information), stating that you need to wait some time to increase the storage again:
-```
+
+``` {.bash filename="Output"}
 ...
 An error occurred (VolumeModificationRateExceeded) when calling the ModifyVolume operation: You've reached the maximum modification rate per volume limit. Wait at least 6 hours between modifications per EBS volume.
 ...
 ```
-{.output}
 
 #### **Try to run the script after deleting the AWS credentials**
 If you try to increase the storage after deleting the AWS credentials, the script will fail thus:
-```
+
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ rm -fr .aws                                ### delete the credentials
 $ aws_storageEBS_increase.sh 40              ### try to increase storage
@@ -1894,14 +1906,13 @@ Increasing disk size from  to 40 GBs. Please wait:
 aws ec2 modify-volume --size 40 --volume-id  logs/aws_storage_increase.sh20240126.180719.txt 2&1
 Error extending disk size, please check the log file logs/aws_storage_increase.sh20240126.180719.txt for details.
 ```
-{.bash}
 
 The first line of the output above, "Unable to locate credentials. You can configure credentials .. [etc.] ", corresponds to the first `aws` (CLI) command in the script which is in charge of recovering the volume-id of the storage so that the second `aws` command in the script, `aws ec2 modify-volume --size 40 --volume-id` (shown in the output above), can request the storage increase. As shown by the output, the first `aws` command failed for lack of credentials, but  the script continued and eventually failed in the second `aws` command for a syntax error. Check your log file, and the script `aws_storageEBS_increase.sh` in your text editor, particularly the first and second invocations to `aws`. The script is "working", but should have aborted execution when the first `aws` command failed.
 
 Can you fix the script before creating your AMI?
 
 ## 6.5 Before creating your AMI: last trimmings and deleting all login keys
-You have configured your instance to become AMI with regard to:
+You have configured your 'instance-to-become-AMI' with regard to:
 - system software (patches, libraries and possibly a new LTS version of Ubuntu Linux) 
 - possibly changed the end-user username
 - end-user software, possibly adding other applications and deleting others
@@ -1910,29 +1921,30 @@ You have configured your instance to become AMI with regard to:
 You may have had to iterate through those steps a few times to get to the configuration you needed for your AMI. For instance, given that reducing storage size is difficult, you may have had to increase storage gradually, creating intermediate AMIs to roll back, if needed. 
 
 **The last tasks to carry out are these**:
+
 - performing **minor trimmings** you want in each instance created from your AMI
 - **rebooting your instance** to become AMI and login again as the `ubuntu` user --- this is to ensure all changes take effect
-- **deleting the login keys** you have been using to login to your instance to become AMI so that they are not present in each instance created from your AMI. It is a recommended best practice to delete all previously used keys just before creating an AMI for [improving security and reducing the likelihood of "man-in-the-middle" attacks](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs).
-- **stopping your instance to become AMI** with `sudo shootdown now` --- *you will not be able to login again to your instance to become AMI*, as you will have deleted all login keys.
-- **creating your AMI in the AWS Console** as you did in Section 2. [Create an AMI and make it Public in the AWS Console](#2-create-an-ami-and-make-it-public-in-the-aws-console). 
-- **testing your AMI** --- creating an instance from your new AMI and login to the instance as you did in the previous episode [Instances Management Tasks Using the Scripts](https://cloud-span.github.io/cloud-admin-guide-2-managing-aws-instances/02-instances-management-tasks/index.html). Recall that we manage the instances we create in three directories: `amis`, `courses`, `tests`. So you may want to use the `tests` directory to create the instance from your new AMI, for example: `tests/t001-test-instance-ami02/inputs`. The point of such a name is to "link" the elements involved: it is a test instance (not a course nor an AMI instance), created from the second AMI you created (in this course).  
+- **deleting the login keys** you have been using to login to your 'instance-to-become-AMI' so that they are not present in each instance created from your AMI. It is a recommended best practice to delete all previously used keys just before creating an AMI for [improving security and reducing the likelihood of "man-in-the-middle" attacks](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs).
+- **stopping your 'instance-to-become-AMI'** with `sudo shootdown now` --- *you will not be able to login again to your 'instance-to-become-AMI'*, as you will have deleted all login keys.
+- **creating your AMI in the AWS Console** as you did in Section 2 (Create an AMI and make it Public in the AWS Console). 
+- **testing your AMI** --- creating an instance from your new AMI and login to the instance as you did in the previous episode [Instances Management Tasks Using the Scripts](./02-instances-management-tasks/). Recall that we manage the instances we create in three directories: `amis`, `courses`, `tests`. So you may want to use the `tests` directory to create the instance from your new AMI, for example: `tests/t001-test-instance-ami02/inputs`. The point of such a name is to "link" the elements involved: it is a test instance (not a course nor an AMI instance), created from the second AMI you created (in this course).  
 
 ### Minor trimmings you may want in each instance created from your AMI
 You may want some data or a few admin scripts installed in each instance created from your AMI, just as we installed all the Scripts in the Genomics AMI in the directory `~/.local/bincsaws`, of  both the `ubuntu` user and the `csuser`. 
 
-You can use the scripts `cptoInstance.sh` and `cpfromInstance.sh` to copy files between your admin computer and your instance to become AMI you are configuring. Alternatively, you can use GitHub to place whatever you want in your instance to become AMI, and then git-clone it into your instance, see the section [Configure Your Terminal Environment](https://cloud-span.github.io/cloud-admin-guide-1-setting-work-environments/03-configure-terminal-environment/index.html), which shows how we installed the Scripts in the instance that became the Genomics AMI.
+You can use the scripts `cptoInstance.sh` and `cpfromInstance.sh` to copy files between your admin computer and your 'instance-to-become-AMI' you are configuring. Alternatively, you can use GitHub to place whatever you want in your 'instance-to-become-AMI', and then git-clone it into your instance, see the section [Configure Your Terminal Environment](/docs/lesson01-setting-work-envs/02-configure-account.qmd), which shows how we installed the Scripts in the instance that became the Genomics AMI.
 
 You may also want to trim the prompt, the colours of the prompt, or the colours used to display directory names, link files, etc. The configuration files you need to trim are `~/.bashrc` and `~/.dircolors`. 
 
 These are the lines in `~/.bashrc` of the `csuser` and `ubuntu` user you need to modify to trim the prompt and its colours:
-```
+
+``` {.bash filename="Code"}
 ### csuser (nwuser)
     PS1='${debian_chroot:+($debian_chroot)}\[\033[00;37m\]\u\[\033[00;33m\]@\[\033[00;32m\]\h\[\033[00m\]:\[\033[00;36m\]\w\[\033[00m\] \n\$ '
 
 ### ubuntu user
     PS1='${debian_chroot:+($debian_chroot)}\[\033[00;37m\]\u\[\033[00;33m\]@\[\033[00;32m\]\H\[\033[00m\]:\[\033[00;36m\]\w\[\033[00m\] \n\$ '
 ```
-{.}
 
 The strange strings are colour codes (you need to google to change them). The prompt elements are (**1**) the username `\u\`, (**2**) the at `@` symbol, (**3**) the host name `\h\` in `csuser` and full host name `\H\` in the `ubuntu` user, (**4**) a semi-colon `:`, (**5**) the working directory `\w\`, and (**6**) the dollar sign `\$` at the end.
 
@@ -1947,10 +1959,9 @@ If you change `~/.bashrc` or `~/.dircolors`, you need to logout and login again 
 ### Rebooting your instance for any changes to take effect
 You are now done with changes.  Please reboot the system as shown below and login again in 2-3 minutes as the `ubuntu` user (`lginstance.sh .. ubuntu`), as you need sudo privileges for the next task: deleting all login keys.
 
-```
+``` {.bash filename="Code"}
 $ sudo shutdown --reboot now
 ```
-{.bashr}
 
 You may have already seen a message like the one below after updating the operating system in your personal computer:
 “Your computer needs to restart for changes to take effect.”
@@ -1958,7 +1969,7 @@ You may have already seen a message like the one below after updating the operat
 ### Deleting all login keys
 You are logged in as the `ubuntu` user. Please enter the commands below to delete all the loging keys (details in [remove-ssh-host-key-pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs)): 
 
-```
+``` {.bash filename="Code"}
 ubuntu@instanceToBecomeAMI02-Jorge.cloud-span.aws.york.ac.uk:~
 $ ls /etc/ssh/*_key /etc/ssh/*_key.pub                                 ### what are we deleting?
 /etc/ssh/ssh_host_dsa_key      /etc/ssh/ssh_host_ecdsa_key.pub    /etc/ssh/ssh_host_rsa_key
@@ -1976,13 +1987,13 @@ $ cat .ssh/authorized_keys                                           ### delete 
 Ctrl-d
 
 ```
-{.bash}
 
-Entering the last command, `cat .ssh/authorized_keys`, and then typing the keys `Ctrl` and `d` simultaneously to exit the `cat` command, has the effect of emptying out  the file `.ssh/authorized_keys`, thus deleting the login key we have been using to login to our instance to become AMI. 
+Entering the last command, `cat .ssh/authorized_keys`, and then typing the keys `Ctrl` and `d` simultaneously to exit the `cat` command, has the effect of emptying out  the file `.ssh/authorized_keys`, thus deleting the login key we have been using to login to our 'instance-to-become-AMI'. 
 
 Once an instance is launched from your new AMI, the AWS will append to that file the login key created for the instance, and then, the script `aws_instances_configure.sh` will invoke the script `/home/ubunutu/usersAccessKeys-setup-MAIN.sh` in the instance to copy that file into the equivalent one in the `csuser` (or your new user account) to enable it to login. 
 
 You now need to:
+
 - shootdown your instance, entering this command: `sudo shootdown now` --- you will be logged and won't be able to login again.
 - go to the AWS Console and create an AMI out of your instance as suggested above within the `tests` directory, etc.
 - create an instance with your new AMI and login to your instance and check the configuration you did: username, storage size, prompt, scripts, etc. You have created instances before, so do similarly, and remember to change the ami-id in the file `resourcesIDs.txt` with the ami-id of your instance.

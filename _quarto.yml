@@ -84,8 +84,8 @@ website:
         contents: 
           - docs/lesson02-managing-aws-instances/01-configure-instances-internet.qmd
           - docs/lesson02-managing-aws-instances/02-instances-management.qmd
-          - docs/lesson02-managing-aws-instances/03-amis-management.qmd
-          - docs/lesson02-managing-aws-instances/03-scripts-design.qmd
+          - docs/lesson02-managing-aws-instances/03-ami-management.qmd
+          - docs/lesson02-managing-aws-instances/04-scripts-design.qmd
 
 format:
   html:
