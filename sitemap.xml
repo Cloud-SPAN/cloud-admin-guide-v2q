@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/index.html</loc>
-    <lastmod>2024-06-18T14:55:19.601Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/04-scripts-design.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/01-configure-instances-internet.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/01-create-aws-account.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/04-configure-cloudshell.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/02-configure-account.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
-  </url>
-  <url>
     <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/miscellanea/about.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/miscellanea/precourse-instructions.html</loc>
-    <lastmod>2024-06-18T14:55:19.541Z</lastmod>
-  </url>
-  <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/03-configure-terminal.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
   </url>
   <url>
     <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/index.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
   </url>
   <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/index.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/02-configure-account.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
   </url>
   <url>
-    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/02-instances-management.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/03-configure-terminal.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/04-scripts-design.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
   </url>
   <url>
     <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/03-ami-management.html</loc>
-    <lastmod>2024-06-18T14:55:19.537Z</lastmod>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/index.html</loc>
+    <lastmod>2024-09-05T13:30:11.438Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/02-instances-management.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/01-configure-instances-internet.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson02-managing-aws-instances/index.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/01-create-aws-account.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/lesson01-setting-work-envs/04-configure-cloudshell.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Cloud-SPAN.github.io/cloud-admin-guide-v2q/docs/miscellanea/precourse-instructions.html</loc>
+    <lastmod>2024-09-05T13:30:11.374Z</lastmod>
   </url>
 </urlset>

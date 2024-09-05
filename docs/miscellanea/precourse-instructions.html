@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Automated Management of AWS Instances - Precourse Instructions</title>
+<title>Precourse Instructions – Automated Management of AWS Instances</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -136,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -147,11 +147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Precourse Instructions</li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../../docs/lesson01-setting-work-envs/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Setting Up Cloud/Terminal Environments</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -201,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../../docs/lesson02-managing-aws-instances/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Managing AWS Instances</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -274,14 +274,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>install or update Bash — Mac users</li>
 <li>use a laptop or desktop computer with access to the Internet and a browser (such as Chrome) installed</li>
 </ul>
-<p>This <em>Setup</em> section provides instructions to install Git Bash on Windows computers and to install or update Bash in Mac computers.</p>
+<p>This section provides instructions to install Git Bash on Windows computers and to install or update Bash in Mac computers.</p>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction"><strong>Introduction</strong></h3>
 <p>The course teaches how to use a set of Bash scripts to manage (create, configure, stop, start and delete) one or multiple AWS instances with a single invocation of a script.</p>
 <p>To run the scripts you need to use a <strong>terminal</strong> that runs the Bash shell. The terminal is a program that enables you to enter textual commands through the keyboard to instruct the operating sytem in your computer the operations you want to be performed such as running a program or copying or deleting files. The terminal is also widely known as the <strong>shell</strong> and the <strong>command-line</strong> interface (CLI). In this course we mostly use the term “terminal” and occasionally “shell” and “command line” where more meaningful. <strong>Bash</strong> stands for <em>Bourne Again Shell</em>. It is a powerful command programming language that was developed to serve as the CLI for the UNIX operating system. Bash is currently the most widely used shell and has a long and interesting history which you can read in the <a href="https://en.wikipedia.org/wiki/Bash_(Unix_shell)">Wikipedia entry for Bash shell</a>.</p>
 <p><strong>Linux users</strong> don’t need to install any software as the terminal in Linux systems runs Bash by default.</p>
 <p><strong>Windows users</strong> will need to install <strong>Git for Windows</strong> on their computer as described below <strong>prior to the course</strong>. Git for Windows includes <code>Git Bash</code>, a Windows version of the Unix Bash shell, <code>ssh</code> (secure shell) and many other useful programs. <code>ssh</code> is used to login to the AWS instances created with the scripts.</p>
-<p><strong>Mac users</strong> will need to install or update Bash on their computer as described below. Mac computers usually have installed both the Zsh shell and the Bash shell; and the <strong>terminal</strong> runs Zsh by default. <strong>Zsh</strong> and the <strong>Bash version</strong> usually installed (3.2.57 or so) <strong>cannot</strong> run the scripts that manage AWS instances. Hence you need to update Bash (the version we updated to in early 2023 was 5.2.15). Note that you can “run” the scripts from a terminal that runs Zsh, but as the first line of each script is this <code>#!/usr/bin/env bash</code>, a Zsh terminal will run Bash to <strong>actually run</strong> each script.</p>
+<p><strong>Mac users</strong> will need to install or update Bash on their computer as described below. Mac computers usually have installed both the Bash shell and the Zsh shell. The <strong>terminal</strong> runs Zsh by default. <strong>Zsh</strong> and the <strong>Bash version</strong> usually installed (3.2.57 or so) <strong>cannot</strong> run the scripts that manage AWS instances. Hence you need to update Bash (the version we updated to in early 2023 was 5.2.15). Note that you can “run” the scripts from a terminal that runs Zsh, but as the first line of each script is this <code>#!/usr/bin/env bash</code>, a Zsh terminal will run Bash to <strong>actually run</strong> each script.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -439,7 +439,7 @@ Install or update Bash — Mac users
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a> Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a> Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Check the Bash version installed with the command:</p>
+<p>Check the Bash version installed with the command below:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -496,18 +496,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -539,7 +528,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/Cloud-SPAN\.github\.io\/cloud-admin-guide-v2q\/");
@@ -547,7 +558,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -888,7 +899,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q">
+    <a class="nav-link" href="https://github.com/Cloud-SPAN/cloud-admin-guide-v2q">
       <i class="bi bi-github" role="img" aria-label="Quarto GitHub">
 </i> 
     </a>
