@@ -1,14 +1,13 @@
 ---
 title: Precourse Instructions
 ---
-
 To take the course **Automated Management of AWS Instances** you are expected to:
 
 -   install Git Bash --- Windows users
 -   install or update Bash --- Mac users
 -   use a laptop or desktop computer with access to the Internet and a browser (such as Chrome) installed
 
-This *Setup* section provides instructions to install Git Bash on Windows computers and to install or update Bash in Mac computers.
+This section provides instructions to install Git Bash on Windows computers and to install or update Bash in Mac computers.
 
 ### **Introduction**
 
@@ -20,7 +19,7 @@ To run the scripts you need to use a **terminal** that runs the Bash shell. The 
 
 **Windows users** will need to install **Git for Windows** on their computer as described below **prior to the course**. Git for Windows includes `Git Bash`, a Windows version of the Unix Bash shell, `ssh` (secure shell) and many other useful programs. `ssh` is used to login to the AWS instances created with the scripts.
 
-**Mac users** will need to install or update Bash on their computer as described below. Mac computers usually have installed both the Zsh shell and the Bash shell; and the **terminal** runs Zsh by default. **Zsh** and the **Bash version** usually installed (3.2.57 or so) **cannot** run the scripts that manage AWS instances. Hence you need to update Bash (the version we updated to in early 2023 was 5.2.15). Note that you can "run" the scripts from a terminal that runs Zsh, but as the first line of each script is this `#!/usr/bin/env bash`, a Zsh terminal will run Bash to **actually run** each script.
+**Mac users** will need to install or update Bash on their computer as described below. Mac computers usually have installed both the Bash shell and the Zsh shell. The **terminal** runs Zsh by default. **Zsh** and the **Bash version** usually installed (3.2.57 or so) **cannot** run the scripts that manage AWS instances. Hence you need to update Bash (the version we updated to in early 2023 was 5.2.15). Note that you can "run" the scripts from a terminal that runs Zsh, but as the first line of each script is this `#!/usr/bin/env bash`, a Zsh terminal will run Bash to **actually run** each script.
 
 ::: {.callout-note collapse="true"}
 ## Install Git Bash (Git for Windows) --- Windows users
@@ -116,7 +115,7 @@ You will see an output like the following:
  Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 ```
 
-Check the Bash version installed with the command:
+Check the Bash version installed with the command below:
 
 ``` {.bash filename="Code"}
  $ bash --version

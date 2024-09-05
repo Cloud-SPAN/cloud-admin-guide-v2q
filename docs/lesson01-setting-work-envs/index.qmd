@@ -2,7 +2,7 @@
 title: Setting Up Your Cloud and Terminal Environments
 ---
 
-Please read [**Workshops Organisation**](/docs/miscellanea/precourse-instructions.qmd) if you haven't done so.
+Please read [**Workshops Organisation**](/index.qmd#workshops-organisation) if you haven't done so.
 
 The Bash shell scripts that automatically manage multiple AWS instances will be referred to as the "Scripts" from now on.
 

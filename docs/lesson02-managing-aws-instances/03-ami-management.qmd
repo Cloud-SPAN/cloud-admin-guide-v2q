@@ -473,9 +473,9 @@ By the way, you can change the instance type of an instance in the AWS Console a
 - change the instance type: click on **Actions** at the top, then on **Instance settings**, and then on **Change instance type**. A new page will appear where you will be able to change the instance type --- save the changes
 - restart the instance. 
 
-# 6. Configure an 'instance-to-become-AMI'
+# 6. Configure an instance to become AMI
 
-This section presents our approach to configure an 'instance-to-become-AMI' including:
+THIS section presents our approach to configure an 'instance-to-become-AMI' including:
 
 6.1. Updating system software\
 6.2. Changing the end-user username\
