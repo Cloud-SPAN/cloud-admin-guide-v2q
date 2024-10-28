@@ -1,25 +1,17 @@
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7589272.svg)](https://doi.org/10.5281/zenodo.7589272)
 
-# Metagenomics
+# Cloud Admin Guide Overview
 
-This hands-on, online course teaches data analysis for metagenomics projects. It is aimed at those with little or no experience of using high performance computing (HPC) for data analysis. In the course we will cover:
-- navigating file directories and using the command line
-- logging into a remote cloud instance
-- using common commands and running analysis programs in the command line
-- what is metagenomics?
-- following a metagenomics analysis workflow including:
-  - performing quality control on reads
-  - assembly of reads into a metagenome
-  - improving your assembly with polishing
-  - binning into species/metagenome-assembled genomes (MAGs)
-  - taxonomic assignment and functional annotation using your binned reads
+This module teaches how to manage Amazon Web Services (AWS) instances — each instance being a Linux virtual machine. Using Bash Shell scripts, it is shown how to configure, create, stop, start, and delete, one or multiple instances with a single invocation of a script.
 
-The course is taught as a mixture of live coding, online lectures, self-study and drop-in sessions.
+### Topic 1: Setting up the work environment 
+Learn how to set up your working environment, your AWS account and your shell terminal configuration, to be able to run the scripts. 
 
-## Prerequisites
-This course assumes no prior experience with the tools covered in the workshop but learners are expected to have some familiarity with biological concepts, including the concept of genomes and microbiomes. Participants should bring their own laptops and plan to participate actively.
+### Topic 2: Managing AWS instances 
+Learn some best practices to deploy and manage AWS instances for a course, for testing software configurations, for creating new AMIs. 
 
-To get started, follow the directions in the Setup tab to get access to the required software and data for this workshop.
+### Topic 3: Managing AMIs, Scripts
+Learn the blurry bits of the scripts, how to control changes to the scripts with GitHub, the Cloud-SPAN AMIs, when and how to create and control AMI versions, updating an AMI Linux and software tools, and more. 
 
-## Acknowledgments
-The site infrastructure is based on [The Carpentries](https://carpentries.org/). The first two lessons are based on our [Prenomics](https://cloud-span.github.io/prenomics00-intro/) course; the rest are based on our [Metagenomics](https://cloud-span.github.io/metagenomics00-overview/) course.
+## About Cloud-SPAN
+Cloud-SPAN is a collaboration between the [Department of Biology, University of York](https://www.york.ac.uk/biology/) and the [Software Sustainability Institute](https://www.software.ac.uk/) funded by the UKRI Innovation Scholars award (Project Reference: [MR/V038680/1](https://www.google.com/url?q=https%3A%2F%2Fgtr.ukri.org%2Fprojects%3Fref%3DMR%252FV038680%252F1&sa=D&sntz=1&usg=AFQjCNF0nsozFp-1kvcp0Dgjks6kY8CiCQ)) which trains researchers, and the research software engineers that support them, to run specialised analyses on cloud-based high-performance computing infrastructure.
