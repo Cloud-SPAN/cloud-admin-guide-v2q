@@ -245,6 +245,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#download-the-scripts-from-github" id="toc-download-the-scripts-from-github" class="nav-link" data-scroll-target="#download-the-scripts-from-github">1. Download the Scripts from GitHub</a>
   <ul class="collapse">
   <li><a href="#login-to-the-aws-console" id="toc-login-to-the-aws-console" class="nav-link" data-scroll-target="#login-to-the-aws-console">Login to the AWS Console</a></li>
@@ -253,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#make-the-scripts-accessible-through-the-execution-path" id="toc-make-the-scripts-accessible-through-the-execution-path" class="nav-link" data-scroll-target="#make-the-scripts-accessible-through-the-execution-path">2. Make the Scripts accessible through the execution path</a>
   <ul class="collapse">
-  <li><a href="#restarting-the-terminal-and-the-aws-cloudshell" id="toc-restarting-the-terminal-and-the-aws-cloudshell" class="nav-link" data-scroll-target="#restarting-the-terminal-and-the-aws-cloudshell">Restarting the terminal and the AWS CloudShell</a></li>
+  <li><a href="#restarting-the-cloudshell-terminal-and-the-cloudshell-environment" id="toc-restarting-the-cloudshell-terminal-and-the-cloudshell-environment" class="nav-link" data-scroll-target="#restarting-the-cloudshell-terminal-and-the-cloudshell-environment">Restarting the CloudShell terminal and the CloudShell environment</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson01-setting-work-envs/04-configure-cloudshell.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -290,14 +291,13 @@ Prerequisites
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Please read <a href="../../index.html#course-overview">Workshops Organisation</a></strong> if you haven’t done so. To complete this episode you will need:</p>
+<p><strong>Please read <a href="../../index.html#workshops-organisation">Workshops Organisation</a></strong> if you haven’t done so.</p>
+<p>If you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong>, you <strong>don’t need</strong> to complete this episode.</p>
+<p>If you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>, you must complete <strong>either</strong> this episode or the previous one: <a href="../../docs/lesson01-setting-work-envs/03-configure-terminal.html">Configure Your Terminal Environment</a>.</p>
+<p>To complete this episode you will need:</p>
 <ul>
-<li>if you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>:
-<ul>
-<li>to have created and configured your AWS account as described in the two previous episodes: <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a> and <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html">Configure Your AWS Account</a>.</li>
-<li>the <strong>login page</strong>, <strong>username</strong> and <strong>password</strong> of your IAM user account.</li>
-</ul></li>
-<li>if you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong> (and an AWS Linux instance), you <strong>don’t need</strong> to complete this episode but to <strong>follow the instructions</strong> in the episode <a href="../../docs/lesson01-setting-work-envs/03-configure-terminal.html">Configure Your Terminal Environment</a>.</li>
+<li>to have created and configured your AWS account as described in the episodes <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a> and <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html">Configure Your AWS Account</a>.</li>
+<li>the <strong>login page</strong>, <strong>username</strong> and <strong>password</strong> of your IAM user account. You can find them in the .csv file you downloaded once you created your IAM account as part of configuring your AWS account.</li>
 </ul>
 </div>
 </div>
@@ -311,15 +311,18 @@ Prerequisites
 <li>has the <strong>AWS CLI</strong> installed and configured with <strong>programmatic access</strong> to your AWS account using temporary security credentials based on the credentials to access the AWS Console — this is completely transparent to the user.</li>
 <li>has other software tools installed including: <code>Python</code>, <code>Node.js</code>, <code>git</code>, <code>make</code>, <code>pip</code>, <code>curl</code>, <code>zip</code>, <code>unzip</code>, <code>ssh</code>.</li>
 <li>runs on a Linux AWS instance whose input and output are directed to the browser tab where it is invoked. The instance has 1 GB storage as a Linux file system.</li>
-<li>preserves data and software that you install in your home directory between sessions, but only <strong>for 120 days</strong> — you will receive warning emails before they are deleted so you can access the AWS CloudShell again. You can install software at <strong>system-wide level</strong> but you will have to reinstall it every time you access the AWS CloudShell.</li>
+<li>preserves data and software that you install within your <strong>home directory</strong> between sessions, but only <strong>for 120 days</strong> — you will receive warning emails before they are deleted so you can access the AWS CloudShell again. You can install software at <strong>system-wide level</strong> but you will have to reinstall it every time you access the AWS CloudShell.</li>
 </ul>
 <p>For some applications, the key bindings in the AWS CloudShell may be slightly different to the key bindings for same applications in a desktop/laptop machine.</p>
+</section>
+<section id="overview" class="level1">
+<h1>Overview</h1>
 <p>These are the main steps you will follow to configure your AWS CloudShell environment:</p>
 <ol type="1">
-<li><p><strong>Download the Scripts from GitHub</strong><br>
+<li><p><a href="#download-the-scripts-from-github">Download the Scripts from GitHub</a>.<br>
 You will login to the AWS Console with your IAM user account, launch the AWS CloudShell, and download the Scripts from GitHub.</p></li>
-<li><p><strong>Make the Scripts accessible through the execution path</strong><br>
-You will configure the AWS CloudShell so that the Scripts can be run from any location in the AWS CloudShell file system.</p></li>
+<li><p><a href="#make-the-scripts-accessible-through-the-execution-path">Make the Scripts accessible through the execution path</a>.<br>
+You will configure your AWS CloudShell environment so that the Scripts can be run from any location in the AWS CloudShell file system.</p></li>
 </ol>
 </section>
 <section id="download-the-scripts-from-github" class="level1">
@@ -337,11 +340,11 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 <p><strong>IMPORTANT</strong>: On the top right, check that the region is set to Ireland. <strong>Set it to Ireland if it is not</strong>:</p>
 <p>An AWS CloudShell that you launch can only operate on resources within a selected region. Since the Cloud-SPAN Amazon Machine Image (AMI) from which you will create AWS instances with the Scripts is located in the Ireland region, you need to select this region before launching the AWS CloudShell.</p>
 <p>If you are using an <strong>institutional account</strong> and you cannot set the region to Ireland, set it to the region which your institutional account is enabled to. Hence you will be installing and running the Scripts in the CloudShell for that region. However, before running the Scripts (in the next lesson), you will need to ask your IT department to copy the Cloud-SPAN AMI to your AWS account.</p>
-<p>(Note: you can launch multiple AWS CloudShells, each operating on a different region, but this is not needed and hence not covered in the course.)</p>
+<p><strong>Note</strong>: you can launch multiple AWS CloudShells, each operating on a different region, but this is not needed and hence not covered in the course.</p>
 </section>
 <section id="launch-the-aws-cloudshell" class="level2">
 <h2 class="anchored" data-anchor-id="launch-the-aws-cloudshell">Launch the AWS CloudShell</h2>
-<p>To launch the AWS CloudShell, click on its icon at the top: the little square with these two characters “**&gt;_**” inside.</p>
+<p>To launch the AWS CloudShell, click on its icon at the top: the little square with these two characters “<strong>&gt;_</strong>” inside.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../images/config-linux-env/01-console-login-as-iam-user.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser with the region menu at the top right and AWS CloudShell option at middle top circled" width="900"></p>
@@ -358,13 +361,12 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 </figure>
 </div>
 <p>You will now be presented with the AWS CloudShell terminal, like the one below.</p>
-<p>It may take up to a couple of minutes for the AWS CloudShell terminal to be ready the first time you open it in a Console session:</p>
+<p>It may take up to a couple of minutes for the AWS CloudShell terminal to be ready the first time you open it in a Console session because:</p>
 <ul>
-<li>first, an AWS instance called <strong>the environment</strong> will be launched — you will see the message “Waiting for the environment to run …”, not shown below</li>
-<li>then the <strong>terminal</strong> program will be run — you will see the message “Preparing your terminal …”.</li>
-<li>finally, you will see the terminal <strong>prompt</strong>, something like this: [<strong>cloudshell-user <span class="citation" data-cites="ip-11-22-33-44">@ip-11-22-33-44</span> ~</strong>]<strong>$</strong> — the numbers in the prompt are the IP address of the instance and may differ every time you open the AWS CloudShell.</li>
+<li>first, an AWS instance called <strong>the environment</strong> will be launched — you may see one of these messages (not shown below) “Waiting for the environment to run ..” or “Creating the environment ..”.</li>
+<li>then the <strong>terminal</strong> program will be run — you may see the message “Preparing your terminal …”.</li>
+<li>finally, you will see the terminal <strong>prompt</strong>, something like this: [<strong>cloudshell-user <span class="citation" data-cites="ip-10-134-43-226">@ip-10-134-43-226</span> ~</strong>]<strong>$</strong> — the numbers in the prompt are the IP address of the instance and may differ every time you open the AWS CloudShell t.</li>
 </ul>
-<p>The message after the first prompt, “Try these commands to get started: aws help …”, means that the AWS CLI, whose name when used is <code>aws</code>, is ready to be used.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../images/config-linux-env/04-aws-cloudshell-ready-screen.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser showing the AWS CloudShell terminal prompt" width="900"></p>
@@ -374,7 +376,7 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 </section>
 <section id="download-the-scripts" class="level2">
 <h2 class="anchored" data-anchor-id="download-the-scripts">Download the Scripts</h2>
-<p>To download the Scripts, enter or copy-paste the git command below into the terminal and press Enter.</p>
+<p>To download the Scripts, enter or copy-paste the git command below into the CloudShell terminal and press Enter.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -388,7 +390,7 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 </div>
 <div class="sourceCode" id="cb2" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span> ~</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The terminal should now look similar to the following. If so, you have downloaded the Scripts into the **_tmp_cloudspan_aws** directory in your home directory.</p>
+<p>The CloudShell terminal should now look similar to the following. If so, you have downloaded the Scripts into the <strong>_tmp_cloudspan_aws</strong> directory in your home directory.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../images/config-linux-env/05-aws-cloudshell-cloning-the-scripts.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser showing the AWS CloudShell terminal with git command line, the ls command line and download directory circled" width="900"></p>
@@ -399,7 +401,7 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 </section>
 <section id="make-the-scripts-accessible-through-the-execution-path" class="level1">
 <h1>2. Make the Scripts accessible through the execution path</h1>
-<p>There are many ways to make the Scripts accessible through the execution path. To avoid any conflicts with the current configuration of the AWS CloudShell, we are going to:</p>
+<p>There are many ways to make the Scripts accessible through the execution path. To avoid any conflicts with the current configuration of the CloudShell terminal, we are going to:</p>
 <ol type="1">
 <li>create a new “bin” directory</li>
 <li>copy the Scripts to the new bin directory</li>
@@ -416,10 +418,10 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"PATH=</span><span class="dt">\"\$</span><span class="st">HOME/.local/bincsaws:</span><span class="dt">\$</span><span class="st">PATH</span><span class="dt">\"</span><span class="st">"</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The command <code>echo ... &gt;&gt; ~/.bashrc</code> adds an assignment shell statement at the end of the Bash configuration file <code>~/.bashrc</code>. The statement adds the new bin directory to the execution path which is held by the shell variable <code>PATH</code>.</p>
-<p>Since the <em>terminal</em> program runs the commands in <code>~/.bashrc</code> every time it is launched, the assigment shell statement will add the “new” bin directory to the execution path on every subsequent launch of the AWS CloudShell.</p>
+<p>Since the <em>terminal</em> program runs the commands in <code>~/.bashrc</code> every time it is launched, the assigment shell statement will add the “new” bin directory to the execution path on every subsequent launch of the CloudShell terminal.</p>
 <p>That means that the Scritps <strong>are not yet accessible through the execution path</strong>.</p>
-<p>For the Script to become thus accessible, we need either to restart the <em>terminal</em>, or to restart the AWS CloudShell, or to run the <code>source</code> command to make the <strong>current</strong> <em>terminal</em> run the commands in <code>~/.bashrc</code> again, and thus get the PATH variable updated within this terminal session.</p>
-<p>Let’s use the <code>source</code> command to test the Scripts are accessible through the execution path, and then look at how to restart the terminal and the AWS CloudShell.</p>
+<p>For the Script to become thus accessible, we need either to restart the CloudShell <em>terminal</em>, or to restart the CloudShell environment (the AWS instance mentioned earlier), or to run the <code>source</code> command to make the <strong>current</strong> CloudShell <em>terminal</em> run the commands in <code>~/.bashrc</code> again, and thus get the PATH variable updated within this terminal session.</p>
+<p>Let’s use the <code>source</code> command to test the Scripts are accessible through the execution path, and then look at how to restart the CloudShell terminal and the CloudShell environment.</p>
 <p>Enter or copy-paste the following commands:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -429,7 +431,7 @@ You will configure the AWS CloudShell so that the Scripts can be run from any lo
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">csinstances_create.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The terminal should now look like this:</p>
+<p>The CloudShell terminal should now look like this:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../images/config-linux-env/06-aws-cloudshell-installing-the-scripts-n-running-csinstances_create.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser showing the AWS CloudShell terminal with command lines for installing and running one of the Scripts circled" width="900"></p>
@@ -452,13 +454,13 @@ Warning
 <p>Please don’t delete that directory just yet. We will use some files there in the next lesson. Once we use those files you will delete that directory.</p>
 </div>
 </div>
-<section id="restarting-the-terminal-and-the-aws-cloudshell" class="level3">
-<h3 class="anchored" data-anchor-id="restarting-the-terminal-and-the-aws-cloudshell">Restarting the terminal and the AWS CloudShell</h3>
+<section id="restarting-the-cloudshell-terminal-and-the-cloudshell-environment" class="level3">
+<h3 class="anchored" data-anchor-id="restarting-the-cloudshell-terminal-and-the-cloudshell-environment">Restarting the CloudShell terminal and the CloudShell environment</h3>
 <p>You can restart the terminal by simply logging out of the terminal through entering the command <code>exit</code> or typing <code>Ctrl-d</code> (pressing the keys <code>Ctrl</code> and <code>d</code> simultaneously). Once you are logged out, press any key for the <em>terminal</em> to be launched again. Restarting the terminal is lightweight in that it is relatively quick because only the terminal program is restarted.</p>
-<p>You can restart the AWS CloudShell by closing the browser tab and launching CloudShell again, or by clicking on the <strong>Actions</strong> drop-down menu on the top right of the screen and then clicking on <strong>Restart AWS CloudShell</strong>.</p>
+<p>You can restart the CloudShell environment by closing the browser tab and launching CloudShell again, or by clicking on the <strong>Actions</strong> drop-down menu on the top right of the screen and then clicking on <strong>Restart</strong>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../images/config-linux-env/07-aws-cloudshell-actions-menu.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser showing the AWS CloudShell terminal with the options Actions and Restart AWS Cloudshell circled" width="900"></p>
+<p><img src="../../images/config-linux-env/07-aws-cloudshell-actions-menu.png" class="img-fluid figure-img" alt="Screenshot of AWS Console page in a browser showing the AWS CloudShell terminal with the options Actions and Restart circled" width="900"></p>
 <figcaption>.</figcaption>
 </figure>
 </div>

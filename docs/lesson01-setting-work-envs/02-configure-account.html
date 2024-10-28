@@ -215,8 +215,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#secure-your-aws-root-user-account" id="toc-secure-your-aws-root-user-account" class="nav-link" data-scroll-target="#secure-your-aws-root-user-account">2. Secure your AWS <strong>Root user</strong> account</a></li>
   <li><a href="#create-an-iam-user-account-to-create-and-manage-aws-resources" id="toc-create-an-iam-user-account-to-create-and-manage-aws-resources" class="nav-link" data-scroll-target="#create-an-iam-user-account-to-create-and-manage-aws-resources">3. Create an IAM user account to create and manage AWS resources</a>
   <ul class="collapse">
-  <li><a href="#create-the-user-group" id="toc-create-the-user-group" class="nav-link" data-scroll-target="#create-the-user-group">Create the user group</a></li>
-  <li><a href="#create-your-iam-user-account-and-add-it-to-the-administrators-group" id="toc-create-your-iam-user-account-and-add-it-to-the-administrators-group" class="nav-link" data-scroll-target="#create-your-iam-user-account-and-add-it-to-the-administrators-group">Create your IAM user account and add it to the Administrators group</a></li>
+  <li><a href="#create-the-user-group" id="toc-create-the-user-group" class="nav-link" data-scroll-target="#create-the-user-group">3.1 Create the user group</a></li>
+  <li><a href="#create-your-iam-user-account-and-add-it-to-the-administrators-group" id="toc-create-your-iam-user-account-and-add-it-to-the-administrators-group" class="nav-link" data-scroll-target="#create-your-iam-user-account-and-add-it-to-the-administrators-group">3.2 Create your IAM user account and add it to the Administrators group</a></li>
   </ul></li>
   <li><a href="#create-an-alias-for-your-iam-user-acount" id="toc-create-an-alias-for-your-iam-user-acount" class="nav-link" data-scroll-target="#create-an-alias-for-your-iam-user-acount">4. Create an alias for your IAM user acount</a></li>
   <li><a href="#grant-your-iam-user-account-the-permissions-to-access-the-billing-dashboard" id="toc-grant-your-iam-user-account-the-permissions-to-access-the-billing-dashboard" class="nav-link" data-scroll-target="#grant-your-iam-user-account-the-permissions-to-access-the-billing-dashboard">5. Grant your IAM user account the permissions to access the Billing Dashboard</a></li>
@@ -255,15 +255,13 @@ Prerequisites
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Please read <a href="../../index.html#course-overview">Workshops Organisation</a></strong> if you haven’t done so. To complete this episode you will need:</p>
-<ul>
-<li>if you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>:
+<p><strong>Please read <a href="../../index.html#workshops-organisation">Workshops Organisation</a></strong> if you haven’t done so.</p>
+<p>If you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong>, you <strong>don’t need</strong> to complete this episode.</p>
+<p>If you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>, you must complete this episode and for that you will need:</p>
 <ul>
 <li>to have opened your AWS account as described in the first episode of this lesson: <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a>.</li>
 <li>to be logged in to your AWS account as the <strong>Root User</strong> (described also in that episode, at the end).</li>
 <li>ideally, your mobile phone to add multi-factor authentication (<strong>MFA</strong>) to your AWS account. However, <strong>if you don’t have a mobile phone, you can skip this step</strong> and still use your AWS account.</li>
-</ul></li>
-<li>if you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong> (and and AWS Linux instance), you <strong>don’t need</strong> to complete this episode.</li>
 </ul>
 </div>
 </div>
@@ -271,15 +269,15 @@ Prerequisites
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>These are the main steps you will follow to configure your AWS account:</p>
 <ol type="1">
-<li><p><strong>Change the default region of your account to Ireland.</strong><br>
+<li><p><a href="#change-the-default-region-of-your-account-to-ireland">Change the default region of your account to Ireland</a>.<br>
 AWS services are provided through many regions around the world and a region is allocated by default. You will need to change the region of your account to Ireland because the Amazon Machine Image from which you will create your AWS instance is stored in the Ireland region. But you can later change your account region if you wish.</p></li>
-<li><p><strong>Secure your AWS Root User account.</strong><br>
+<li><p><a href="#secure-your-aws-root-user-account">Secure your AWS Root User account</a>.<br>
 The account your created in the last episode is your Root user account and can perform any operation including closing the account. It is best practice to use the Root user account only for high-level administration and to create the first <strong>IAM</strong> (Identity Access Managment) user account for day-to-day work and account management. It is also best practice to secure the Root user account with multi-factor authentication (MFA).</p></li>
-<li><p><strong>Create an IAM user account to create and manage AWS resources.</strong><br>
+<li><p><a href="#create-an-iam-user-account-to-create-and-manage-aws-resources">Create an IAM user account to create and manage AWS resources</a>.<br>
 IAM user accounts are attached to a <strong>User Group</strong> that has a set of specific permissions (such as reading, writing and deleting) on specified resources. We will create a User Group with predefined permissions and an IAM user account in that group.</p></li>
-<li><p><strong>Create an alias for your account id.</strong><br>
-Your Root user account id is a 12-digit number that is difficult to remember. We are going to create an alias that is easier to remember. This is especially useful because the alias will replace the 12-digit number in the web address for logging in to your account as IAM user.</p></li>
-<li><p><strong>Grant your IAM user account the permissions to access the Billing Dashboard.</strong><br>
+<li><p><a href="#create-an-alias-for-your-iam-user-acount">Create an alias for your IAM user account</a>.<br>
+Your IAM user account id is a 12-digit number that is difficult to remember. We are going to create an alias that is easier to remember. This is especially useful because the alias will replace the 12-digit number in the web address for logging in to your account as IAM user.</p></li>
+<li><p><a href="#grant-your-iam-user-account-the-permissions-to-access-the-billing-dashboard">Grant your IAM user account the permissions to access the Billing Dashboard</a>.<br>
 The Billing Dashboard of your account is only accessible to the Root user by default. As you will mostly be using your IAM user account, it is convenient that you can check your bills and related information with your IAM user account too. We are going set on the permissions that enable your IAM user account to access the Billing Dashboard.</p></li>
 </ol>
 </section>
@@ -362,7 +360,19 @@ Note
 </div>
 <p>To set up your mobile as MFA device you will need a Virtual MFA app on your mobile phone. We have tested both “Duo Mobile” and “Google Authenticator” and give instructions for both but you may already be using another app. AWS lists some options here: <a href="https://aws.amazon.com/iam/features/mfa/">AWS MFAs</a>.</p>
 <p><strong>If you do not have a Virtual MFA app on your mobile phone:</strong> Go to the app store on your phone, search for Duo Mobile <em>or</em> Google Authenticator, and install it.</p>
-<p>Once you have installed an MFA app in your mobile: - Return to the above pop-up “Set up a virtual MFA device” on your computer and choose <strong>Show QR code</strong>. - Open the MFA app on your phone - Press <strong>+ Add</strong> in Duo Mobile or <strong>+</strong> in Google Authenticator - Press <strong>Use QR code</strong> in Duo Mobile or <strong>Scan a QR code</strong> in Google Authenticator. Your camera will open to scan a QR code. - Point your camera at your computer screen showing the QR code to scan. You may need to adjust the zoom for the scan to occur. - Once the scan is successful, the MFA app will display a number for about 30 seconds, and then another number for the same time, and so on until you close the app. - Of those numbers shown in your mobile MFA, you need to enter two consecutive numbers into the fields <strong>MFA Code 1</strong> and <strong>MFA Code 2</strong> on the last pop-up window “Set up a virtual MFA device” on your computer. You may need to scroll down to see MFA Code 2. <strong>NB: enter the numbers with no space between them</strong> even if they are shown with a space in your mobile. - Click on <strong>Assign MFA</strong>.</p>
+<p>Once you have installed an MFA app in your mobile:</p>
+<ul>
+<li>Return to the above pop-up “Set up a virtual MFA device” on your computer and choose <strong>Show QR code</strong>.</li>
+<li>Open the MFA app on your phone
+<ul>
+<li>Press <strong>+ Add</strong> in Duo Mobile or <strong>+</strong> in Google Authenticator</li>
+<li>Press <strong>Use QR code</strong> in Duo Mobile or <strong>Scan a QR code</strong> in Google Authenticator. Your camera will open to scan a QR code.</li>
+<li>Point your camera at your computer screen showing the QR code to scan. You may need to adjust the zoom for the scan to occur.</li>
+</ul></li>
+<li>Once the scan is successful, the MFA app will display a number for about 30 seconds, and then another number for the same time, and so on until you close the app.</li>
+<li>Of those numbers shown in your mobile MFA, you need to enter two consecutive numbers into the fields <strong>MFA Code 1</strong> and <strong>MFA Code 2</strong> on the last pop-up window “Set up a virtual MFA device” on your computer. You may need to scroll down to see MFA Code 2. <strong>NB: enter the numbers with no space between them</strong> even if they are shown with a space in your mobile.</li>
+<li>Click on <strong>Assign MFA</strong>.</li>
+</ul>
 <p>You will see a success message which you can close.</p>
 <p>Every time you login to your Root user account, you will be asked to enter your password and an MFA code number which you must read from your mobile by simply opening the MFA app.</p>
 </section>
@@ -371,7 +381,7 @@ Note
 <p>We are going to create an IAM user account with which you will be able to create and manage AWS resources. This involves first creating an IAM User Group with one or more security policies, and then your IAM user account within that User Group.</p>
 <p>We will create a user group called <strong>Administrators</strong>, then a user account called <strong>YourName</strong> (your actual name), and finally attach the account to the group. As this is the first IAM group and IAM account to be created, we need to do this with the Root user account, but then it will be possible to do it with the IAM account we will create because it will have Administrator privileges.</p>
 <section id="create-the-user-group" class="level3">
-<h3 class="anchored" data-anchor-id="create-the-user-group">Create the user group</h3>
+<h3 class="anchored" data-anchor-id="create-the-user-group">3.1 Create the user group</h3>
 <p>Go to the IAM Dashboard page by typing <strong>iam</strong> in the AWS search box at the top and pressing Enter. On the IAM Dashboard, click on “User groups” under “Access Management” on the left, and then on <strong>Create group</strong> on the right.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -411,7 +421,7 @@ Note
 </div>
 </section>
 <section id="create-your-iam-user-account-and-add-it-to-the-administrators-group" class="level3">
-<h3 class="anchored" data-anchor-id="create-your-iam-user-account-and-add-it-to-the-administrators-group">Create your IAM user account and add it to the Administrators group</h3>
+<h3 class="anchored" data-anchor-id="create-your-iam-user-account-and-add-it-to-the-administrators-group">3.2 Create your IAM user account and add it to the Administrators group</h3>
 <p>To create your IAM user account, click on <strong>Users</strong> in the last page displayed in the previous step, on the left in the figure above.</p>
 <p>The page titled “Users” will be displayed. Click on <strong>Add users</strong>.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -420,7 +430,14 @@ Note
 <figcaption>.</figcaption>
 </figure>
 </div>
-<p>The page below will be displayed, where you can enter your IAM user account details by: - typing your user name (<strong>a single word</strong> of your choice) - checking the box “Access Key - Programmatic access” — this option enables you to use the AWS CLI - checking the box “Password - AWS Management Console access” - checking the box “Autogenerated password” and - checking the box “User must create a new password at next sign-in”</p>
+<p>The page below will be displayed, where you can enter your IAM user account details by:</p>
+<ul>
+<li>typing your user name (<strong>a single word</strong> of your choice — we chose <strong>adminuser</strong>)</li>
+<li>checking the box “Access Key - Programmatic access” — this option enables you to use the AWS CLI</li>
+<li>checking the box “Password - AWS Management Console access”</li>
+<li>checking the box “Autogenerated password” and</li>
+<li>checking the box “User must create a new password at next sign-in”</li>
+</ul>
 <p>Then click on <strong>Next: Permissions</strong></p>
 <p><img src="../../images/config-acc/ca16-iam-user-add-name.jpg" class="img-fluid" alt="Screen shot of AWS Console IAM Add user page in a browser showing the User name box with a user name typed in (adminuser) and circled, and the boxes Access Key - Programmatic access and Password - AWS Management Console access checked and circled" width="900"> <img src="../../images/config-acc/ca16-iam-user-add-name2.jpg" class="img-fluid" alt="Screen shot of AWS Console IAM Add user page in a browser showing the options Autogenerated password and User must create a new password at next sign-in checked and circled, and the button Next: Permissions circled" width="900"></p>
 <p>You will be presented with a page that says “Add user - Set permissions”. The <strong>Add user to group</strong> option should be set (in blue). Leave it set — if it is not set, click on it to set it.</p>
@@ -438,11 +455,10 @@ Note
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Note on tags
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note on tags</p>
 <p>Adding tags — or keywords — to an AWS resource is optional. You don’t need to tag your IAM user account because you only have one such account. Adding tags is useful when you are managing multiple user accounts/resources as it helps searching for specific resources based on their tags.</p>
 </div>
 </div>
@@ -453,10 +469,10 @@ Note
 <figcaption>.</figcaption>
 </figure>
 </div>
-<p>You will now see a page with the message <strong><em>Success — You successfully created the users shown below…</em></strong></p>
+<p>You will now see a page with the message <strong><em>Success</em></strong> — <em>You successfully created the users shown below…</em></p>
 <p><strong>You need to download</strong> the .csv file indicated in this page by clicking on <strong>Download .csv</strong>. This file contains the <strong>credentials</strong> both to login to the AWS Console and to access AWS resources programmatically with your new IAM user account. <em>Programmatically</em> means access from software applications including the AWS CLI.</p>
 <p>For security reasons <strong>you will not be able to access these credentials once you leave this page</strong> but you can create new credentials.</p>
-<p>Click on <strong>Download .csv</strong> to download and save the file in your computer.</p>
+<p>Click on <strong>Download.csv</strong> to download and save the file in your computer.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../images/config-acc/ca19-iam-user-created.jpg" class="img-fluid figure-img" alt="Screen shot of AWS Console IAM Add user success page in a browser with the web address to log in and button to download a .csv file circled" width="900"></p>
@@ -469,17 +485,18 @@ Note
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What’s in the file?
+What’s in the .csv file?
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>The file you downloaded is a <em>comma separated value</em> (CSV) file that you can open in any text editor. Its content is something like this:</p>
-<p><code>User name,Password,Access key ID,Secret access key,Console login link</code> <code>adminuser,0ji)8[bN3{F-X!h,BMZ4AD..KIAVQN34,o0/bSO3WJeO..Vgtc4E3LxXZVbQg,https://xxxxxxxxxxxx.signin.aws.amazon.com/console</code></p>
+<p><code>User name,Password,Access key ID,Secret access key,Console login link</code></p>
+<p><code>adminuser,0ji)..{F-X!h,BMZ4D..QN34,o0/bSO3W..VgtXZVbQg,https://xxx..xxx.signin.aws.amazon.com/console</code></p>
 <p>The first line specifies the names of the comma-separated values in the second line — comma characters are not part of any of the values.</p>
 <p>The values in the second line shown above will be different to those in your CSV file.</p>
-<p>The first and second fields, <code>adminuser</code> and <code>0ji)8[bN3{F-X!h</code> are the username and the password to access the AWS Console. The third and the fourth fields, <code>BMZ4AD..KIAVQN34</code> and <code>o0/bSO3WJeO..Vgtc4E3LxXZVbQg</code>, are the <em>access key ID</em> and the <em>secret access key</em> which, combined, will enable you to use the AWS CLI and, more generally, to access AWS resources programmatically. The last field, <code>https://xxxxxxxxxxxx.signin.aws.amazon.com/console</code>, is the web address to login to the AWS Console with the IAM user account you have created, and other IAM accounts you may create later.</p>
+<p>The first and second fields, <code>adminuser</code> and <code>0ji)..F-X!h</code> are the username and the password to access the AWS Console. The third and the fourth fields, <code>BMZ4D..QN34</code> and <code>o0/bSO3W..VgtXZVbQg</code>, are the <em>access key ID</em> and the <em>secret access key</em> which, combined, will enable you to use the AWS CLI and, more generally, to access AWS resources programmatically. The last field, <code>https://xxx..xxx.signin.aws.amazon.com/console</code>, is the web address to login to the AWS Console with the IAM user account you have created.</p>
 <p><strong>NB</strong>: the first time you login to the AWS Console you will have to change the password.</p>
-<p><strong>NB</strong>: we are representing here with “xxxxxxxxxxxx” the digits in the URL to login to the AWS Console, <code>https://xxxxxxxxxxxx.signin.aws.amazon.com/console</code>. This 12-digit number corresponds to your account id.</p>
+<p><strong>NB</strong>: we are using “xxx..xxx” to represent the 12 digits in the URL to login to the AWS Console, <code>https://xxx..xxxx.signin.aws.amazon.com/console</code>. The 12-digit number corresponds to your account id.</p>
 </div>
 </div>
 <p>Once you close the success message above, in the page that appears you should see the user account you have just created, listed along with the Groups (Administrators) of which it is a member and other information, for example: “Never” under “Last activity” means you have not yet logged in.</p>
@@ -487,7 +504,7 @@ What’s in the file?
 </section>
 <section id="create-an-alias-for-your-iam-user-acount" class="level2">
 <h2 class="anchored" data-anchor-id="create-an-alias-for-your-iam-user-acount">4. Create an alias for your IAM user acount</h2>
-<p>A 12-digit number can be difficult to remember so let’s create an alias which is easier to remember. The alias can be used to login to your account.</p>
+<p>A 12-digit number can be difficult to remember, so let’s create an alias which is easier to remember. The alias can be used to login to your account.</p>
 <p>Type <strong>iam</strong> in the AWS search box and press Enter to go to the “IAM Dashboard”.</p>
 <p>On the right of the Dashboard, under the heading “AWS Account”, click on <strong>Create</strong> next to “Account Alias”</p>
 <div class="quarto-figure quarto-figure-center">
@@ -515,7 +532,7 @@ Access your IAM user account with both URLs:
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>open two <strong>new</strong> tabs in your browser (but do not close this browser tab so that we can finish up setting up your IAM account with the last step below).</li>
+<li>open two <strong>new</strong> tabs in your browser (but do not close this browser tab so that we can finish setting up your IAM account with the last step below).</li>
 <li>enter <code>https://xxxxxxxxxxxx.signin.aws.amazon.com/console</code> in one of the tabs, but change “xxx..xxx” with your 12-digit account number.</li>
 <li>enter <code>https://youralias.signin.aws.amazon.com/console</code> in the other tab, but change “youralias” with your actual account alias.</li>
 <li>in both tabs use your actual <strong>username</strong> and <strong>password</strong> from your .csv file.</li>

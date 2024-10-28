@@ -239,24 +239,29 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Please read <a href="../../index.html#workshops-organisation"><strong>Workshops Organisation</strong></a> if you haven’t done so.</p>
+<p><strong>Please read <a href="../../index.html#workshops-organisation">Workshops Organisation</a></strong> if you haven’t done so.</p>
 <p>The Bash shell scripts that automatically manage multiple AWS instances will be referred to as the “Scripts” from now on.</p>
 <p>You can use any of the following terminals to run the Scripts as instructed in this course:</p>
 <ul>
 <li>Linux terminals that run the Bash shell.</li>
-<li>Windows Git Bash terminals — see the <a href="../../docs/miscellanea/precourse-instructions.html">Setup</a> section.</li>
-<li>Mac terminals that run the Bash shell or the Zsh shell — see the <a href="../../docs/miscellanea/precourse-instructions.html">Setup</a> section to install or update Bash; Bash version must be 5.0 or higher.</li>
+<li>Windows Git Bash terminals — see the <a href="../../docs/miscellanea/precourse-instructions.html">Precourse Instructions</a> section to install Git Bash.</li>
+<li>Mac terminals that run the Bash shell or the Zsh shell — see the <a href="../../docs/miscellanea/precourse-instructions.html">Precourse Instructions</a> section to install or update Bash; Bash version must be 5.0 or higher.</li>
 <li>the <strong>AWS CloudShell</strong> terminal, a Linux terminal that runs the Bash shell by default. The AWS CloudShell is hosted on AWS and is used through the browser.</li>
 </ul>
 <section id="overview" class="level1">
 <h1>Overview</h1>
 <p>The Scripts make use of the <strong>AWS Command Line Interface</strong> (AWS CLI), a software tool that enables you to interact with AWS through <strong>commands</strong> that can be run either within <strong>shell scripts</strong> or in any of those <strong>terminals</strong> above (and others). The Scripts run the AWS CLI to make requests to manage (create, allocate, …, and delete) AWS services such as instances, storage, domain names, etc. For such requests to be successful, the <strong>AWS CLI</strong> and the target <strong>AWS account</strong>, wherein services will be managed, <strong>need to be configured</strong>.</p>
-<p>This lesson will guide you to: - create your AWS account. - configure your AWS account for daily work, including <strong>enabling access with the AWS CLI</strong>. - configure your <strong>terminal environment</strong> with the Scripts and the AWS CLI, the AWS CLI configured to manage resources within your AWS account.</p>
+<p>This lesson will guide you to:</p>
+<ul>
+<li>create your AWS account — Episode 1 (see menu on the left).</li>
+<li>configure your AWS account for daily work, including <strong>enabling access with the AWS CLI</strong> — Episode 2.</li>
+<li>configure your <strong>terminal</strong> environment with the Scripts and the AWS CLI configured to manage resources within your AWS account — Episode 3.</li>
+<li>configure your <strong>AWS CloudShell</strong> terminal environment with the Scripts (the AWS CLI is already configured to manage resources within your AWS account) — Episode 4.</li>
+</ul>
 <section id="your-aws-account" class="level3">
 <h3 class="anchored" data-anchor-id="your-aws-account">Your AWS account</h3>
-<p>Episodes 1 and 2 provide the instructions to create and configure your AWS account.</p>
-<p>We organised the instructions in all episodes (4 episodes in lesson 1 and 4 in lesson 2) assuming that you are going to <strong>create and use your own</strong> AWS account, and hence you have full permissions to configure it as instructed in the course — we refer to such an account as an AWS <strong>personal account</strong>.</p>
-<p>However, <strong>you can use an existing AWS account</strong> you have access to. Throughout the course, where relevant, we point out what “extra steps” you may need to do to configure your account as required to run the Scripts.</p>
+<p>We organised the instructions in this course assuming that <strong>you are going to create and use your own</strong> AWS account, and hence you have full permissions to configure it as instructed in the course — we refer to such an account as an AWS <strong>personal account</strong>.</p>
+<p>However, <strong>you can use an existing AWS account</strong> you already have access to. Throughout the course, where relevant, we point out what “extra steps” you may need to do to configure your account as required to run the Scripts.</p>
 <p>If you already have an AWS account that you would like to use to run the Scripts, skip Episode 1 and configure your account as described in Episode 2. Specifically, to enable <strong>access with the AWS CLI</strong>, you need to have/create an IAM (Identity and Access Management) user account enabled with <strong>programmatic access</strong> based on <strong>Access key ID</strong> and <strong>Secret access key</strong> credentials. If the AWS account you are using is your personal account, you have full permissions to do the configuration presented in that section.</p>
 <p>If the AWS account that you would like to use to run the Scripts is an <strong>institutional account</strong>, meaning that it was <strong>provided to you by your institution</strong> (company, school, organisation), skip Episode 1 and configure your account with <strong>programmatic access</strong> as mentioned above, if possible. However, <strong>you may need to contact</strong> your IT department to help you configure your account as required to run Scripts. Typically, institutional accounts are created and <strong>somewhat configured</strong> by the <strong>IT department</strong> of the institution first, and only then passed to a person for that person’s individual use. The configuration by an IT department may include using AWS services in a <strong>single region</strong> only (in USA, Europe, etc.), or accessing AWS services using <strong>specific security applications</strong>, among other regulations, see the callout below.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -282,7 +287,7 @@ Are you using an institutional AWS account?
 <section id="your-terminal-environment" class="level3">
 <h3 class="anchored" data-anchor-id="your-terminal-environment">Your terminal environment</h3>
 <p>Episode 3 provides the instructions to install the Scripts and the AWS CLI in your Git Bash, Linux or Mac terminal environment, and to configure the AWS CLI to use your credentials (private and public keys) when invoked within the Scripts to request AWS service operations. The credentials will be generated using the AWS Console when you configure your AWS account in Episode 2.</p>
-<p>Episode 4 provides the instructions to configure the Scripts in the AWS CloudShell. The AWS CloudShell is “a browser-based [Linux Bash terminal] shell that gives you command-line access to your AWS resources” and <strong>has the AWS CLI</strong> already <strong>installed and ready to run</strong> using “credentials” derived from the information you use to login to the AWS Console. Hence you only need to configure the Scripts, but <strong>you must be logged in</strong> to your AWS account through <strong>the AWS Console</strong> to be able <strong>to run the AWS CloudShell</strong> and the Scripts.</p>
+<p>Episode 4 provides the instructions to configure the Scripts in the AWS CloudShell. The AWS CloudShell is “a browser-based [Linux Bash terminal] shell that gives you command-line access to your AWS resources”, and <strong>has the AWS CLI</strong> already <strong>installed and ready to run</strong> using “credentials” derived from the information you use to login to the AWS Console. Hence you only need to configure the Scripts. <strong>You must be logged in</strong> to your AWS account through <strong>the AWS Console</strong> to be able <strong>to run the AWS CloudShell</strong> and the Scripts.</p>
 <p>In this course you will be using the AWS Console and, through the Scripts, the AWS CLI to manage AWS services but there are other ways to manage AWS services, see the callout below.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">

@@ -210,10 +210,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#outline" id="toc-outline" class="nav-link active" data-scroll-target="#outline">Outline</a>
-  <ul class="collapse">
-  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
-  </ul></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#create-your-base-domain-name" id="toc-create-your-base-domain-name" class="nav-link" data-scroll-target="#create-your-base-domain-name">1. Create Your Base Domain Name</a>
   <ul class="collapse">
   <li><a href="#go-to-the-route-53-dashboard" id="toc-go-to-the-route-53-dashboard" class="nav-link" data-scroll-target="#go-to-the-route-53-dashboard">Go to the Route 53 Dashboard</a></li>
@@ -269,32 +266,39 @@ Prerequisites
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Please read <a href="https://cloud-span.github.io/cloud-admin-guide-0-overview#course-overview">Workshops Organisation</a></strong> if you haven’t done so. To complete this episode you will need:</p>
+<p><strong>Please read <a href="../../index.html#workshops-organisation">Workshops Organisation</a></strong> if you haven’t done so.</p>
+<p>If you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong>, you <strong>don’t need</strong> to complete this episode.</p>
+<p>If you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>, you must complete this episode and for that you will need:</p>
 <ul>
-<li>if you are self-studying the course <strong>or</strong> attending a workshop using <strong>your AWS account</strong>:
-<ul>
-<li>to have created and configured your AWS account as described in Episodes 1 and 2 of Lesson 1, namely: <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a> and <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html">Configure Your AWS Account</a>.</li>
-<li>the AWS Console login details of your IAM user account: <strong>login page</strong>, <strong>username</strong> and <strong>password</strong>.</li>
-</ul></li>
-<li>if you are attending a workshop using a <strong>Cloud-SPAN AWS account</strong> (and an AWS Linux instance), you <strong>don’t need</strong> to complete this episode.</li>
+<li><p>to have created and configured your AWS account as described in the episodes <a href="../../docs/lesson01-setting-work-envs/01-create-aws-account.html">Create Your AWS Account</a> and <a href="../../docs/lesson01-setting-work-envs/02-configure-account.html">Configure Your AWS Account</a>.</p></li>
+<li><p>the AWS Console login details of your IAM user account: <strong>login page</strong>, <strong>username</strong> and <strong>password</strong>.</p></li>
 </ul>
 </div>
 </div>
-<section id="outline" class="level1">
-<h1>Outline</h1>
-<section id="steps" class="level2">
-<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<section id="overview" class="level1">
+<h1>Overview</h1>
 <p>These are the main steps you will follow to configure internet access for the instances you will create with the Scripts:</p>
 <ol type="1">
-<li><p><strong>Create Your Base Domain Name</strong><br>
-The base domain name you will create will be configured so that the Scripts can create a sub-domain name for each instance. If you are using an <strong>AWS institutional account</strong>, your base domain name may itself be a sub-domain within a domain name managed by your institution. Check the callout at the end of this section to ensure your based domain name is properly configured by you or your IT department.</p></li>
-<li><p><strong>Create Your AWS Security Group</strong><br>
+<li><p><strong><a href="#create-your-base-domain-name">Create Your Base Domain Name</a></strong>.<br>
+<strong>This step is optional</strong>. If you decide not to create a base domain name, or do not specify it (as described in the next episode) when creating instances, the instances created by the Scripts will be accessed (logged in) using the IP addresses allocated to the instancs by AWS.<br>
+If you decide to create a base domain name, and specify it (as described in the next episode) when creating instances, the Scripts will create a sub-domain to access each instance. If you are using an <strong>AWS institutional account</strong>, your base domain name may itself be a sub-domain within a domain name managed by your institution. Check the callout at the end of this section to ensure your based domain name is properly configured by you or your IT department.</p></li>
+<li><p><strong><a href="#create-your-aws-security-group">Create Your AWS Security Group</a></strong>.<br>
 An AWS <strong>security group</strong> is a set of rules to configure the Internet communication ports of AWS instances. The security group you will create will enable the communication port used by the <code>ssh</code> program. We only need one security group as all instances need the same configuration. If you are using an <strong>AWS institutional account</strong>, you should not have any problem creating a security group — try to create it; if you cannot then contact your IT deparment.</p></li>
-<li><p><strong>Select an AWS Subnet to Access the Instances</strong><br>
-An AWS subnet is a network within an AWS region to which the instances created by the Scripts will be connected so that they can be accessed from anywhere. You will select one of the subnets available in the Ireland region. If you are using an <strong>AWS institutional account</strong>, you may be able or need to use a subnet already setup by your IT department — ask them.</p></li>
+<li><p><strong><a href="#select-an-aws-subnet-to-access-the-instances">Select an AWS Subnet to Access the Instances</a></strong>.<br>
+An AWS subnet is a network within an AWS region to which the instances created by the Scripts will be connected so that they can be accessed from anywhere.<br>
+<strong>This step is optional</strong>. If you do not specify a <strong>subnet-id</strong> (as described in the next episode) when creating instances, the Scripts will try to obtain a subnet-id from your AWS account. We have successfully tested the Scripts to obtain and use a subnet-id running the scripts with a personal AWS account and with an institutional AWS account. The personal account was configured to use the default subnets allocated by AWS. The institutional account was conﬁgured <strong>not</strong> to use the default subnets allocated by AWS, but other subnets conﬁgured by the IT department of our institution.<br>
+If the scripts cannot obtain a subnet-id, they will display a message describing how to obtain a subnet-id (see below the detailed instructions for this step): to search for vpc (virtual private cloud) in the AWS Console (in the search box at the top), then click on subnets on the left menu, and to copy one of the subnet-id’s displayed. <strong>NB</strong>: if no subnet-id is displayed in the AWS Console, and you are using an <strong>AWS institutional account</strong>, you will need to contact your IT department.</p></li>
 </ol>
-<p>You are going to create those three resources using the AWS Console with your IAM user account. These are the instructions to <strong>login to your IAM account</strong>: - Open a new browser window and enter the address of the login page for your account IAM users. The address contains your account alias or your 12-digit account number and has this form: - https://<strong>youraccountalias</strong>.signin.aws.amazon.com/console - https://<strong>123456789012</strong>.signin.aws.amazon.com/console - Enter your IAM username and password. You may also get a <strong>Security check</strong> to complete. - <strong>Set the region to Ireland</strong> (eu-west-1) if it is not, by clicking on the drop-down menu on the top to the right, see top right on the page below.</p>
-</section>
+<p>You must do the above steps using the AWS Console with your IAM user account. These are the instructions to <strong>login to your IAM account</strong>:</p>
+<ul>
+<li>Open a new browser window and enter the address of the login page for your account IAM users. The address contains your account alias or your 12-digit account number and has this form:
+<ul>
+<li>https://<strong>youraccountalias</strong>.signin.aws.amazon.com/console</li>
+<li>https://<strong>123456789012</strong>.signin.aws.amazon.com/console</li>
+</ul></li>
+<li>Enter your IAM username and password. You may also get a <strong>Security check</strong> to complete.</li>
+<li><strong>Set the region to Ireland</strong> (eu-west-1) if it is not, by clicking on the drop-down menu at the top to the right, see top right on the page below.</li>
+</ul>
 </section>
 <section id="create-your-base-domain-name" class="level1">
 <h1>1. Create Your Base Domain Name</h1>
@@ -422,13 +426,13 @@ If you are using an institutional AWS account:
 </div>
 <div class="callout-body-container callout-body">
 <p>Recall that the base domain name <code>awsplaicloud.com</code> was created with an AWS <strong>personal account</strong> and that instances domain names will have the form <code>instancename-001.awsplaicloud.com</code>, where <code>instancename-001</code> will be a subdomain name within <code>awsplaicloudcom</code>.</p>
-<p>If you are using an AWS <strong>institutional account</strong>, your base domain name will likely be something like <code>cloud-span.aws.york.ac.uk</code>, and instances domain names will have the form <code>instancename-001.cloud-span.aws.york.ac.uk</code>, where:</p>
+<p>Using an AWS <strong>institutional account</strong>, your base domain name will likely be something like <code>cloud-span.aws.york.ac.uk</code>, and instances domain names will have the form <code>instancename-001.cloud-span.aws.york.ac.uk</code>, where:</p>
 <ul>
 <li><code>york.ac.uk</code> is the <strong>base</strong> domain name of the University of York, and has two parts: the domain name <em>per se</em>, <code>york</code>, and the domain suffix or top-level domain (TLD), <code>ac.uk</code>, which must be chosen among various other suffixes such as: <code>.com</code>, <code>.edu</code>, <code>.net</code>, <code>.org</code>, <code>.link</code>, etc.</li>
 <li><code>aws</code> is a subdomain managed by the IT department to identify AWS domains used by a department or project within the university — similar subdomains are <code>gcp</code> for Google Cloud Platform, and <code>azure</code> for Microsoft cloud platform.</li>
 <li><code>cloud-span</code> is the subdomain configured by the IT department for the Cloud-SPAN project. Note that words separated by a hyphen (-) count as a single word in domain and subdomain names. It is the dot <code>.</code> that separates a domain name into subdomains, though some subdomains pairs are handled as one, for example: <code>co.uk</code> is handled as one TLD by AWS and probably by other providers of domain names.</li>
 <li><code>instancename-001</code> is the subdomain for the instance-001 created by the Scripts.</li>
-<li><strong>IMPORTANT</strong>: while both <code>cloud-span</code> and <code>instancename-001</code> are both subdomains (within <code>aws.york.ac.uk</code> and <code>cloud-span.aws.york.ac.uk</code> respectively), they are configured differently:
+<li><strong>IMPORTANT</strong>: while both <code>cloud-span</code> and <code>instancename-001</code> are both subdomains (respectively within <code>aws.york.ac.uk</code> and <code>cloud-span.aws.york.ac.uk</code>), they are configured differently:
 <ul>
 <li><code>cloud-span</code> is configured as a <strong>host zone</strong> (as <code>awsplaicloud.com</code> was configured above), and hence has an AWS <strong>host zone id</strong>. You need to configure, or ask your IT department to configure, your base domain name as a host zone so you can configure the Scripts with the corresponding <strong>host zone name</strong> and <strong>host zone id</strong>.</li>
 <li><code>instancename-001</code>, <code>instancename-002</code>.., <code>instancename-999</code> are configured by the Scripts as <strong>A Records</strong> (which map domain names to IPv4 addresses) within the specified host zone.</li>
