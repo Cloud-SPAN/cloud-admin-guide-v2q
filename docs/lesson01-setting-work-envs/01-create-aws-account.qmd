@@ -1,23 +1,30 @@
 ---
 title: "Create Your AWS Account"
 ---
-
 ::: callout-warning
 ## Prerequisites
+**Please read [Workshops Organisation](/index.qmd#workshops-organisation)** if you haven't done so. 
 
-**Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need: - if you are self-studying the course **or** attending a workshop using **your AWS account**: - an email address - a credit card --- new accounts get one-year of AWS Free Tier but a card number must be entered on creating an account - the phone number associated with the credit card - the address associated with the credit card - if you are attending a workshop using a **Cloud-SPAN AWS account** (and an AWS Linux instance), you **don't need** to complete this episode.
+If you are attending a workshop using a **Cloud-SPAN AWS account**, you **don't need** to complete this episode.
+
+If you are self-studying the course **or** attending a workshop using **your AWS account**, you must complete this episode and for that you will need:
+
+- an email address 
+- a credit card --- new accounts get one-year of AWS Free Tier but a card number must be entered on creating an account 
+- the phone number associated with the credit card 
+- the address associated with the credit card 
 :::
 
 ## Introduction
 
 These are the main steps you will follow to open your AWS account:
 
-1.  Sign-up to AWS with your email (as username) and password.
-2.  Select your account type (Personal) and enter your contact information.
-3.  Enter Billing Information: your credit card details.
-4.  Confirm your identity to AWS through a phone call or SMS message.
-5.  Select support plan (Basic) and complete sign-up.
-6.  Login to your AWS account.
+1.  [Sign-up to AWS with your email (as username) and password](#sign-up-to-aws-with-your-email-and-password).
+2.  [Select your account type (Personal) and enter your contact information](#select-your-account-type-personal-and-enter-your-contact-information).
+3.  [Enter Billing Information: your credit card details](#enter-billing-information-your-credit-card-details).
+4.  [Confirm your identity to AWS through a phone call or SMS message](#confirm-your-identity-to-aws-through-a-phone-call-or-sms-message).
+5.  [Select support plan (Basic) and complete sign-up](#select-support-plan-basic-and-complete-sign-up).
+6.  [Login to your AWS account](#login-to-your-aws-account).
 
 ## 1. Sign-up to AWS with your email and password
 
@@ -111,7 +118,7 @@ You will then be prompted to:
 3.  At this stage you can only login to the Root user account. In the next episode you will create an IAM account which you will use to create and manage AWS resources.
 :::
 
-Finally you will be logged in as Root user to the **Console Home** screen shown below, able to use your account. We will first configure your account in the next episode.
+Finally you will be logged in as the Root user to the **Console Home** screen shown below, able to use your account. We will first configure your account in the next episode.
 
 ![.](/images/open-acc/using-acc04-signedin-options-services-and-cookies.PNG.jpg){width="900px" fig-alt="Screen shot of AWS (management) Console in the browser showing the first page after you have logged in"}
 

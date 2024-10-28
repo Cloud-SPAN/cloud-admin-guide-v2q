@@ -2,30 +2,33 @@
 title: Setting Up Your Cloud and Terminal Environments
 ---
 
-Please read [**Workshops Organisation**](/index.qmd#workshops-organisation) if you haven't done so.
+**Please read [Workshops Organisation](/index.qmd#workshops-organisation)** if you haven't done so.
 
 The Bash shell scripts that automatically manage multiple AWS instances will be referred to as the "Scripts" from now on.
 
 You can use any of the following terminals to run the Scripts as instructed in this course:
 
 -   Linux terminals that run the Bash shell.
--   Windows Git Bash terminals --- see the [Setup](/docs/miscellanea/precourse-instructions.qmd) section.
--   Mac terminals that run the Bash shell or the Zsh shell --- see the [Setup](/docs/miscellanea/precourse-instructions.qmd) section to install or update Bash; Bash version must be 5.0 or higher.
+-   Windows Git Bash terminals --- see the [Precourse Instructions](/docs/miscellanea/precourse-instructions.qmd) section to install Git Bash.
+-   Mac terminals that run the Bash shell or the Zsh shell --- see the [Precourse Instructions](/docs/miscellanea/precourse-instructions.qmd) section to install or update Bash; Bash version must be 5.0 or higher.
 -   the **AWS CloudShell** terminal, a Linux terminal that runs the Bash shell by default. The AWS CloudShell is hosted on AWS and is used through the browser.
 
 # Overview
 
 The Scripts make use of the **AWS Command Line Interface** (AWS CLI), a software tool that enables you to interact with AWS through **commands** that can be run either within **shell scripts** or in any of those **terminals** above (and others). The Scripts run the AWS CLI to make requests to manage (create, allocate, ..., and delete) AWS services such as instances, storage, domain names, etc. For such requests to be successful, the **AWS CLI** and the target **AWS account**, wherein services will be managed, **need to be configured**.
 
-This lesson will guide you to: - create your AWS account. - configure your AWS account for daily work, including **enabling access with the AWS CLI**. - configure your **terminal environment** with the Scripts and the AWS CLI, the AWS CLI configured to manage resources within your AWS account.
+This lesson will guide you to:
+
+- create your AWS account --- Episode 1 (see menu on the left).
+- configure your AWS account for daily work, including **enabling access with the AWS CLI** --- Episode 2. 
+- configure your **terminal** environment with the Scripts and the AWS CLI configured to manage resources within your AWS account --- Episode 3.
+- configure your **AWS CloudShell** terminal environment with the Scripts (the AWS CLI is already configured to manage resources within your AWS account) --- Episode 4.
 
 ### Your AWS account
 
-Episodes 1 and 2 provide the instructions to create and configure your AWS account.
+We organised the instructions in this course assuming that **you are going to create and use your own** AWS account, and hence you have full permissions to configure it as instructed in the course --- we refer to such an account as an AWS **personal account**.
 
-We organised the instructions in all episodes (4 episodes in lesson 1 and 4 in lesson 2) assuming that you are going to **create and use your own** AWS account, and hence you have full permissions to configure it as instructed in the course --- we refer to such an account as an AWS **personal account**.
-
-However, **you can use an existing AWS account** you have access to. Throughout the course, where relevant, we point out what "extra steps" you may need to do to configure your account as required to run the Scripts.
+However, **you can use an existing AWS account** you already have access to. Throughout the course, where relevant, we point out what "extra steps" you may need to do to configure your account as required to run the Scripts.
 
 If you already have an AWS account that you would like to use to run the Scripts, skip Episode 1 and configure your account as described in Episode 2. Specifically, to enable **access with the AWS CLI**, you need to have/create an IAM (Identity and Access Management) user account enabled with **programmatic access** based on **Access key ID** and **Secret access key** credentials. If the AWS account you are using is your personal account, you have full permissions to do the configuration presented in that section.
 
@@ -48,7 +51,7 @@ The course does not cover the configuration and use of those or similar security
 
 Episode 3 provides the instructions to install the Scripts and the AWS CLI in your Git Bash, Linux or Mac terminal environment, and to configure the AWS CLI to use your credentials (private and public keys) when invoked within the Scripts to request AWS service operations. The credentials will be generated using the AWS Console when you configure your AWS account in Episode 2.
 
-Episode 4 provides the instructions to configure the Scripts in the AWS CloudShell. The AWS CloudShell is "a browser-based \[Linux Bash terminal\] shell that gives you command-line access to your AWS resources" and **has the AWS CLI** already **installed and ready to run** using "credentials" derived from the information you use to login to the AWS Console. Hence you only need to configure the Scripts, but **you must be logged in** to your AWS account through **the AWS Console** to be able **to run the AWS CloudShell** and the Scripts.
+Episode 4 provides the instructions to configure the Scripts in the AWS CloudShell. The AWS CloudShell is "a browser-based \[Linux Bash terminal\] shell that gives you command-line access to your AWS resources", and **has the AWS CLI** already **installed and ready to run** using "credentials" derived from the information you use to login to the AWS Console. Hence you only need to configure the Scripts. **You must be logged in** to your AWS account through **the AWS Console** to be able **to run the AWS CloudShell** and the Scripts.
 
 In this course you will be using the AWS Console and, through the Scripts, the AWS CLI to manage AWS services but there are other ways to manage AWS services, see the callout below.
 

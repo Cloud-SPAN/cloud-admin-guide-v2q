@@ -1,58 +1,64 @@
 ---
 title: Managing AWS Instances
 ---
-Please read **[Workshops Organisation](/index.qmd#course-overview)** if you haven't done so.
+Please read **[Workshops Organisation](/index.qmd#workshops-organisation)** if you haven't done so.
 
 
 The environments and configurations presented in the previous lesson, [Setting Up Your Cloud and Terminal Environments](/docs/lesson01-setting-work-envs/index.qmd), comprise a **base development environment** to create and manage AWS services with both the AWS Console and the AWS CLI (command line interface). If you are using an AWS **personal account** (that you created and configured as described in that lesson), you can create and manage **any service in any AWS region**, as your account was configured with the AdministratorAccess permissions policy which "*Provides full access to AWS services and resources*". 
 
-Towards using the Scripts to create and manage AWS instances, we will first need to configure **Internet access** for the instances. The instances configuration and the Scripts were designed for each instance to be accessed through a **domain name** and with the program `ssh` using an encrypted login key, as outlined below. Hence, we will create a **base domain name** from which the Scripts will create, for each instance, a **subdomain** name to identify and make each instance accessible with `ssh`. Creating a domain name in your AWS account will incur some cost, as low as US $5.00 per year or more depending on the  *suffix /top-level domain* (TLD) that you choose for your base domain name. Examples of TLDs include: `.com`, `.net`, `.org`, `.link`, among many others (the cheapest in AWS is `.link`). If you already have a domain name in place, you can use that instead. Your account will also incur costs for any service you launch that is not included in the **AWS Free Tier** --- check the lesson [AWS Costs Explained](https://cloud-span.github.io/create-aws-instance-3-costs-explained/) from another Cloud-SPAN course, so you know your free limits. 
+Towards using the Scripts to create and manage AWS instances, we will first need to configure **Internet access** for the instances. The instances configuration and the Scripts were designed for each instance to be accessed with the program `ssh` using an encrypted login key and an **optional** *domain name*, as outlined below. If you decide on using domain names to access instances, you must then create a **base domain name** from which the Scripts will create a **subdomain** for each instance. Creating a base domain name in your AWS account will incur some cost, as low as US $5.00 per year or more depending on the  *suffix /top-level domain* (TLD) that you choose for your base domain name. Examples of TLDs include: `.com`, `.net`, `.org`, `.link`, among many others (the cheapest in AWS is `.link`). If you already have a domain name in place, you can use that instead. Your account will also incur costs for any service you launch that is not included in the **AWS Free Tier** --- check the lesson [AWS Costs Explained](https://cloud-span.github.io/create-aws-instance-3-costs-explained/) from another Cloud-SPAN course, so you know your free limits. 
 
-If you are using an AWS **institutional account** (that was created and configured by the IT department in your institution), you will most likely not be directly responsible for the cost of using a domain name or any other service with your account. However, you may need to ask your IT department to configure a base domain name for you, or to follow some guidelines to specify the domain name. Your account may also have restrictions as to the **AWS region where you can create and manage AWS services**. For instance, the AWS institutionl account of the Cloud-SPAN project can only make use of services in the eu-west-1 Ireland region, and the Cloud-SPAN base domain name was suggested and configured by our IT department. If your institutional account is restricted to use an AWS region other than Ireland, you may need to ask your IT department to make a copy, to your AWS account, of the Amazon Machine Image (**AMI**) template used by the Scripts to create AWS instances. **Your IT department should be able to help you** with this and other matters; just let them know what you need to configure in your AWS account to use the Scripts, and whenever you come accross **Access Denied** or similar messages when using the Scripts.
+If you are using an AWS **institutional account** (that was created and configured by the IT department in your institution), and you decide on using domain names, you will most likely not be directly responsible for the cost of using domain names or any other service with your account. However, you may need to ask your IT department to configure the base domain name for you, or to follow some guidelines to specify that domain name. Your account may also have restrictions as to the **AWS region where you can create and manage AWS services**. For instance, the AWS institutionl account of the Cloud-SPAN project can only make use of services in the eu-west-1 Ireland region, and the Cloud-SPAN base domain name was suggested and configured by our IT department. If your institutional account is restricted to use an AWS region other than Ireland, you may need to ask your IT department to make a copy, to your AWS account, of the Amazon Machine Image (**AMI**) template used by the Scripts to create AWS instances. **Your IT department should be able to help you** with this and other matters; just let them know what you need to configure in your AWS account to use the Scripts, and whenever you come accross **Access Denied** or similar messages when using the Scripts.
 
 # Overview
-We use the Scripts to create and manage multiple AWS instances for training. When running a workshop, a number of instances is created as a copy of an AMI that is configured with ‘omics data and software analysis tools that are relevant to the workshop.  Each student is granted exclusive access to one instance.
+We use the Scripts to create and manage multiple AWS instances for training. When running a workshop, for each participant an instance is created as a copy of an AMI that is configured with ‘omics data and software analysis tools that are relevant to the workshop.
 
-Each instance is created to be accessed through a **domain name** using `ssh` and an encrypted login key file. 
+Workshop participants login to the `csuser` account in their instance, using `ssh` with an encrypted login key file and **either** with a domain name (if a base domain name was configured and is specified to the Scripts as described later in the course) **or** with the IP address allocated to the instance by AWS.
 
-For example, using the base domain name of the Cloud-SPAN project, `cloud-span.aws.york.ac.uk`, the (sub) domain name for an instance named `instance001` would be `instance001.cloud-span.aws.york.ac.uk`.
+Examples. Suppose two instances have been created with the names `instance01` and `instance02` (which must be specified in a file that is passed to the Scripts as described later in the course). Each instance would be accessed as shown below (depending on whether a base domain name was specified to create the instances):
 
-Using the base domain name of an AWS personal account, for example, `awsplaicloud.com`, the domain name for the same instance name would be `instance001.awsplaicloud.com`.
-
-Once an instance is created, the end user will access the instance `csuser` account with `ssh` providing the name of the corresponding login key file as shown below.
-
-Using the AWS Cloud-SPAN institutional account base domain name:
 ``` {.bash filename="Code"}
-$ ssh -i login-key-instance001.pem  csuser@instance001.cloud-span.aws.york.ac.uk     ### -i stands for identity file
+$ ssh -i login-key-instance01.pem  csuser@instance01.cloud-span.aws.york.ac.uk
+$ ssh -i login-key-instance02.pem  csuser@instance02.cloud-span.aws.york.ac.uk
+
+$ ssh -i login-key-instance01.pem  csuser@instance01.awsplaicloud.com
+$ ssh -i login-key-instance02.pem  csuser@instance02.awsplaicloud.com
+
+$ ssh -i login-key-instance01.pem  csuser@10.134.43.226
+$ ssh -i login-key-instance02.pem  csuser@43.226.10.134
 ```
 
+The `ssh` parameter `-i` stands for identify file. 
 
-Using the personal account based domain name:
-``` {.bash filename="Code"}
-$ ssh -i login-key-instance001.pem  csuser@instance001.awsplaicloud.com              
-```
+The first two lines correspond to the case where the base domain name specified was that of the  Cloud-SPAN project institutional account: `cloud-span.aws.york.ac.uk`.
 
-Each instance domain name is mapped to an IP address. Domain names, IP addresses, and login keys are created *automatically* on creating the corresponding instances, and deleted likewise when the corresponding instances are deleted.
+The third and fourth lines correspond to the case where the base domain name specified was that of an AWS personal account, for example: `awsplaicloud.com`.
+
+The last two lines correspond to the case where **no** base domain name was specified. Note that in this case the instance names are still used to identify the login key files but cannot be used (as part of a domain name) to identify the corresponding instances.  
 
 ### Episode 1: Configure Instances Internet Access
 
 Episode 1 will guide you to configure internet access for the instances you will create with the Scripts. This involves:
-- creating a base domain name 
+
+- creating a base domain name --- **optional** 
 - creating a few access rules for the communication ports used by the `ssh` program
-- selecting an AWS network to which the instances will be attached so that they can be reached from anywhere with `ssh`
+- selecting an AWS network to which the instances will be attached so that they can be reached from anywhere with `ssh` --- **optional** but please read the overview of the episode
 
  <!-- this reference is to a section in a another page file is right -- don't delete [Create a Base Domain Name](01-configure-instances-internet-access#1-create-a-base-domain-name). -->
+
 ### Episode 2: Instances Management Tasks Using the Scripts
 
 Episode 2 is the guide to using the Scripts to create and manage multiple instances for a course /workshop. The episode shows:
+
 - how to configure the Scripts with the names of the instances to create and the AWS resources to use (base domain name, AMI template, etc.).
 - how to organise the Scripts configuration files for multiple courses. 
-- how to use /run the Scripts and manage unforseen instances management requests such as cancellations by workshop participants
+- how to use /run the Scripts 
+- how to manage unforseen instances management requests such as cancellations or late registrations by workshop participants, and
 - some troubleshooting
 
 ### Episode 3: AMIs Management
 
-Episode 3 is about managing Amazon Machine Images (AMIs). As AWS instances are copies of an AMI, you need to create a new AMI if the software or data used in a course change, but there are other reasons that may require creating a new AMI. The episode presents the management of AMIs that we have done as part of managing AWS instances with the Scripts.
+Episode 3 is about managing Amazon Machine Images (AMIs). As AWS instances are copies of an AMI, you need to create a new AMI if the software or data used in a course change, but there are other reasons that may require creating a new AMI. The episode presents the management of AMIs that we have done as part of managing AWS instances with the Scripts, including how to create and customise a new AMI.
 
 ### Episode 4: The Scripts Design
 
