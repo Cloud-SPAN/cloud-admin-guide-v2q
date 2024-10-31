@@ -6,17 +6,19 @@ title: "AMIs Management"
 **Please read [Workshops Organisation](/index.qmd#course-overview)** if you haven't done so. To complete this episode you will need:
 
 - to have completed the previous episode: [Instances Management Tasks Using the Scripts](./02-instances-management.qmd).
-- if you are self-studying the course **or** attending a workshop using **your AWS account**:
-  - to have created your AWS account as described in [Create Your AWS Account](/docs/lesson01-setting-work-envs/01-create-aws-account.qmd) (Episode 1, Lesson 1).
-  - to have configured your AWS account as described in [Configure Your AWS Account](/docs/lesson01-setting-work-envs/02-configure-account.qmd) (Episodes 2, Lesson 1).
+
+- if you are attending a workshop using a **Cloud-SPAN AWS account**, you **will be given** the necessary information at the workshop to complete this episode.
+
+- if you are self-studying the course **or** attending a workshop using **your AWS account**, you will need:
+  - to have created your AWS account as described in [Create Your AWS Account](/docs/lesson01-setting-work-envs/01-create-aws-account.qmd).
+  - to have configured your AWS account as described in [Configure Your AWS Account](/docs/lesson01-setting-work-envs/02-configure-account.qmd).
   - to have configured your terminal environment as described in either of these episodes:
-    - [Configure Your Terminal Environment](/docs/lesson01-setting-work-envs/03-configure-terminal.qmd) (Episode 3, Lesson 1) --- **or** 
-    - [Configure Your AWS CloudShell Environment](/docs/lesson01-setting-work-envs/04-configure-cloudshell.qmd) (Episode 4, Lesson 1)
-   - to have configured instances internet access as described in [Configure Instances Internet Access](./01-configure-instances-internet.qmd) (previous episode, this lesson). 
+    - [Configure Your Terminal Environment](/docs/lesson01-setting-work-envs/03-configure-terminal.qmd) --- **or** 
+    - [Configure Your AWS CloudShell Environment](/docs/lesson01-setting-work-envs/04-configure-cloudshell.qmd).
+   - to have configured instances internet access as described in [Configure Instances Internet Access](./01-configure-instances-internet.qmd). 
   - your **base domain name**.
   - the AWS resource IDs of your: **host zone**, **security group**, and **subnet**.
   - the AWS Console login details of your IAM user account: **login page**, **username** and **password**. 
-- if you are attending a workshop using a **Cloud-SPAN AWS account** (and an AWS Linux instance), you **will be given** the necessary information at the workshop.
 :::
 
 # Introduction
@@ -27,26 +29,26 @@ A software enviroment is called an **Amazon Machine Image** (AMI) in AWS termino
 
 In the last episode we used the Scripts to create multiple AWS instances through **specifying** (in configuration files) the **instances names**, the id of the **AMI** from which to create the instances, etc. For each request to create an instance, AWS **makes** a copy of the specified AMI, **attaches** the copy to the specified "hardware platform" (we specified *t3.small*), and **configures** the copy which then becomes a proper runnable and accessible instance. The Cloud-SPAN project uses Linux Ubuntu AMIs, and hence the configuring **by AWS** of each AMI copy includes enabling the **ubuntu** user to login, through adding the **public key** part of the login key created to access the instance to the file `/home/ubuntu/.ssh/authorized_keys` in the **ubuntu** account. Finally, each instance is configured (by our script `aws_instances_configure.sh`) to enable the **csuser** to login, through copying that file in the ubuntu account to the file `/home/csuser/.ssh/authorized_keys` in the **csuser** account.
 
-**AMIs are created from AWS instances** in three main steps: (**1**) **creating** an instance, (**2**)  **configuring** the instance as *required* regarding software and data, and (**3**) **requesting** AWS *to create* an AMI from the instance --- AWS copies the instance *software environment* into an AMI *software enviroment* from which other instances can be created. Steps 1 and 3 are the same for any AMI and hence are **mechanical**. Step 2, **configuring** an 'instance-to-become-AMI', may be simple or rather complex depending on what software/data needs updating, and may involve design.
+**AMIs are created from AWS instances** in three main steps: (**1**) **creating** an instance, (**2**)  **configuring** the instance as *required* regarding software and data, and (**3**) **requesting** AWS *to create* an AMI from the instance --- AWS copies the instance *software environment* into an AMI *software enviroment* from which other instances can be created. Steps 1 and 3 are the same for any AMI and hence are **mechanical**. Step 2, **configuring** an instance (that is) to become AMI, may be simple or rather complex depending on what software/data needs updating, and may involve design.
 
-This episode presents the management of AMIs that we do as part of managing AWS instances with the Scripts. The first 3 sections cover the **mechanical part**, steps 1 and 3 above, which are rather simple once you have gone through the tasks involved. The last 3 sections cover our approach to and experience in **configuring** instances to-become-AMIs. Knowing the configuring we have done and some scripts we have developed to facilitate common configuring tasks will help you not to start from scratch.
+This episode presents the management of AMIs that we do as part of managing AWS instances with the Scripts. The first 3 sections cover the **mechanical part**, steps 1 and 3 above, which are rather simple once you have gone through the tasks involved. The last 3 sections cover our approach to and experience in **configuring** instances to become AMIs. Knowing the configuring we have done and some scripts we have developed to facilitate common configuring tasks will help you not to start from scratch.
 
-## Sections
-1. **Create an 'instance-to-become-AMI'**\
+# Sections
+1. **[Create an instance to become AMI](#create-an-instance-to-become-ami)**\
 In this section you are going to create an 'instance-to-become-AMI' using the file-directory structure we use to manage such instances. 
 
-2. **Create an AMI and make it Public in the AWS Console**
+2. **[Create an AMI and make it Public in the AWS Console](#create-an-ami-and-make-it-public-in-the-aws-console)**
 
-3. **Delete an AMI in the AWS Console**\
+3. **[Delete an AMI in the AWS Console](#delete-an-ami-in-the-aws-console)**\
 We use the AWS Console to create an AMI, to make it public or private, and to delete it. Sections 2 and 3 will guide you to perform those tasks with the AWS Console. --- In case you are wondering about **scripting AMIs management**, yes AMIs can also be managed (created, deleted, etc.) with the AWS CLI, and hence a set of scripts (like the Scripts that manage instances) could be developed to manage AMIs. We haven't had the need to do so, however: the AMI tasks we need to perform are rather simple in the AWS Console and only rarely needed in the Cloud-SPAN project, so far.
 
-4. **Instances management for courses, AMIs and tests**\
+4. **[Instances management for courses, AMIs and tests](#instances-management-for-courses-amis-and-tests)**\
 Section 4 introduces the file-directory structure we use to manage instances to-become-AMIs. This section describes other AMI management practices we follow.
 
-5. **When to configure an 'instance-to-become-AMI'**\
+5. **[When to configure an instance to become AMI](#when-to-configure-an-instance-to-become-ami)**\
 Based on our experience in configuring instances to-become-AMIs within the Cloud-SPAN project, this section presents our viewpoint as to when and how to create an AMI.
 
-6. **Configure an 'instance-to-become-AMI'**\
+6. **[Configure an instance to become AMI](#configure-an-instance-to-become-ami)**\
 This section shows our approach to update both system software and end-user software using various scripts we have developed to automate some of the tasks involved.
 
 # 1. Create an 'instance-to-become-AMI'
@@ -475,7 +477,7 @@ By the way, you can change the instance type of an instance in the AWS Console a
 
 # 6. Configure an instance to become AMI
 
-THIS section presents our approach to configure an 'instance-to-become-AMI' including:
+THIS section presents our approach to configure an instance to become AMI including:
 
 6.1. Updating system software\
 6.2. Changing the end-user username\
