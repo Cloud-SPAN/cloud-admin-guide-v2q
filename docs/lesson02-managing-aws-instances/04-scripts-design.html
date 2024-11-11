@@ -265,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="toc-actions"><ul><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/edit/main/docs/lesson02-managing-aws-instances/04-scripts-design.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Cloud-SPAN/nerc-metagenomics-v2q/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content page-columns page-full column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/index.html">Managing AWS Instances</a></li><li class="breadcrumb-item"><a href="../../docs/lesson02-managing-aws-instances/04-scripts-design.html">The Scripts Design</a></li></ol></nav>
 <div class="quarto-title">
@@ -296,60 +296,59 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This episode has no hands-on activities but you should have covered the two previous episodes, <a href="./02-instances-management">Instances Management Tasks Using the Scripts</a> and <a href="./03-ami-management">AMIs Management</a>, to better understand the concepts presented in this episode.</p>
+<p>This episode has no hands-on activities but you should have covered the two previous episodes, <a href="../../docs/lesson02-managing-aws-instances/02-instances-management.html">Instances Management Tasks Using the Scripts</a> and <a href="../../docs/lesson02-managing-aws-instances/03-ami-management.html">AMIs Management</a>, to better understand the concepts presented in this episode.</p>
 </div>
 </div>
 <section id="overview" class="level1">
 <h1>Overview</h1>
 <ol type="1">
-<li><strong>The Scripts Design</strong><br>
+<li><strong><a href="#the-scripts-design">The Scripts Design</a></strong><br>
 How the Scripts are organised and how they work internally are the subjects of this section.</li>
-<li><strong>The AWS CLI Command Reference</strong><br>
+<li><strong><a href="#the-aws-cli-command-reference">The AWS CLI Command Reference</a></strong><br>
 The Scripts functionality depends on the AWS CLI commands. This section briefly describes the AWS CLI interface and how we used it to develop the Scripts.</li>
-<li><strong>Improving the Scripts</strong><br>
+<li><strong><a href="#improving-the-scripts">Improving the Scripts</a></strong><br>
 This section describes a few improvements for the Scripts that we may later undertake.</li>
 </ol>
 </section>
-<section id="the-scripts-design" class="level1">
+<section id="the-scripts-design" class="level1 page-columns page-full">
 <h1>1. The Scripts Design</h1>
-<p>This section describes the organisation and workings of the Scripts. After you read this section, you will know where to look into the Scripts in case you need to improve them.</p>
+<p>This section describes the organisation and workings of the Scripts. The paper <a href="https://gigabytejournal.com/articles/133">Automated management of AWS instances for training</a>, in the section “<strong><em>The scripts design and implementation</em></strong>” discusses other aspects of the scripts design that complement this section. After you read this section and that section in the paper, you will know where to look into the Scripts in case you need to improve them.</p>
 <p>Let’s recall the Scripts names:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Output</strong></pre>
 </div>
-<div class="sourceCode" id="cb1" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_domainNames_create.sh</span>        aws_instances_configure.sh  csinstances_create.sh</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_domainNames_delete.sh</span>        aws_instances_launch.sh     csinstances_delete.sh</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_allocate.sh</span>       aws_instances_terminate.sh  csinstances_start.sh</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_associate2ins.sh</span>  aws_loginKeyPair_create.sh  csinstances_stop.sh</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_deallocate.sh</span>     aws_loginKeyPair_delete.sh</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_disassociate.sh</span>   colour_utils_functions.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1" data-filename="Output"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>aws_domainNames_create.sh       aws_instances_terminate.sh      csinstances_create.sh</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>aws_domainNames_delete.sh       aws_loginKeyPair_create.sh      csinstances_delete.sh</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>aws_instances_configure.sh      aws_loginKeyPair_delete.sh      csinstances_start.sh</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>aws_instances_launch.sh         colour_utils_functions.sh       csinstances_stop.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="organisation-into-modules" class="level2">
 <h2 class="anchored" data-anchor-id="organisation-into-modules">Organisation into modules</h2>
-<p>Recall that you run <code>csinstances_create.sh</code> to create one or multiple <strong>instances</strong> specified in an “<strong><em>instancesNames.txt</em></strong>” file (whose name you can choose), and that each instance is accessed with <code>ssh</code> using a <strong>login key</strong> and a <strong>domain name</strong> that is mapped to an <strong>IP address</strong>.</p>
+<p>Recall that you run <code>csinstances_create.sh</code> to create one or multiple <strong>instances</strong> specified in an “<strong><em>instancesNames.txt</em></strong>” file (whose name you can choose), and that each instance is accessed with <code>ssh</code> using a <strong>login key</strong> and a <strong>domain name</strong> or an <strong>IP address</strong> (if domain names are not managed).</p>
 <p>The main code of <code>csinstances_create.sh</code> is below. <strong>All it does</strong> is to run the <code>aws_*.sh</code> scripts that <em>actually</em> <strong>create</strong> instances and related resources, passing to each such script the parameter it received, the path/name of the “<em>instancesNames.txt</em>” file which, being the first and only parameter you specify, is stored in the script variable <strong><code>$1</code></strong></p>
 <p>The script <code>csinstances_delete.sh</code> is organised and works the same way but it runs the scripts that <em>actually</em> <strong>delete</strong> instances and related resources instead.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Output</strong></pre>
+<pre><strong>csinstances_create.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb2" data-filename="Output"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_loginKeyPair_create.sh</span>      <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_message</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_instances_launch.sh</span>         <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_message</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_allocate.sh</span>      <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_message</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_domainNames_create.sh</span>       <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_message</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_elasticIPs_associate2ins.sh</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_message</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_instances_configure.sh</span>      <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_message</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2" data-filename="csinstances_create.sh"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">check_theScripts_csconfiguration</span>   <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_msg</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_loginKeyPair_create.sh</span>         <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_msg</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_instances_launch.sh</span>            <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_msg</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${1</span><span class="op">%</span>/<span class="pp">*</span><span class="va">}</span><span class="st">/.csconfig_DOMAIN_NAMES.txt"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span>  <span class="co">### %/* gets the inputs directory path</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">aws_domainNames_create.sh</span>      <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_msg</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">aws_instances_configure.sh</span>         <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">||</span> <span class="kw">{</span> <span class="ex">message</span> <span class="st">"</span><span class="va">$error_msg</span><span class="st">"</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>That all means that each <code>aws_*.sh</code> script is in charge of:</p>
 <ul>
-<li>a <strong>single type</strong> of AWS operation request (either <em>create, allocate, .., deallocate, or delete</em>)</li>
-<li>for <strong>one</strong> or <strong>multiple</strong> AWS resources <strong>all of the same type</strong> (either <em>instance, login key, domain name, or IP address</em>).<br>
-Each script will make an AWS operation request for each instance name specified in the file “<em>instancesNames.txt</em>”.</li>
+<li>a <strong>single type</strong> of AWS service request (either <em>create, allocate, .., deallocate, or delete</em>)</li>
+<li>for <strong>one</strong> or <strong>multiple</strong> AWS resources <strong>all of the same type</strong> (either <em>instance, login key, or domain name</em>).<br>
+Each script makes an AWS service request for each instance name specified in the file “<em>instancesNames.txt</em>”.</li>
 </ul>
 <p>Such organisation means that <strong>all</strong> login keys are created first, then <strong>all</strong> instances are created, etc. — and vice versa: <strong>all</strong> instances are deleted first, then <strong>all</strong> login keys are deleted, etc.</p>
-<p>An alternative way to organise the Scripts would be such that: each instance and its resources (login key, domain name, and IP address) are created first, then a second instance and its resources are created, and so on. But the code gets much more complicated.</p>
+<p>An alternative way to organise the Scripts would be such that: each instance and its resources (login key, etc.) are created first, then a second instance and its resources are created, and so on. But the code gets much more complicated.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -373,15 +372,15 @@ Exercise
 </section>
 <section id="the-aws_.sh-scripts-main-processing-steps" class="level2">
 <h2 class="anchored" data-anchor-id="the-aws_.sh-scripts-main-processing-steps">The <code>aws_*.sh</code> scripts main processing steps</h2>
-<p>Each <code>aws_*.sh</code> script makes an AWS operation request for each instance name specified in the file “<em>instancesNames.txt</em>” through these main steps:</p>
+<p>Each <code>aws_*.sh</code> script makes an AWS service request for each instance name specified in the file “<em>instancesNames.txt</em>” through these main steps:</p>
 <ol type="1">
-<li><p>Determine the location of relevant “shared data” from the path of the file “<em>instancesNames.txt</em> (received as parameter):</p>
+<li><p>getting the location of relevant “shared data” from the path of the file “<em>instancesNames.txt</em> (received as parameter), that is:</p>
 <ul>
-<li>the path of the configuration files <code>resourcesIDs.txt</code>, <code>tags.txt</code> — required by the scripts that <strong>create</strong> instances and related resources.</li>
-<li>the path of results files (in the <code>outputs</code> directory) that contain the AWS resources IDs — required by the scripts that <strong>delete</strong> instances and related resources, and <code>csinstances_stop.sh</code> and <code>csinstances_start.sh</code>.</li>
+<li>the path of the configuration files <code>resourcesIDs.txt</code> and <code>tags.txt</code>, whose content is required by the scripts that <strong>create</strong> instances and related resources.</li>
+<li>the path of results files (in the <code>outputs</code> directory) that contain the AWS resources IDs, which are required by the scripts that <strong>delete</strong> instances and related resources, and the scripts <code>csinstances_stop.sh</code> and <code>csinstances_start.sh</code>.</li>
 </ul></li>
-<li><p>makes a list of instances names from the names specified in the file “<em>instancesNames.txt</em>”.</p></li>
-<li><p>loop through the instances names list to request, for each instance, the script-relevant AWS operation through running <code>aws</code> passing required parameters — some extracted from the files in step 1.</p></li>
+<li><p>making a list of instances names from the names specified in the file “<em>instancesNames.txt</em>”.</p></li>
+<li><p>looping through the instances names list to request, for each instance, the script-relevant AWS service operation through running <code>aws</code> passing required parameters — some parameters are extracted from the files in step 1.</p></li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -398,7 +397,7 @@ Exercise
 </div>
 </div>
 </section>
-<section id="the-scripts-shared-data-communication" class="level2">
+<section id="the-scripts-shared-data-communication" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="the-scripts-shared-data-communication">The Scripts “shared data” communication</h2>
 <p>Breaking down the functionality of the Scripts as described above, or of any software system for that matter, involves designing communication between the parts. Such communication can be based either on <strong>message passing</strong> or <strong>shared data</strong>. Message passing is <strong>explicit</strong> communication between two or more specific parts. Shared data is <strong>implicit</strong> communication: all parts know where the shared data is.</p>
 <p>The Scripts use both types of communication:</p>
@@ -413,124 +412,135 @@ Exercise
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
 </div>
-<div class="sourceCode" id="cb3" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">instancesNamesFile</span><span class="op">=</span><span class="va">${1}</span>               <span class="co"># $1 or ${1} is the path of "instancesNames.txt" received as parameter</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">inputsDir</span><span class="op">=</span><span class="va">${1</span><span class="op">%</span>/<span class="pp">*</span><span class="va">}</span>                     <span class="co"># inputs directory path</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDir</span><span class="op">=</span><span class="va">${1</span><span class="op">%</span>/inputs<span class="pp">*</span><span class="va">}</span>/outputs      <span class="co"># outputs directory path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">instancesNamesFile</span><span class="op">=</span><span class="va">${1}</span>           <span class="co"># $1 or ${1} is the path of "instancesNames.txt" received as parameter</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">inputsDir</span><span class="op">=</span><span class="va">${1</span><span class="op">%</span>/<span class="pp">*</span><span class="va">}</span>                 <span class="co"># inputs directory path</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDir</span><span class="op">=</span><span class="va">${1</span><span class="op">%</span>/inputs<span class="pp">*</span><span class="va">}</span>/outputs  <span class="co"># outputs directory path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="making-the-path-of-the-outputsresults-directory" class="level3">
 <h3 class="anchored" data-anchor-id="making-the-path-of-the-outputsresults-directory">Making the path of the <code>outputs</code>/“results” directory</h3>
-<p>Then, each <code>aws_*.sh</code> script that <strong>creates</strong> instances or related resources will use only one of the assignment statements below to make the path of the directory where it will create a file to write the results of each AWS operation request that it will issue for each instance name specified in the file “<em>instancesNames.txt</em>”:</p>
+<p>Then, each <code>aws_*.sh</code> script that <strong>creates</strong> instances or related resources will use only one of the assignment statements below to make the path of the directory where it will create a file to write the results of each AWS service request that it will issue for each instance name specified in the file “<em>instancesNames.txt</em>”:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
 </div>
 <div class="sourceCode" id="cb4" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/login-keys-creation-output</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/instances-creation-output</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/ip-addresses-allocation-output  </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/domain-names-creation-output</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/ip-addresses-association-output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/domain-names-creation-output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Each <code>aws_*.sh</code> script that <strong>deletes</strong> instances or related resources will use only one of the assignment statements below, instead:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
 </div>
-<div class="sourceCode" id="cb5" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/ip-addresses-deallocate-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/login-keys-delete-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/instances-delete-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/domain-names-delete-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/ip-addresses-disassociate-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/login-keys-delete-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/instances-delete-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">outputsDirThisRun</span><span class="op">=</span><span class="va">${outputsDir}</span>/domain-names-delete-output<span class="kw">`</span><span class="fu">date</span> <span class="st">'+%Y%m%d.%H%M%S'</span><span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You will remember that the results of deleting instances and related resources are written to directories whose names are suffixed with the current date and time.</p>
 </section>
-<section id="getting-the-shared-data-in-the-files-tags.txt-and-resourcesids.txt" class="level3">
+<section id="getting-the-shared-data-in-the-files-tags.txt-and-resourcesids.txt" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="getting-the-shared-data-in-the-files-tags.txt-and-resourcesids.txt">Getting the “shared data” in the files <code>tags.txt</code> and <code>resourcesIDs.txt</code></h3>
-<p>The scripts <code>aws_elasticIPs_allocate.sh</code>, <code>aws_instances_launch.sh</code> and <code>aws_loginKeyPair_create.sh</code> load the labels in the file <code>inputs/tags.txt</code> into the array <code>tags</code>, and then copy the labels values from the <code>tags</code> array to variables with meaningful names:</p>
+<p>The scripts <code>aws_instances_launch.sh</code> and <code>aws_loginKeyPair_create.sh</code> load the tags in the file <code>../inputs/tags.txt</code>, if it exists, into the variable <code>tagsAWS</code> as a <code>json</code> key-value object (only 10 tags are processed):</p>
+<!-- ::: {.column-page} -->
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
 </div>
-<div class="sourceCode" id="cb6" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">tags</span><span class="op">=</span><span class="va">(</span> <span class="kw">`</span><span class="fu">cat</span> <span class="va">$inputsDir</span>/tags.txt<span class="kw">`</span> <span class="va">)</span>  </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">tag_name_value</span><span class="op">=</span><span class="va">${tags</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="va">}</span>           </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">tag_group_value</span><span class="op">=</span><span class="va">${tags</span><span class="op">[</span><span class="dv">3</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">tag_project_value</span><span class="op">=</span><span class="va">${tags</span><span class="op">[</span><span class="dv">5</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">tag_status_value</span><span class="op">=</span><span class="va">${tags</span><span class="op">[</span><span class="dv">7</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="va">tag_pushedby_value</span><span class="op">=</span><span class="va">${tags</span><span class="op">[</span><span class="dv">9</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="va">tag_definedin_value</span><span class="op">=</span><span class="va">${tags</span><span class="op">[</span><span class="dv">11</span><span class="op">]</span><span class="va">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># process the tags.txt file if it exists. If so, it has been checked before as to having 2 fields (keyName keyValue) per line</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># only 10 tags (key-value pairs, 20 fields) are processed.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">tagsAWS</span><span class="op">=</span><span class="st">""</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="va">$inputsDir</span>/tags.txt <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">TAGS</span><span class="op">=</span><span class="va">(</span> <span class="kw">`</span><span class="fu">cat</span> <span class="va">$inputsDir</span>/tags.txt<span class="kw">`</span> <span class="va">)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">tagsNumber</span><span class="op">=</span><span class="va">${</span><span class="op">#</span><span class="va">TAGS</span><span class="op">[@]</span><span class="va">}</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">[[</span> <span class="va">$tagsNumber</span> <span class="ot">&gt;</span> 20 <span class="kw">]]</span> <span class="kw">&amp;&amp;</span> <span class="kw">((</span> <span class="va">tagsNumber</span><span class="op">=</span><span class="dv">20</span> <span class="kw">))</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="kw">((</span> <span class="va">i</span> <span class="op">=</span> <span class="dv">0</span><span class="kw">;</span> <span class="va">i</span> <span class="op">&lt;</span> <span class="va">$tagsNumber</span> <span class="kw">;</span> <span class="va">i</span><span class="op">=</span><span class="va">i</span><span class="op">+</span><span class="dv">2</span>  <span class="kw">))</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">do</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">tagsAWS</span><span class="op">=</span><span class="st">"</span><span class="va">${tagsAWS}</span><span class="st">{ Key=</span><span class="va">${TAGS</span><span class="op">[</span><span class="va">$i</span><span class="op">]</span><span class="va">}</span><span class="st">, Value=</span><span class="va">${TAGS</span><span class="op">[</span><span class="va">$i</span>+1<span class="op">]</span><span class="va">}</span><span class="st"> }, "</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The script <code>aws_instances_launch.sh</code> does similarly to get the resources IDs in the file <code>inputs/resourcesIDs.txt</code>:</p>
+<!-- ::: -->
+<p>The script <code>aws_instances_launch.sh</code> gets the AWS resources IDs in the file <code>../inputs/resourcesIDs.txt</code> as follows:</p>
+<div class="column-page">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
 </div>
-<div class="sourceCode" id="cb7" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">resources</span><span class="op">=</span><span class="va">(</span> <span class="kw">`</span><span class="fu">cat</span> <span class="va">$inputsDir</span>/resourcesIDs.txt<span class="kw">`</span> <span class="va">)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">resource_image_id</span><span class="op">=</span><span class="va">${resources</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">resource_instance_type</span><span class="op">=</span><span class="va">${resources</span><span class="op">[</span><span class="dv">3</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="va">resource_security_group_ids</span><span class="op">=</span><span class="va">${resources</span><span class="op">[</span><span class="dv">5</span><span class="op">]</span><span class="va">}</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="va">resource_subnet_id</span><span class="op">=</span><span class="va">${resources</span><span class="op">[</span><span class="dv">7</span><span class="op">]</span><span class="va">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the resourcesIDs.txt values for configuration - they have been checked and validated before</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">resource_image_id</span><span class="op">=</span><span class="kw">`</span><span class="fu">awk</span> <span class="at">-F</span> <span class="st">" "</span>           <span class="st">'tolower($1) == "imageid"         {print $2}'</span> <span class="va">$inputsDir</span>/resourcesIDs.txt<span class="kw">`</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">resource_instance_type</span><span class="op">=</span><span class="kw">`</span><span class="fu">awk</span> <span class="at">-F</span> <span class="st">" "</span>      <span class="st">'tolower($1) == "instancetype"    {print $2}'</span> <span class="va">$inputsDir</span>/resourcesIDs.txt<span class="kw">`</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="va">resource_security_group_ids</span><span class="op">=</span><span class="kw">`</span><span class="fu">awk</span> <span class="at">-F</span> <span class="st">" "</span> <span class="st">'tolower($1) == "securitygroupid" {print $2}'</span> <span class="va">$inputsDir</span>/resourcesIDs.txt<span class="kw">`</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="va">resource_subnet_id</span><span class="op">=</span><span class="kw">`</span><span class="fu">awk</span> <span class="at">-F</span> <span class="st">" "</span>          <span class="st">'tolower($1) == "subnetid"        {print $2}'</span> <span class="va">$inputsDir</span>/resourcesIDs.txt<span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>Only the <code>aws_instances_launch.sh</code> uses the resources IDs.</p>
 <p>The <code>aws_*.sh</code> scripts that <strong>delete</strong> instances or related resources don’t need nor use the “shared data” in the files <code>tags.txt</code> and <code>resourcesIDs.txt</code>.</p>
 </section>
 </section>
-<section id="the-scripts-loop-through-instances-names" class="level2">
+<section id="the-scripts-loop-through-instances-names" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="the-scripts-loop-through-instances-names">The Scripts <strong>loop</strong> through instances names</h2>
-<p>Once an <code>aws_*.sh</code> script sets access to “shared data” as described above, the script goes through the <strong>loop</strong> where, for each instance name in the “<em>instancesNames.txt</em>” file, the script invokes the AWS operation request it is in charge of.</p>
-<p>The loop of the script <code>aws_instances_launch.sh</code> (which creates one or multiple instances) is shown below. We have added the line numbers on the left for convenience but they don’t correspond to the actual line numbers in the script. Also, we have ommitted the code for Results Handling after the invokation of the AWS operation request with <code>aws</code> — such Results Handling is similar in all the <code>aws_*.sh</code> scripts.</p>
+<p>Once an <code>aws_*.sh</code> script sets access to “shared data” as described above, the script goes through the <strong>loop</strong> where, for each instance name in the “<em>instancesNames.txt</em>” file, the script invokes the AWS service request it is in charge of.</p>
+<p>The loop of the script <code>aws_instances_launch.sh</code> (which creates one or multiple instances) is shown below. We have added the line numbers on the left for convenience but they don’t correspond to the actual line numbers in the script.</p>
+<div class="column-page">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
-<pre><strong>Code</strong></pre>
+<pre><strong>aws_instances_launch.sh - main loop</strong></pre>
 </div>
-<div class="sourceCode" id="cb8" data-filename="Code"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">01</span> instancesNames=<span class="er">(</span> <span class="kw">`</span><span class="fu">cat</span> <span class="va">$instancesNamesFile</span><span class="kw">`</span> <span class="kw">)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">02</span> for instance in <span class="va">${instancesNames</span><span class="op">[@]</span><span class="va">}</span></span>
+<div class="sourceCode" id="cb8" data-filename="aws_instances_launch.sh - main loop"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">01</span> instancesNames=<span class="er">(</span> <span class="kw">`</span><span class="fu">cat</span> <span class="va">$instancesNamesFile</span><span class="kw">`</span> <span class="kw">)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">02</span> for instanceFullName in <span class="va">${instancesNames</span><span class="op">[@]</span><span class="va">}</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">03</span> do</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">04</span>   logkeyend=<span class="va">${instance</span><span class="op">%</span>-src<span class="pp">*</span><span class="va">}</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">05</span>   aws ec2 run-instances <span class="at">--image-id</span> <span class="va">$resource_image_id</span> <span class="at">--instance-type</span> <span class="va">$resource_instance_type</span><span class="dt">\</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>06   <span class="at">--key-name</span> <span class="st">"login-key-</span><span class="va">${logkeyend}</span><span class="st">"</span>  <span class="dt">\</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>07   <span class="at">--security-group-ids</span> <span class="va">$resource_security_group_ids</span> <span class="dt">\</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>08   <span class="at">--subnet-id</span> <span class="va">$resource_subnet_id</span> <span class="at">--tag-specifications</span> <span class="dt">\</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>09   <span class="st">"ResourceType=instance, Tags=[{Key=Name,   Value=</span><span class="va">$instance</span><span class="st">}, </span><span class="dt">\</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">10                      {Key=name,      Value=</span><span class="va">${instance</span><span class="op">,,</span><span class="va">}</span><span class="st">}, </span><span class="dt">\</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="st">11                      {Key=group, Value=</span><span class="va">$tag_group_value</span><span class="st">}, </span><span class="dt">\</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">12                      {Key=project, Value=</span><span class="va">$tag_project_value</span><span class="st">}, </span><span class="dt">\</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="st">13                      {Key=status, Value=</span><span class="va">$tag_status_value</span><span class="st">}, </span><span class="dt">\</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="st">14                      {Key=pushed_by, Value=</span><span class="va">$tag_pushedby_value</span><span class="st">}, </span><span class="dt">\</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="st">15                  {Key=defined_in, Value=</span><span class="va">$tag_definedin_value</span><span class="st">},  </span><span class="dt">\</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="st">16                ]"</span>  <span class="va">$outputsDirThisRun</span>/<span class="va">$instance</span>.txt 2<span class="kw">&amp;</span><span class="ex">1</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">17</span>   if [ <span class="va">$?</span> <span class="at">-eq</span> 0 ]<span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">18</span>      <span class="co">### aws Results Handling</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="ex">19</span>   fi</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="ex">20</span> done</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">04</span>    instance=<span class="va">${instanceFullName</span><span class="op">%</span>-src<span class="pp">*</span><span class="va">}</span>        <span class="co">### get rid of suffix "-srcAMInn.." if it exists</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">05</span>    loginkey=login-key-<span class="va">$instance</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">06</span>    aws ec2 run-instances <span class="at">--image-id</span>  <span class="va">$resource_image_id</span> <span class="at">--instance-type</span>  <span class="va">$resource_instance_type</span> <span class="dt">\</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>07       <span class="at">--key-name</span> <span class="va">$loginkey</span>  <span class="dt">\</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>08       <span class="at">--security-group-ids</span> <span class="va">$resource_security_group_ids</span> <span class="dt">\</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>09       <span class="at">--subnet-id</span> <span class="va">$resource_subnet_id</span> <span class="dt">\</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>10       <span class="at">--tag-specifications</span> <span class="dt">\</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>11       <span class="st">"ResourceType=instance, Tags=[{Key=Name, Value=</span><span class="va">$instanceFullName</span><span class="st">}, </span><span class="va">$tagsAWS</span><span class="st"> ]"</span> <span class="op">&gt;</span>  <span class="va">$outputsDirThisRun</span>/<span class="va">$instance</span>.txt <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span>   </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ex">12</span>    if [ <span class="va">$?</span> <span class="at">-eq</span> 0 ]<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">13</span>        message <span class="st">"</span><span class="kw">`</span><span class="ex">colour</span> gl Success<span class="kw">`</span><span class="st"> creating </span><span class="kw">`</span><span class="ex">colour</span> bl instance:<span class="kw">`</span><span class="st"> </span><span class="va">$instance</span><span class="st">"</span>  <span class="va">$outputsDirThisRun</span>/<span class="va">$instance</span>.txt</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">14</span>    else</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ex">15</span>        message <span class="st">"</span><span class="kw">`</span><span class="ex">colour</span> red Error<span class="kw">`</span><span class="st"> (</span><span class="va">$?</span><span class="st">) creating </span><span class="kw">`</span><span class="ex">colour</span> bl instance:<span class="kw">`</span><span class="st"> </span><span class="va">$instance</span><span class="st">"</span>  <span class="va">$outputsDirThisRun</span>/<span class="va">$instance</span>.txt</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ex">16</span>        exit 2</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ex">17</span>    fi</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ex">18</span> done</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="ex">19</span> exit 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Line 01: the variable <code>instancesNames</code> is initialised as list of the instances names in the file “<em>instancesNames.txt</em>” file (variable <code>$instancesNamesFile</code>).</p>
-<p>Line 02: the loop starts, using the variable <code>instance</code> to store the instance name in turn.</p>
-<p>Line 04: <code>logkeyend=${instance%-src*}</code> gets the end, the suffix, of the login key name to pass as parameter to <code>aws</code> (line 06). Each login key name is created with the fixed prefix <code>login-key-</code> concatenated to the instance name (in the <code>instance</code> variable) <strong>without</strong> the instance name suffix that identifies the source (<code>%-src*</code>) AMI template (discussed in episode 3).</p>
-<p>Lines 05-16 is a single command — the character <code>\</code>, at the end of lines 05-12, tells Bash to carry on reading input before running the command. The command runs the AWS CLI program <code>aws</code> requesting to launch and instance, passing various parameters including: <code>--image-id</code> (AMI id), .. and the tag values (previously loaded from the file <code>inputs/tags.txt</code>). The parameters to <code>aws</code> are discussed below.</p>
-<p>Line 16: the results of invoking <code>aws</code> are stored in the file whose name is specified by the value in the variables <code>$outputsDirThisRun/$instance.txt</code> which were previously defined before and within the loop, respectively. Both results (1) and any errors (2), if any, are written to that file (<code>2&amp;1</code>).</p>
+</div>
+<p>Line <strong>01</strong>: the variable <code>instancesNames</code> is initialised as a list of the instances names in the file “<em>instancesNames.txt</em>” file (variable <code>$instancesNamesFile</code>).</p>
+<p>Line <strong>02</strong>: the loop starts, using the variable <code>instanceFullName</code> to store the instance name in turn.</p>
+<p>Line <strong>04</strong>: <code>instance=${instanceFullName%-src*}</code> store the instance name in the variable <code>instance</code> but without the suffix <code>-srcAMInn</code> (<code>%-src*</code>) that identifies the source AMI template to create the instance, if it was specified, see the section <a href="../../docs/lesson02-managing-aws-instances/03-ami-management.html#instances-names-we-use">Instances names we use</a> in the previous episode.</p>
+<p>Line <strong>05</strong>: <code>loginkey=login-key-$instance</code> store the login key name in the variable <code>loginkey</code> to pass it as parameter to <code>aws</code> (in line 07). Each login key name is created with the fixed prefix <code>login-key-</code> concatenated to the instance name (in the <code>instance</code> variable).</p>
+<p>Lines <strong>06-11</strong> is a single command — the character <code>\</code>, at the end of lines 06-10, tells Bash to carry on reading input before running the command. This command <strong>runs</strong> the <strong>AWS CLI</strong> program, which is called <code>aws</code>, requesting to launch an instance, passing various parameters including: <code>--image-id</code> (AMI id), .. and the tags in the variable <code>tagsAWS</code> (previously loaded from the file <code>../inputs/tags.txt</code>). The parameters to <code>aws</code> are discussed below.</p>
+<p>Line <strong>11</strong>: the results of invoking <code>aws</code> are stored in the file whose name is specified by the value in the variables <code>$outputsDirThisRun/$instance.txt</code> which were previously defined before and within the loop, respectively. Both results and any errors, if any, are written to that file (<code>2&amp;1</code>).</p>
 <section id="the-loops-in-the-other-scripts" class="level3">
 <h3 class="anchored" data-anchor-id="the-loops-in-the-other-scripts">The loops in the other scripts</h3>
 <p>The loop in each of all other <code>aws_*.sh</code> scripts is similar to the loop shown above in that:</p>
 <ul>
 <li>the <code>instance</code> loop variable is used to create the name of other files to access therein data that is relevant to the function of the script. Recall that:<br>
 “<em>Each instance name is the key to access each instance results files in the</em> <code>outputs</code> <em>directory</em>”.</li>
-<li><code>aws</code> is run to make the corresponding AWS operation request.</li>
+<li><code>aws</code> is run to make the corresponding AWS service request.</li>
 <li>results and errors of invoking <code>aws</code> are saved to a file in the <code>outputs</code>/script-results/ directory.</li>
 </ul>
 <p>The loop in the scripts below are somewhat different to all others:</p>
 <ul>
-<li><strong><code>aws_domainNames_create.sh</code></strong>:<br>
-<em>Before</em> invoking <code>aws</code> to create a domain name (for the <code>instance</code> being processed in the loop), <code>aws_domainNames_create.sh</code> creates a .json file with the details of the domain name to be created, and then invokes <code>aws</code> passing the path of that file as parameter, among other parameters.<br>
-</li>
-<li><strong><code>aws_loginKeyPair_create.sh</code></strong>:<br>
-<em>After</em> invoking <code>aws</code> to create a login key (for the <code>instance</code> being processed in the loop), if the invocation was <strong>Successful</strong>, <code>aws_loginKeyPair_create.sh</code> unpacks the login key from the results file (of invoking <code>aws</code>) into a .pem file. Such results are returned in .json format, which includes a key-value pair for each item of information returned, for example: “KeyName”: “login-key-instance01”; “KeyPairId”: “key-0f2702d75934347e4”; “KeyMaterial”: ” <em>the login key itself</em> “, among other items of information. The value of”KeyMaterial” is extracted from the resuts file, and somewhat processed before writing it onto a .pem file. The processing is required for the login keys to work in MacOS machines.</li>
+<li><p><strong><code>aws_domainNames_create.sh</code></strong>:<br>
+<em>Before</em> invoking <code>aws</code> to create a domain name (for the <code>instance</code> being processed in the loop), <code>aws_domainNames_create.sh</code> creates a .json file with the details of the domain name to be created, and then invokes <code>aws</code> passing the path of that file as a parameter along with other parameters.</p></li>
+<li><p><strong><code>aws_loginKeyPair_create.sh</code></strong>:<br>
+<em>After</em> invoking <code>aws</code> to create a login key (for the <code>instance</code> being processed in the loop), if the invocation was <strong>Successful</strong>, <code>aws_loginKeyPair_create.sh</code> unpacks the login key from the results file (of invoking <code>aws</code>) into a <code>.pem</code> file. Such results are returned in .json format, which includes a key-value pair for each item of information returned, for example: “KeyName”: “login-key-instance01”; “KeyPairId”: “key-0f2702d75934347e4”; “KeyMaterial”: “<em>the-login-key-itself</em>”, among other items of information. The value of “<strong>KeyMaterial</strong>” is extracted from the resuts file, and somewhat processed before writing it onto a <code>.pem</code> file. Such processing is required for the login keys to work in MacOS machines.</p></li>
+<li><p><strong><code>aws_instances_configure.sh</code></strong>, <strong><code>csinstances_stop.sh</code></strong>, and <strong><code>csinstances_start.sh</code></strong>:<br>
+The loop through instance names in these scripts is somewhat more complex than in the other scripts, as conﬁguring, stopping and starting instances require different handling depending on whether <strong>domain names are managed</strong> or <strong>not</strong>, and these scripts handle both scenarios.</p></li>
 </ul>
 </section>
 </section>
 </section>
 <section id="the-aws-cli-command-reference" class="level1">
 <h1>2. The AWS CLI Command Reference</h1>
-<p>The code box below shows some of the <code>aws</code> (AWS CLI) commands used by the Scripts. For each command, only the first three parameters passed to <code>aws</code> by the Scripts are shown (the actual commands pass quite a few more parameters).</p>
+<p>The code box below shows some of the <code>aws</code> (AWS CLI) commands used by the Scripts. For each command, only the first three parameters passed to <code>aws</code> by the Scripts are shown. The Scripts pass quite a few more parameters to those commands as exemplified by the code of <code>aws_instances_create.sh</code> above.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -539,50 +549,23 @@ Exercise
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 delete-key-pair <span class="at">--key-name</span> ..</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 run-instances <span class="at">--image-id</span>  ..</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 terminate-instances  <span class="at">--instance-ids</span> ..</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 allocate-address <span class="at">--domain</span> ..</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 release-address <span class="at">--allocation-id</span> ..</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> route53 change-resource-record-sets <span class="at">--hosted-zone-id</span> ..</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 describe-volumes <span class="at">--filters</span> ..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> route53 change-resource-record-sets <span class="at">--hosted-zone-id</span> ..</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ec2 describe-volumes <span class="at">--filters</span> ..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The first parameter identifies the target main AWS service: <code>ec2</code> and <code>route53</code> (in the code box). The service <code>ec2</code> stands for Elastic Compute Cloud which comprises quite a few sub-services or resources such as: login keys, AMI, IP addreses, volumes, snapshots, etc. The service <code>route53</code> is the one that deals with domain names.</p>
-<p>The second parameter (<code>create-key-pair</code>, .., or <code>describe-volumes</code>), is the command/operation we want the AWS service to perform. Each of the commands above has the form <em>verb-noun</em>, or <em>action-onWhat</em>, thus identifying the type of EC2 resource on which the command will be applied.</p>
-<p>The third parameter, (<code>--key-name</code>, .., or <code>--filters</code>), and the following parameters are the <em>parameters to the command</em> (the second parameter of <code>aws</code>), identifying the target specific AWS resource to be affected and how it will be affected by the command requested.</p>
-<p>The AWS CLI (<code>aws</code>) is extremely powerful and flexible. The Scripts only use only a minor part of it. The AWS CLI enables you to access and modify any AWS service and any type of resource within each service. There are over 100 AWS services, of which EC2 is one of them. EC2 has over 200 <em>command-resource</em> operations.</p>
+<p>The first parameter to <code>aws</code> identifies the target AWS service: <code>ec2</code> and <code>route53</code> (in the code box). The service <code>ec2</code> stands for Elastic Compute Cloud which comprises quite a few sub-services or resources such as: login keys, AMI, IP addreses, volumes, snapshots, etc. The service <code>route53</code> is the one that deals with domain names.</p>
+<p>The second parameter (<code>create-key-pair</code>, .., or <code>describe-volumes</code>) is the operation we want the AWS service to perform. Each of the operations above has the form <em>verb-noun</em>, or <em>action-onWhat</em>, thus identifying the type of EC2 resource on which the operation is to be applied.</p>
+<p>The following parameters (third, fourth, etc.) are organised as “<strong><em>key value</em></strong>” pairs (see the code of <code>aws_instances_launch.sh</code> above). These are <em>parameters to the operation</em> (the second parameter to <code>aws</code>), and serve both to identify the target specific AWS resource to be affected and to specify how the resource will be affected by the operation requested.</p>
+<p>The AWS CLI (<code>aws</code>) is extremely powerful and flexible. The Scripts only use only a minor part of it. The AWS CLI enables you to access and modify any AWS service and any type of resource within each service. At the time of writing, there are over 100 AWS services of which EC2 is one of them; EC2 has over 200 <em>operation-resource</em> operations.</p>
 <p>If you plan to improve the Scripts and this involves changing the <code>aws</code> commands in the Scripts, you need to consult the <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html">AWS CLI Command Reference</a> — the landing page is shown below.</p>
 <p>Overall, in trying a new <code>aws</code> command you should aim to have a simple version of the new command running as soon as possible and then tune it gradually. For this purpose, look at the relevant examples in the AWS CLI Command Reference. The screenshots below show you how to get to the Examples of the <code>aws ec2 run-instances</code> command that creates (runs and launches) instances. Our Script <code>aws_instances_launch.sh</code> uses a version of those examples.</p>
 <p>On the “AWS CLI Command Reference” page, click on <strong>Available Services</strong> and scroll down until you find <strong>ec2</strong> and click on it.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../images/04-the-Scripts-design/01-aws-cli-cmd-ref-home-page.png" class="img-fluid figure-img" alt="Screenshot of AWS CLI Command Reference page in a browser showing the option Available Services circled" width="900"></p>
-<figcaption>.</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../images/04-the-Scripts-design/02-aws-cli-cmd-ref-services-list-including-ec2.png" class="img-fluid figure-img" alt="Screenshot of AWS CLI Command Reference page in a browser, scrolled down and showing the option ec2 circled" width="900"></p>
-<figcaption>.</figcaption>
-</figure>
-</div>
-<p>The page “ec2” will be presented. Click on <strong>Available Commands</strong> and scroll down until you find <strong>run-instances</strong> and click on it.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../images/04-the-Scripts-design/03-aws-cli-cmd-ref-ec2-homepage.png" class="img-fluid figure-img" alt="Screenshot of AWS CLI ec2 page in a browser, showing the option Available commands circled" width="900"></p>
-<figcaption>.</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../images/04-the-Scripts-design/04-aws-cli-cmd-ref-ec2-service-list-run-instances.png" class="img-fluid figure-img" alt="Screenshot of AWS CLI ec2 page in a browser, scrolled down and showing the option run-instances circled" width="900"></p>
-<figcaption>.</figcaption>
-</figure>
-</div>
-<p>The page “run-instances” will be presented. Click on <strong>Examples</strong>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../images/04-the-Scripts-design/05-aws-cli-cmd-ref-ec2-run-instances-page.png" class="img-fluid figure-img" alt="Screenshot of AWS CLI run-instances page in a browser, showing the option Examples circled" width="900"></p>
-<figcaption>.</figcaption>
-</figure>
-</div>
+<p><img src="../../images/04-the-Scripts-design/01-aws-cli-cmd-ref-home-page.png" class="img-fluid" alt="Screenshot of AWS CLI Command Reference page in a browser showing the option Available Services circled" width="900"></p>
+<p><img src="../../images/04-the-Scripts-design/02-aws-cli-cmd-ref-services-list-including-ec2.png" class="img-fluid" alt="Screenshot of AWS CLI Command Reference page in a browser, scrolled down and showing the option ec2 circled" width="900"></p>
+<p>The page of “ec2” will be presented. Click on <strong>Available Commands</strong> and scroll down until you find <strong>run-instances</strong> and click on it.</p>
+<p><img src="../../images/04-the-Scripts-design/03-aws-cli-cmd-ref-ec2-homepage.png" class="img-fluid" alt="Screenshot of AWS CLI ec2 page in a browser, showing the option Available commands circled" width="900"></p>
+<p><img src="../../images/04-the-Scripts-design/04-aws-cli-cmd-ref-ec2-service-list-run-instances.png" class="img-fluid" alt="Screenshot of AWS CLI ec2 page in a browser, scrolled down and showing the option run-instances circled" width="900"></p>
+<p>The page of “run-instances” will be presented. Click on <strong>Examples</strong>.</p>
+<p><img src="../../images/04-the-Scripts-design/05-aws-cli-cmd-ref-ec2-run-instances-page.png" class="img-fluid" alt="Screenshot of AWS CLI run-instances page in a browser, showing the option Examples circled" width="900"></p>
 <p>The page below will be presented. You can see the resemblance between the code in the examples below and the code in our Script <code>aws_instances_launch.sh</code>. The main difference being our use of shell variables to tune the <code>aws</code> command within the loop according to each instance name, etc.</p>
 <p>We developed all the Scripts starting with the relevant examples in the AWS CLI Command Reference.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -594,12 +577,11 @@ Exercise
 </section>
 <section id="improving-the-scripts" class="level1">
 <h1>3. Improving the Scripts</h1>
-<p>The Scripts provide enough functionality to manage well one or multiple AWS instances in the context of hands-on training and similar contexts, wherein each instance is to be used by a single person for a period of time. Other contexts will most likely need modifying the scripts and, of course, the scripts can be improved somehow. This is a list of improvements that we have identified:</p>
+<p>The Scripts provide enough functionality to manage well one or multiple AWS instances in the context of hands-on training and similar contexts, wherein each instance is to be used by a single person for a relatively short period of time.</p>
+<p>Other contexts will most likely need modifying the scripts and, of course, the scripts can be improved somehow. This is a list of improvements that we have identified:</p>
 <ol type="1">
-<li><p>Handling comments in configuration files: <code>resourcesIDs.txt</code>, <code>tags.txt</code> and “<em>instancesNames.txt</em>” files. This will make those files more readable.</p></li>
+<li><p>Handling comments in the configuration files <code>tags.txt</code> and “<em>instancesNames.txt</em>” files. This will make those files more readable.</p></li>
 <li><p>Code naming conventions and comments in the Scripts can be improved.</p></li>
-<li><p>Checking some resouces limits (quotas) of the target AWS account. For example, the Scripts use <em>elastic</em> IP addresses that don’t change on rebooting instances. The default number of elastic IPs for each AWS account is 5, and can be increased in the AWS Console. However, the Scripts will fail if the number of available IP addresses is exceeded when running the Scripts: the Scripts will fail in creating the IP addresses but would have succeded in creating the login keys and the intances. Hence, after increasing that number in the AWS Console, the Scripts <code>aws_elasticIPs_allocate.sh</code>, <code>aws_domainNames_create.sh</code>, <code>aws_elasticIPs_associate2instance.sh</code>, and <code>aws_instances_configure.sh</code> would have to be run “manually”.</p></li>
-<li><p>Managing <em>dynamic</em> IP addresses (that change on rebooting instances), as opposed to <em>elastic</em> IP addresses, should perhaps be considered in order to make management more efficient and less dependant on resources limits.</p></li>
 <li><p>Adding the <code>--dry-run</code> option to the Scripts would facilitate development. The AWS CLI (<code>aws</code>) supports a <code>--dry-run</code> and it would be a matter of handling that option within the Scripts.</p></li>
 </ol>
 <p>Congratulations! You have completed the Automated Management of AWS Instances course.</p>
